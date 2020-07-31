@@ -1,6 +1,7 @@
 'use strict'
 // Import parts of electron to use
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, autoUpdater} = require('electron')
+require('update-electron-app')()
 // Add React extension for development
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 // Keep a global reference of the window object, if you don't, the window will
@@ -68,3 +69,11 @@ app.on('activate', () => {
     createWindow()
   }
 })
+const server = 'https://update.electronjs.org'
+const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
+
+autoUpdater.setFeedURL(feed)
+
+setInterval(() => {
+  autoUpdater.checkForUpdates()
+}, 10 * 60 * 1000)
