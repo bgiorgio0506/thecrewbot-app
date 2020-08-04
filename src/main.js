@@ -2,13 +2,14 @@
 // Import parts of electron to use
 const { app, BrowserWindow, autoUpdater} = require('electron')
 require('update-electron-app')()
+require('dotenv').config()
 // Add React extension for development
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 // Keep a reference for dev mode
-let dev = false
+let dev = true
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
   dev = true
@@ -28,6 +29,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true
     },
+    icon:'./src/assets/icons/ico/ico1.ico'
   })
   // and load the index.html of the app.
   // Load the index.html
@@ -71,9 +73,11 @@ app.on('activate', () => {
 })
 const server = 'https://update.electronjs.org'
 const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
+if(dev === false){
+  autoUpdater.setFeedURL(feed)
 
-autoUpdater.setFeedURL(feed)
+  setInterval(() => {
+    autoUpdater.checkForUpdates()
+  }, 10 * 60 * 1000)
 
-setInterval(() => {
-  autoUpdater.checkForUpdates()
-}, 10 * 60 * 1000)
+}

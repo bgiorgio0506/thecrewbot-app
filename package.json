@@ -17,14 +17,25 @@
     "email": "bgiorgio0506@gmail.com"
   },
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/bgiorgio0506/thecrewbot-app.git"
+  },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "src/assets/icons/ico/ico1.ico",
+        "executableName": "The Flight Crew App"
+      },
+      "electronWinstallerConfig": {
+        "iconUrl": "file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "thecrewbot_app"
+            "name": "thecrewbot_app",
+            "iconUrl": "file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico",
+            "setupIcon": "../src/assets/icons/ico/ico1.ico"
           }
         },
         {
@@ -45,13 +56,13 @@
       "publishers": [
         {
           "name": "@electron-forge/publisher-github",
-          "config": {
-            "repository": {
-              "owner": "bgiorgio0506",
-              "name": "thecrewbot_app"
-            },
-            "prerelease": true
-          }
+          "repository": {
+            "owner": "bgiorgio0506",
+            "name": "thecrewbot_app"
+          },
+          "authToken": "",
+          "dreaft": true,
+          "prerelease": true
         }
       ],
       "plugins": [
@@ -74,6 +85,7 @@
       ]
     }
   },
+  "icon": "src/assets/icons/ico/ico1.ico",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.52",
     "@electron-forge/maker-deb": "^6.0.0-beta.52",
@@ -94,12 +106,16 @@
     "@electron-forge/publisher-github": "^6.0.0-beta.52",
     "babel-loader": "^8.1.0",
     "babili-webpack-plugin": "^0.1.2",
+    "dotenv": "^8.2.0",
     "electron-devtools-installer": "^3.1.1",
+    "electron-is-dev": "^1.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "irc": "^0.5.2",
     "mini-css-extract-plugin": "^0.9.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "request": "^2.88.2",
+    "tmi.js": "^1.5.0",
     "twitch-toolkit": "0.0.11",
     "update-electron-app": "^1.5.0"
   }
