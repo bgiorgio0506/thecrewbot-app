@@ -1,0 +1,1 @@
+window.Renderer = require('electron').ipcRenderer

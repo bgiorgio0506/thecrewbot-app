@@ -1,8 +1,10 @@
 'use strict'
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater} = require('electron')
+const { app, BrowserWindow, autoUpdater, ipcMain} = require('electron')
 require('update-electron-app')()
 require('dotenv').config()
+const utils = require('../src/helpers/utility')
+const tmi = require('tmi.js');
 // Add React extension for development
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 // Keep a global reference of the window object, if you don't, the window will
@@ -10,6 +12,10 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-d
 let mainWindow
 // Keep a reference for dev mode
 let dev = true
+//Question queue
+let questQueue = [];
+let questID = 0; //init id
+
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
   dev = true
@@ -27,7 +33,8 @@ function createWindow() {
     height: 768, // height of the window
     show: false, // don't show until window is ready
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      preload : __dirname+'/preload.js'
     },
     icon:'./src/assets/icons/ico/ico1.ico'
   })
@@ -71,6 +78,73 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+/** CHAT BOT SECTION **/
+//chatbot opts 
+const ClientBot = new tmi.Client({
+  options: { debug: true },
+connection: {
+      reconnect: true,
+      secure: true
+},
+  identity: {
+      username: process.env.TWITCH_BOT_USERNAME,
+      password: process.env.TWITCH_BOT_PASSWORD,
+  },
+  channels:['paolom346_']
+})
+
+ClientBot.connect().catch((error)=>{throw error;})
+
+ClientBot.on('message', (channel, tags, message, self)=>{
+  //console.log(message, tags, channel, self)
+  if(message.includes('!secret') === true){
+      let messageArr = message.split(' '); // split the string into an Array
+      messageArr.shift();// remove command string from message content
+      let quest = messageArr.join(' '); //join array
+      let questObj  = { id :questQueue.length, user:tags.username, question:quest, position: questQueue.length+1, complete: false}
+      // add to queue array
+      //console.log(questQueue) // debug log
+      questQueue.push(questObj);// push before render is committed
+      mainWindow.webContents.send('add-quest',questQueue)
+      ClientBot.say(channel, '***Test Message ***\n  Grazie '+ questObj.user +' la tua secret è al : '+ questQueue.length+ '°' + ' in ordine!!\n Aspetta e tutto ti sarà dato'); //send user response
+  }
+
+  if(message.includes('!status') === true){
+    if (questQueue.length > 0) {
+     let index = utils.findIndexInObjArr(questQueue, 'user', tags.username)
+     if (index === -1) {
+       ClientBot.say(channel,'Non abbiamo trovato la tua ****')
+     } else {
+        index = index+1;
+        ClientBot.say(channel,'La tua **** al ' + index + '°')
+      }
+    }else  ClientBot.say(channel,'Non abbiamo trovato la tua ****')
+  }
+
+  if(message.includes('!social') === true){
+    ClientBot.say(channel, 'Trovami in tutti i social quì: https://linktr.ee/paolom346')
+  }
+
+  if(message.includes('!donazioni') === true){
+    ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip '+'  Grazie per il supporto '+ tags.username+ ' !!')
+  }
+})
+
+ClientBot.on('connected', ()=>{
+  console.log('Joined channel')
+})
+
+ipcMain.on('rm-quest', (e ,id)=>{
+  questQueue = questQueue.filter(item => item.id !== id);
+})
+//setInterval(()=>{
+//  ClientBot.say('paolom346_','*****This is a test***** \nfrom' + process.env.APP_NAME + '\n  version: ' + process.env.APP_VERSION + '\n on platform: ' + process.platform+ '\n Debug : '+ process.env.APP_DEBUG)
+//}, 60000)
+
+
+
+//Updater Section 
 const server = 'https://update.electronjs.org'
 const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
 if(dev === false){
