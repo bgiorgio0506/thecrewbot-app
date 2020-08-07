@@ -1,9 +1,7 @@
 // Import dependencies
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { ipcRenderer, remote } from 'electron'
-import CreateList from './components/app'
-import Error from './components/error'
+import CreateList from './components/list'
 import './assets/css/app.css';
 
 console.log('This line is begin called before app rendering')

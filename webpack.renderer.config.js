@@ -5,6 +5,7 @@ const rules = require('./webpack.rules')
 //const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 module.exports = {
   entry: path.resolve(__dirname, 'src/index.jsx'),
@@ -19,7 +20,7 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   output:{
-    path:path.resolve(__dirname,'./.webpack/renderer/main'),
+    path:path.resolve(__dirname,'./.webpack/renderer/'),
     filename:'index.js'
   },
   target: 'electron-renderer',

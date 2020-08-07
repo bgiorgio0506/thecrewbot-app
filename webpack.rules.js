@@ -47,9 +47,10 @@ module.exports.rulesDev = [
 
   module.exports.rulesProd = [
     {
-        test: /\.node$/,
-        use: 'node-loader',
-      },
+      test: /\.node$/,
+      use: "node-loader",
+      include: defaultInclude
+  },
       {
         test: /\.(m?js|node)$/,
         parser: { amd: false },
@@ -60,10 +61,6 @@ module.exports.rulesDev = [
           },
         },
       },
-      {
-        test: /\.node$/,
-        use: "node-loader",
-    },
     {
       test: /\.css$/,
       use: [
@@ -75,7 +72,7 @@ module.exports.rulesDev = [
     {
       test: /\.jsx?$/,
       use: [{ loader: 'babel-loader' }],
-      include: defaultInclude
+      include:defaultInclude
     },
     {
       test: /\.(jpe?g|png|gif)$/,
