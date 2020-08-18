@@ -15,6 +15,7 @@ let mainWindow
 let dev = false
 //Question queue
 let questQueue = [];
+let id = 0;
 
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
@@ -102,27 +103,33 @@ connection: {
 ClientBot.connect().catch((error)=>{throw error;})
 
 ClientBot.on('message', (channel, tags, message, self)=>{
-  log.info(message, tags, channel, self)
+  
+  //log.info(message, tags, channel, self)
   if(message.includes('!domanda') === true){
       let questObj = {}
       let messageArr = message.split(' '); // split the string into an Array
       messageArr.shift();// remove command string from message content
       let quest = messageArr.join(' '); //join array
+      id = id+1// increment questId
       //check if the same question is in the array
+      console.log(questQueue.length)
       if(questQueue.length > 0){
         questQueue.map((item)=>{
           if(item.question.includes(quest) === true){
             ClientBot.say(channel, 'Attenzione domanda già fatta da: '+ item.user) //say no to the user
           }else{
             //build elements and push for render
-            questObj  = { id :questQueue.length, user:tags.username, question:quest, position: questQueue.length+1, complete: false}
+            questObj  = { id :id, user:tags.username, question:quest}
             questQueue.push(questObj);
+            questQueue = utils.filterObjArr(questQueue)
+            console.log(questQueue)
             mainWindow.webContents.send('add-quest',questQueue)// send event to UI
           }
         })
       }else{
+        console.log('Calling here')
         //if the array is empty take the first question
-        questObj  = { id :questQueue.length, user:tags.username, question:quest}
+        questObj  = { id : id, user:tags.username, question:quest}
         questQueue.push(questObj);// push before render is committed
         mainWindow.webContents.send('add-quest',questQueue)
       }
@@ -161,9 +168,8 @@ ClientBot.on('connected', ()=>{
 /*** EVENT HANDLING AND IPC CALLS ***/
 //when a question is marked as completed then delete the element
 ipcMain.on('rm-quest', (e ,id)=>{
-  let index = utils.findIndexInObjArr(questQueue, 'id', id) // find element in the array
-  delete questQueue[index]; //delete element
-  //console.log(questQueue) //debug
+  questQueue = questQueue.filter(item => item.id !== id)
+  //console.log(questQueue.length) //debug
 })
 
 
