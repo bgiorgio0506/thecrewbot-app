@@ -22,7 +22,7 @@ if(items.length === 0){
 }else{
   return items.map((item)=>{
     return (
-    <li id={item.id}>{item.user} chiede: {item.question} <br/> Contrassegna risposto: <input type="checkbox" onClick = {()=> handleClick(item.id)}/> <br/></li>
+    <li  class ="genericQuest" id={item.id}><strong>{item.user}</strong>  <p class="askPrefix">chiede</p>  :  {item.question} <input type="button" class ="doneBtn" value="Done" onClick = {()=> handleClick(item.id)}/> <br/></li>
     )
   })
 }

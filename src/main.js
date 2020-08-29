@@ -15,7 +15,7 @@ let mainWindow
 let gotTheLock
 
 // Keep a reference for dev mode
-let dev = false
+let dev = true
 
 //Init settings
 settings.set('config.prefix', "!").catch(err=>{throw err});
@@ -62,6 +62,7 @@ function createWindow() {
     width: 1024, // width of the window
     height: 768, // height of the window
     show: false, // don't show until window is ready
+    frame:false, //frame less
     webPreferences: {
       nodeIntegration: true,
       webSecurity:false
