@@ -1,4 +1,4 @@
-# Basic Welcome bot 
+# Basic Question Bot
 
 ![](https://img.shields.io/badge/language-JavaScript-yellow.svg)
 
