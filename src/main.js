@@ -20,7 +20,7 @@ let langObj = langLib() //get app lang
 
 
 // Keep a reference for dev mode
-let dev = true
+let dev = false
 
 //Init settings
 settings.set('config.prefix', "!").catch(err=>{throw err});
@@ -35,7 +35,8 @@ let id = 0;
 
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
-  dev = true
+ if(process.env.APP_DEBUG === true) dev = true
+ else dev= false
 }
 // Temporary fix for broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -72,6 +73,7 @@ function createWindow() {
     height: 768, // height of the window
     show: false, // don't show until window is ready
     frame:false, //frame less
+    resizable:true,
     webPreferences: {
       nodeIntegration: true,
       webSecurity:false

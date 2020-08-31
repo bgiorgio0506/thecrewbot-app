@@ -2,18 +2,23 @@
 /* Main CSS stylesheet */
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,600");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,500,600");
+
 html,
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
 body {
-  margin:0px;
+  margin: 0px;
   font-size: 16px;
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
 }
-@media screen and (prefers-color-scheme: light), screen and (prefers-color-scheme: no-preference) {
+
+@media screen and (prefers-color-scheme: light),
+screen and (prefers-color-scheme: no-preference) {
+
   /* Light mode */
   body {
     color: #000;
@@ -21,21 +26,23 @@ body {
   }
 }
 
-#app{
+#app {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-div{
+div {
   display: block;
 }
 
 
 /*MENU STRUCTURE*/
 
-.header{
+.header {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
   padding: 10px 20px;
   overflow: hidden;
   background: white;
@@ -53,14 +60,15 @@ div{
 
 /*Menu style*/
 
-.header a, i{
+.header a,i {
+  -webkit-app-region: no-drag;
   float: left;
   color: black;
   text-align: center;
   vertical-align: middle;
   padding: 20px;
   text-decoration: none;
-  font-size: 18px; 
+  font-size: 18px;
   line-height: 25px;
 }
 
@@ -68,8 +76,8 @@ div{
   font-size: 25px;
 }
 
-.header a.logo:hover{
-  background:transparent;
+.header a.logo:hover {
+  background: transparent;
 }
 
 .header a:hover {
@@ -77,9 +85,9 @@ div{
   color: black;
 }
 
-.header a.active {
-  font-size: bold;
-}
+/*.header a.active {
+  font-size:bold;
+}*/
 
 .header i:hover {
   background-color: #ddd;
@@ -87,7 +95,7 @@ div{
 }
 
 /*MAIN STRUCTURE*/
-.center-panel{
+.center-panel {
   display: flex;
   justify-content: flex-start;
   padding: 24px 50px;
@@ -96,33 +104,33 @@ div{
 }
 
 /* Main Style*/
-.section{
+.section {
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   font-size: 20px;
-  color:black;
+  color: black;
   font-weight: bold;
 }
 
-.genericQuest{
+.genericQuest {
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   font-size: 15px;
   margin: 10px 30px;
 }
 
-.doneBtn{
+.doneBtn {
   padding: 10px 15px;
-  color:white;
-  background:#339933;
+  color: white;
+  background: #339933;
   border-radius: 4px;
   outline: none;
   border: none;
 }
 
-.doneBtn:hover{
+.doneBtn:hover {
   background-color: #267326;
 }
 
-.askPrefix{
+.askPrefix {
   margin: 0px;
   padding: 0px;
   display: inline;
@@ -130,12 +138,14 @@ div{
 }
 
 @media screen and (prefers-color-scheme: dark) {
+
   /* Dark moe */
   body {
     color: #fff;
     background-color: #000;
   }
 }
+
 h1 {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 21px;

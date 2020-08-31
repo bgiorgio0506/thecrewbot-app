@@ -19,6 +19,7 @@ const CreateList = () => {
     setState(items.filter(item => item.id !== id));//change React state
   };
 
+  //{langObj.labels[1]}
 if(items.length === 0){
 return <p> <strong>{langObj.labels[1]}</strong></p>
 }else{

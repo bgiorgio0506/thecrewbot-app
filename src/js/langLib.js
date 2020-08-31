@@ -1,14 +1,23 @@
 const settings = require('electron-settings')
+const path = require('path')
+
+let langpath
 
 //Lang set default Italian
 const getLang = ()=>{
+    console.log(settings.getSync('config.lang'))
     if(settings.getSync('config.lang') === undefined){
         settings.set('config.lang', 'it')
         //'/lang/'+ process.env.APP_DEF_LANG_FILE
-        return require('../../lang'+ process.env.APP_DEF_LANG_FILE)
+        //let path = '../../lang/'+process.env.APP_DEF_LANG_FILE
+        langpath = path.join('C:\\thecrewbot-app\\', 'lang\\'+process.env.APP_DEF_LANG_FILE+'.json')
+        return require(langpath)
       }
       else{
-        return require('../../lang/'+settings.getSync('config.lang')+'.json')
+        //let langprefix = settings.getSync('config.lang')
+        //let path ='../../lang/'+settings.getSync('config.lang')+'.json'
+        langpath = path.join('C:\\thecrewbot-app\\', 'lang\\'+settings.getSync('config.lang')+'.json')
+        return require(langpath)
     }
 }
 

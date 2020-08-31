@@ -9,7 +9,7 @@ import './assets/css/app.css';
 const langObj  = getLang()
 
 console.log('This line is begin called before app rendering')
-
+//{langObj.labels[0]}
 
 // Render the app into the root div
 const render = () => {
