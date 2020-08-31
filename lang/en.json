@@ -1,0 +1,20 @@
+{
+    "errors":[
+
+    ], 
+    "info":[
+
+    ],
+    "labels":[
+        "QUESTIONS",
+        "No questions in the queue"
+    ],
+    "botMess":[
+        "We have not found your question ", 
+        "Your question is at ", 
+        "Question already submitted by "
+    ],
+    "symbols":[
+        "th"
+    ]
+}

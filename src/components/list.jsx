@@ -1,9 +1,11 @@
 // Import dependencies
 import React from 'react'
 import { ipcRenderer } from 'electron'
+import getLang from '../js/langLib';
 
 // Create list component
 const CreateList = () => {
+  const langObj = getLang()
   let Inititems = []
   const [items, setState] = React.useState(Inititems)
   console.log(items);
@@ -18,7 +20,7 @@ const CreateList = () => {
   };
 
 if(items.length === 0){
-  return <p> <strong> No question in the queue!!</strong></p>
+return <p> <strong>{langObj.labels[1]}</strong></p>
 }else{
   return items.map((item)=>{
     return (

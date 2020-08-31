@@ -1,0 +1,20 @@
+{
+    "errors":[
+
+    ], 
+    "info":[
+
+    ],
+    "labels":[
+        "DOMANDE", 
+        "Non ci sono domande in coda"
+    ],
+    "botMess":[
+        "Non abbiamo trovato la tua domanda", 
+        "La tua domanda al ", 
+        "Attenzione domanda già fatta da: "
+    ],
+    "symbols":[
+        "°"
+    ]
+}

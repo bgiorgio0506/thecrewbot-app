@@ -7,6 +7,9 @@ module.exports = {
   module: {
     rules: rules.rulesProd,
   },
+  externals: {
+    'fs-extra': 'commonjs2 fs-extra',
+  },
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },

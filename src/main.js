@@ -7,12 +7,17 @@ const tmi = require('tmi.js')
 const path = require('path');
 const log  = require('electron-log')
 const settings = require('electron-settings')
+const fsExtra = require('fs-extra')
+const langLib = require('./js/langLib').default
+
 // Add React extension for development
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
-let gotTheLock
+let mainWindow;
+let gotTheLock;
+let langObj = langLib() //get app lang
+
 
 // Keep a reference for dev mode
 let dev = true
@@ -21,6 +26,8 @@ let dev = true
 settings.set('config.prefix', "!").catch(err=>{throw err});
 settings.set('config.channel', ['paolom346_']);
 settings.set('config.updateLater', false);
+
+
 
 //Question queue
 let questQueue = [];
@@ -53,6 +60,8 @@ if (gotTheLock === false) {
     }
   })
 }
+
+
 
 
 /*** MAIN Window creation ****/
@@ -133,7 +142,7 @@ ClientBot.on('message', (channel, tags, message, self)=>{
       if(questQueue.length > 0){
         questQueue.map((item)=>{
           if(item.question.includes(quest) === true){
-            ClientBot.say(channel, 'Attenzione domanda già fatta da: '+ item.user) //say no to the user
+            ClientBot.say(channel, langObj.botMess[2]+ item.user) //say no to the user
           }else{
             //build elements and push for render
             questObj  = { id :id, user:tags.username, question:quest}
@@ -157,12 +166,12 @@ ClientBot.on('message', (channel, tags, message, self)=>{
     if (questQueue.length > 0) {
      let index = utils.findIndexInObjArr(questQueue, 'user', tags.username) //find the question in the erray
      if (index === -1) {
-       ClientBot.say(channel,'Non abbiamo trovato la tua domanda') // 404 not found
+       ClientBot.say(channel,langObj.botMess[0]) // 404 not found
      } else {
         index = index+1;
-        ClientBot.say(channel,'La tua domanda al ' + index + '°') //send position in the array 
+        ClientBot.say(channel, langObj.botMess[1] + index + langObj.symbols[0]) //send position in the array 
       }
-    }else  ClientBot.say(channel,'Non abbiamo trovato la tua domanda')
+    }else  ClientBot.say(channel,langObj.botMess[0])
   }
 
   if(command === "donate"){
