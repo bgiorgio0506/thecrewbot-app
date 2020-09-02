@@ -7,36 +7,36 @@ const tmi = require('tmi.js')
 const path = require('path');
 const log  = require('electron-log')
 const settings = require('electron-settings')
-const fsExtra = require('fs-extra')
 const langLib = require('./js/langLib').default
+const { EventEmitter } = require('events')
+
 
 // Add React extension for development
+const emitter = new EventEmitter()
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let gotTheLock;
 let langObj = langLib() //get app lang
-
+emitter.setMaxListeners(0);
 
 // Keep a reference for dev mode
-let dev = false
+let dev = true
 
-//Init settings
-settings.set('config.prefix', "!").catch(err=>{throw err});
-settings.set('config.channel', ['paolom346_']);
-settings.set('config.updateLater', false);
-
-
-
-//Question queue
+//Question queue global context
 let questQueue = [];
 let id = 0;
 
+//Init settings
+settings.setSync('config.channel', ['paolom346_']);
+settings.setSync('config.updateLater', false);
+settings.setSync('config.botPrefix', '!');
+
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
- if(process.env.APP_DEBUG === true) dev = true
- else dev= false
+ if(process.env.APP_DEBUG.includes('true') === true) dev = true;
+ else dev= false;
 }
 // Temporary fix for broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -65,6 +65,7 @@ if (gotTheLock === false) {
 
 
 
+
 /*** MAIN Window creation ****/
 function createWindow() {
   // Create the browser window.
@@ -76,7 +77,8 @@ function createWindow() {
     resizable:true,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity:false
+      webSecurity:false, 
+      enableRemoteModule:true
     },
     icon: nativeImage.createFromDataURL("file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico"),
   })
@@ -123,7 +125,7 @@ ClientBot.connect().catch((error)=>{throw error;})
 ClientBot.on('message', (channel, tags, message, self)=>{
 
   //Command sys
-  let prefix = settings.getSync('config.prefix')// get settings 
+  let prefix = settings.getSync('config.botPrefix')// get settings 
   let messageArr = message.split(' ')//split the message into array
 
   //get only bot command

@@ -7,6 +7,9 @@ module.exports = {
   module: {
     rules: rules.rulesProd,
   },
+  devServer: {
+    historyApiFallback: true
+  },
   externals: {
     'fs-extra': 'commonjs2 fs-extra',
   },

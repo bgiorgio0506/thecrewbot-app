@@ -7,7 +7,7 @@ const schema = {
                 <strong>THE</strong>CREWBOT
             </Fragment>), //if logo can be writed
             class:'logo', //css class
-            redirect:'#', //tbd
+            redirect:'/', //tbd
             isImg: false, //for the future
             ImgSrc : '',// case the logo is img
             imgStyle:{}, // reactStyle props for img
@@ -16,7 +16,7 @@ const schema = {
         headerObjs:[
             {
                 title:"Settings", 
-                redirect:"#",
+                redirect:"/settings",
                 class: '',
                 html: false
             }, 

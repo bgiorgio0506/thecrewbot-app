@@ -5,12 +5,13 @@ let langpath
 
 //Lang set default Italian
 const getLang = ()=>{
-    console.log(settings.getSync('config.lang'))
+    //console.log(settings.getSync('config.lang'))
     if(settings.getSync('config.lang') === undefined){
         settings.set('config.lang', 'it')
         //'/lang/'+ process.env.APP_DEF_LANG_FILE
         //let path = '../../lang/'+process.env.APP_DEF_LANG_FILE
-        langpath = path.join('C:\\thecrewbot-app\\', 'lang\\'+process.env.APP_DEF_LANG_FILE+'.json')
+        //let fileString = process.env.APP_DEF_LANG_FILE;
+        langpath = path.join('C:\\thecrewbot-app\\', 'lang\\it.json')
         return require(langpath)
       }
       else{

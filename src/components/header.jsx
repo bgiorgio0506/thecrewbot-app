@@ -42,9 +42,9 @@ const CreatHeader = () => {
                 }
             </div>
             <div class ="header-right">
-                <i class="fas fa-times" onClick={()=>closeApp()}></i>
-                <i class="far fa-window-maximize" onClick ={()=>toggleMinMax('max')}></i>
                 <i class="fas fa-window-minimize" onClick={()=>toggleMinMax('min')}></i>
+                <i class="far fa-window-maximize" onClick ={()=>toggleMinMax('max')}></i>
+                <i class="fas fa-times" onClick={()=>closeApp()}></i>
             </div>
         </div>
     )
