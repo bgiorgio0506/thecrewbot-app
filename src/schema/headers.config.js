@@ -12,11 +12,37 @@ const schema = {
             ImgSrc : '',// case the logo is img
             imgStyle:{}, // reactStyle props for img
             onclick: ()=>{return;},//function
+            subMenus:[  {
+                title: 'Account',
+                redirect: '#', 
+                class:'', 
+                html:false
+            },
+            {
+                title: 'Questions',
+                redirect: '#', 
+                class:'', 
+                html:false
+            }]
         },
         headerObjs:[
             {
                 title:"Settings", 
                 redirect:"/settings",
+                subMenus: [
+                    {
+                        title: 'General',
+                        redirect: '#', 
+                        class:'', 
+                        html:false
+                    },
+                    {
+                        title: 'Bot Settings',
+                        redirect: '#', 
+                        class:'', 
+                        html:false
+                    }
+                ],
                 class: '',
                 html: false
             }, 

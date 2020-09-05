@@ -1,5 +1,6 @@
 //Import deps 
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { ipcRenderer , remote } from 'electron'
 import schema from '../schema/headers.config'
 
@@ -32,12 +33,12 @@ const CreatHeader = () => {
 
     return (
         <div class="header">
-            <a href={brand.redirect} class={brand.class}> {brand.title} </a>
+            <Link to={brand.redirect} className={brand.class}> {brand.title} </Link>
             <div class="header-left">
             {
                     items.map((item) => {
                         if (item.html) return; //return(<li class ={item.class}><a href={item.redirect}> {item.title} </a></li>)
-                        else return (<a href={item.redirect} >{item.title}</a>)
+                        else return (<Link to={item.redirect} >{item.title}</Link>)
                     })
                 }
             </div>

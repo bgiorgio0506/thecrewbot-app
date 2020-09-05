@@ -1,16 +1,17 @@
 // Import dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter as Router,Route} from 'react-router-dom'
+import { HashRouter as Router, Route} from 'react-router-dom'
+import { Switch, Redirect } from 'react-router'
 import getLang from './js/langLib';
 import './assets/css/app.css';
 
 //Componets import
 import CreateList from './components/list';
 import CreateHeader from './components/header';
-import CreateSettings from './components/settings'
+import CreateSettings from './components/settings';
 
-const langObj  = getLang()
+const langObj = getLang()
 
 console.log('This line is begin called before app rendering')
 //{langObj.labels[0]}
@@ -19,16 +20,17 @@ console.log('This line is begin called before app rendering')
 const render = () => {
     console.log('Called')
     ReactDOM.render(
-    <div id= "app">
-        <CreateHeader/>
         <Router>
-            <div>
-                <Route path='/' component={CreateList}/>
-                <Route path='/settings' component={CreateSettings}/>
+            <div id="app">
+                <CreateHeader />
+                <Redirect exact from="/" to="/" />
+                <Switch>
+                    <Route exact path='/' component={CreateList} />
+                    <Route path='/settings' component={CreateSettings} />
+                </Switch>
             </div>
         </Router>
-    </div>
-   , document.getElementById('root'));  // render empty list
+        , document.getElementById('root'));  // render empty list
 }
 
 render()

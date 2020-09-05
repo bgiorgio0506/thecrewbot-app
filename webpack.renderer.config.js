@@ -21,7 +21,13 @@ module.exports = {
   },
   output:{
     path:path.resolve(__dirname,'./.webpack/renderer/'),
-    filename:'index.js'
+    filename:'index.js', 
+    publicPath: '/'
+  },
+  devServer:{
+    historyApiFallback: true, 
+    contentBase:'./',
+    hot:true
   },
   target: 'electron-renderer',
   plugins: [
