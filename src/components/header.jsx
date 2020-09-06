@@ -6,6 +6,7 @@ import schema from '../schema/headers.config'
 
 const CreatHeader = () => {
 
+    //Get schema for header and brand
     let items = schema.UISchemaState.headerObjs;
     let brand = schema.UISchemaState.logoObj;
 
@@ -31,6 +32,7 @@ const CreatHeader = () => {
       };
 
 
+    //renturn to render
     return (
         <div class="header">
             <Link to={brand.redirect} className={brand.class}> {brand.title} </Link>

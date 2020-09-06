@@ -29,7 +29,6 @@ screen and (prefers-color-scheme: no-preference) {
 #app {
   width: 100%;
   height: 100%;
-  display: flex;
   flex-direction: column;
 }
 
@@ -52,7 +51,6 @@ div {
 }
 
 /*MENU STRUCTURE*/
-
 .header {
   -webkit-user-select: none;
   -webkit-app-region: drag;
@@ -70,9 +68,9 @@ div {
   float: left;
   margin-left: 35px;
 }
+/*MENU END SECTION*/
 
 /*Menu style*/
-
 .header a,i {
   -webkit-app-region: no-drag;
   float: left;
@@ -83,6 +81,7 @@ div {
   text-decoration: none;
   font-size: 18px;
   line-height: 25px;
+  border-radius: 20px;
 }
 
 .header a.logo {
@@ -106,14 +105,49 @@ div {
   background-color: #ddd;
   color: black;
 }
+/*Munu Style Section End*/
+
+/*SubMenu structure*/
+.subMenuSection{
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  top: 55px;
+  left: 30px;
+  overflow-x: hidden;
+  margin-top: 55px;
+}
+/*SubMenu structure section End*/
+
+/*Sub menu style*/
+.subMenuSection a{
+  display: block;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 15px 0px;
+  padding: 15px 25px;
+  color: black;
+  background:#f2f2f2;
+  border-radius: 20px;
+}
+
+.subMenuSection a:hover{
+  background: #ddd;
+  font-weight: bold;
+}
+
+.subMenuSection a.active{
+
+}
+/* Finish submenu style section End */
 
 /*MAIN STRUCTURE*/
 .center-panel {
-  display: flex;
-  justify-content: flex-start;
+  display: block;
   padding: 24px 50px;
   font-family: 'Roboto', sans-serif;
   flex-direction: column;
+  margin-left: 250px;
 }
 
 /* Main Style*/

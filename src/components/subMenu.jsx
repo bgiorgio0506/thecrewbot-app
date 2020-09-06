@@ -1,6 +1,6 @@
 /*Import dependencies*/
 import React from 'react'
-import {Link} from 'react-router-dom';
+import {Link, useLocation, withRouter} from 'react-router-dom';
 import UISchema from '../schema/headers.config';
 import {ipcRenderer} from 'electron';
 import getLang from '../js/langLib';
@@ -11,36 +11,32 @@ import utils from '../helpers/utility'
  * 
  * @param {String} route route of the componet
  */
-async function getSubMenus(route){
-    return new Promise((resolve, reject)=>{
-        try {
-            if(route === '/' && UISchema.UISchemaState.logoObj.subMenus !== undefined){
-                return resolve(UISchema.UISchemaState.logoObj.subMenus)
-            }else{
-                let headerMenuObjs = UISchema.UISchemaState.headerObjs
-                headerMenuObjs.map((headerObj)=>{
-                    if(route.includes(headerObj.redirect) && utils.isEmpty(headerObj.subMenus) ===false) return resolve(headerObj.subMenus);
-                    else resolve()
-                })
-            }
-        } catch (err) {
-            return reject(err)
-        }
-    })
+function getSubMenus(location) {
+    if (location.pathname.includes('/') === true  && location.pathname.length === 1 && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
+    else {
+        let headerMenuObjs = UISchema.UISchemaState.headerObjs
+        let labelIndex = utils.findIndexInObjArr(headerMenuObjs, 'redirect', location.pathname)
+        if(labelIndex !== -1){
+            let headerObj = headerMenuObjs[labelIndex];
+            if(headerObj.subMenus !== undefined && utils.isEmpty(headerObj.subMenus) === false) return headerObj.subMenus
+        }else return; 
+    }
 }
 
-
 //crete sub menu
-const CreateSubMenu = async(route)=>{
-    //get route sub menus and lang
-    let subMenu = await getSubMenus(route).catch(err=>{throw err});
-    let langObj = getLang()
+const CreateSubMenu = () => {
+    //use location to detect route change
+    let location = useLocation();
+    let subMenu = getSubMenus(location)
+    //let langObj = getLang()
 
-    //if no sub menu nothing to render
-    if(subMenu === ' ' || subMenu === undefined) return;
-    //render subMenus
-    else return(<div>
-
+    if (utils.isEmpty(subMenu) === true) return (<div className={"suvMenuSection"}></div>);
+    else return (<div className={"subMenuSection"}>
+        {
+            subMenu.map((label) => {
+                return (<Link to={label.redirect}>{label.title}</Link>)
+            })
+        }
     </div>)
 }
 

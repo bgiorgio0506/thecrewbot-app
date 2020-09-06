@@ -12,7 +12,8 @@ const schema = {
             ImgSrc : '',// case the logo is img
             imgStyle:{}, // reactStyle props for img
             onclick: ()=>{return;},//function
-            subMenus:[  {
+            //submenus
+            subMenus:[{
                 title: 'Account',
                 redirect: '#', 
                 class:'', 
@@ -23,7 +24,14 @@ const schema = {
                 redirect: '#', 
                 class:'', 
                 html:false
-            }]
+            },
+            {
+                title: 'Custom Commands',
+                redirect: '#', 
+                class:'', 
+                html:false
+            },
+        ]
         },
         headerObjs:[
             {
@@ -38,6 +46,12 @@ const schema = {
                     },
                     {
                         title: 'Bot Settings',
+                        redirect: '#', 
+                        class:'', 
+                        html:false
+                    },
+                    {
+                        title: 'Key Bindings',
                         redirect: '#', 
                         class:'', 
                         html:false

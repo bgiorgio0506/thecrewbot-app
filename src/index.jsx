@@ -10,6 +10,7 @@ import './assets/css/app.css';
 import CreateList from './components/list';
 import CreateHeader from './components/header';
 import CreateSettings from './components/settings';
+import CreateSubMenu from './components/subMenu';
 
 const langObj = getLang()
 
@@ -22,11 +23,12 @@ const render = () => {
     ReactDOM.render(
         <Router>
             <div id="app">
-                <CreateHeader />
+                <CreateHeader/>
+                <CreateSubMenu />
                 <Redirect exact from="/" to="/" />
                 <Switch>
-                    <Route exact path='/' component={CreateList} />
-                    <Route path='/settings' component={CreateSettings} />
+                    <Route exact path='/' component={CreateList}/>
+                    <Route excat path='/settings' component={CreateSettings} />
                 </Switch>
             </div>
         </Router>
@@ -34,11 +36,3 @@ const render = () => {
 }
 
 render()
-
-
-//static
-/*        <div class="center-panel">
-    <p class='section'>{langObj.labels[0]}</p>
-                <ul><CreateList /></ul>
-        </div>
-    </div>*/
