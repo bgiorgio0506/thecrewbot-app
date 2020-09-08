@@ -105,6 +105,30 @@ div {
   background-color: #ddd;
   color: black;
 }
+
+#updaterIcon{
+  -webkit-app-region: no-drag;
+  float: left;
+  color: black;
+  text-align: center;
+  vertical-align: middle;
+  padding: 20px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 20px;
+}
+
+#updaterIcon:hover{
+  background-color:white;
+  color: #000;
+}
+
+.updaterAnimation{
+  -webkit-animation:spin 4s linear infinite;
+  -moz-animation:spin 4s linear infinite;
+  animation:spin 4s linear infinite;
+}
 /*Munu Style Section End*/
 
 /*SubMenu structure*/
@@ -124,6 +148,7 @@ div {
   display: block;
   text-decoration: none;
   font-size: 16px;
+  font-weight: bold;
   margin: 15px 0px;
   padding: 15px 25px;
   color: black;
@@ -133,11 +158,11 @@ div {
 
 .subMenuSection a:hover{
   background: #ddd;
-  font-weight: bold;
 }
 
 .subMenuSection a.active{
-
+  background: #3840fb;
+  color: white;
 }
 /* Finish submenu style section End */
 
@@ -198,3 +223,8 @@ h1 {
   font-size: 21px;
   font-weight: 200;
 }
+
+/*Animation*/
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

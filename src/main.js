@@ -8,18 +8,23 @@ const path = require('path');
 const log  = require('electron-log')
 const settings = require('electron-settings')
 const langLib = require('./js/langLib').default
+const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 
+
+//request app singleInstance
+app.requestSingleInstanceLock()
 
 // Add React extension for development
 const emitter = new EventEmitter()
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let gotTheLock;
 let langObj = langLib() //get app lang
-emitter.setMaxListeners(0);
+emitter.setMaxListeners(0);//set listener to max listener
 
 // Keep a reference for dev mode
 let dev = true
@@ -247,28 +252,38 @@ ipcMain.on('quit-app', function () {
 //GitHub publisher
 const server = 'https://update.electronjs.org'
 const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
-if(dev === false){
+if(dev === true){
   autoUpdater.setFeedURL(feed)
 
   setInterval(() => {
     autoUpdater.checkForUpdates()
     log.info('Checking Update...')
-  }, 10 * 60 * 1000)
+  }, 3600000)
 
   autoUpdater.on("error", error => {
     log.error("AutoUpdater Error: ");
     log.error(error.message);
     log.error(error.stack);
     log.error(dialog.showErrorBox("Error!", error.message));
+    UISchema.UISchemaState.isUpdaterDownloading = false
+    //if mainwindow.webcontent are defined
+    if(mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', error)
   });
 
   autoUpdater.on("update-not-available", info => {
+    UISchema.UISchemaState.isUpdaterDownloading = false
+   //if mainwindow.webcontent are defined
+   if(mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState',  UISchema.UISchemaState.isUpdaterDownloading)
+  
     log.info("update not available");
   });
 
   
   autoUpdater.on("checking-for-update", () => {
-    log.info("checking for update");
+    UISchema.UISchemaState.isUpdaterDownloading = true
+   //if mainwindow.webcontent are defined
+   if(mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', true)
+    log.info("checking for update setting UIState to " + UISchema.UISchemaState.isUpdaterDownloading);
   });
 
   autoUpdater.on('update-available', () => {

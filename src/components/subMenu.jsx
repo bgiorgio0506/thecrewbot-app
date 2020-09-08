@@ -23,18 +23,27 @@ function getSubMenus(location) {
     }
 }
 
+function handleClick(id){
+    UISchema.UISchemaState.activeLink = id
+}
+
 //crete sub menu
 const CreateSubMenu = () => {
     //use location to detect route change
     let location = useLocation();
     let subMenu = getSubMenus(location)
+    const activeLink = UISchema.UISchemaState.activeLink;
+
     //let langObj = getLang()
 
     if (utils.isEmpty(subMenu) === true) return (<div className={"suvMenuSection"}></div>);
     else return (<div className={"subMenuSection"}>
         {
             subMenu.map((label) => {
-                return (<Link to={label.redirect}>{label.title}</Link>)
+                return (<Link to={label.redirect} id={label.id} onClick={() => { handleClick(label.id) }} className={
+                    label.class +
+                    (label.id === activeLink ? " active" : "")
+                }>{label.title}</Link>)
             })
         }
     </div>)

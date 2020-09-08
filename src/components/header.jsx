@@ -1,19 +1,34 @@
 //Import deps 
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { ipcRenderer , remote } from 'electron'
-import schema from '../schema/headers.config'
+import { ipcRenderer , remote} from 'electron'
+import UIschema from '../schema/headers.config'
 
 const CreatHeader = () => {
 
     //Get schema for header and brand
-    let items = schema.UISchemaState.headerObjs;
-    let brand = schema.UISchemaState.logoObj;
+    let items = UIschema.UISchemaState.headerObjs;
+    let brand = UIschema.UISchemaState.logoObj;
+
+    //updaterUI state
+    const [updatesState, setState] = React.useState(UIschema.UISchemaState.isUpdaterDownloading)
+    const [errorUpdateCheck, setErrorState] = React.useState(false) //updater error states
 
       //close app
       const closeApp = ()=>{
         ipcRenderer.send('quit-app')
     };
+
+    //Receiving any Updaterstate from main process
+    ipcRenderer.on('updateState', (e , state)=>{
+        if(typeof state === 'object') {
+            if(updatesState === true )setState(false) //setUpdater State to flase
+            setErrorState(true)//set error state
+        }else {
+            if(errorUpdateCheck ===true) setErrorState(false) //set error state
+            setState(state)
+        }
+    })
 
     //Minimize or maximize
     const toggleMinMax = ops => {
@@ -45,13 +60,13 @@ const CreatHeader = () => {
                 }
             </div>
             <div class ="header-right">
+                <i id="updaterIcon" className={(updatesState === true) ? "fas fa-sync-alt updaterAnimation" :(errorUpdateCheck === true) ? "fas fa-exclamation-circle" : " "}></i>
                 <i class="fas fa-window-minimize" onClick={()=>toggleMinMax('min')}></i>
                 <i class="far fa-window-maximize" onClick ={()=>toggleMinMax('max')}></i>
                 <i class="fas fa-times" onClick={()=>closeApp()}></i>
             </div>
         </div>
     )
-
 }
 
 export default CreatHeader
