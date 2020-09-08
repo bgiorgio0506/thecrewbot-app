@@ -31,6 +31,7 @@ module.exports = {
   },
   target: 'electron-renderer',
   plugins: [
+    new Dotenv(),
     /*new HtmlWebpackPlugin({
       title:'My App', 
       filename:'./main_window/index.html', 

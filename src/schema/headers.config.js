@@ -43,7 +43,7 @@ const schema = {
                 subMenus: [
                     {
                         title: 'General',
-                        redirect: '#', 
+                        redirect: '/settings', 
                         class:'', 
                         id:1,
                         html:false
@@ -60,6 +60,13 @@ const schema = {
                         redirect: '#', 
                         class:'', 
                         id:3,
+                        html:false
+                    },
+                    {
+                        title: 'Stream Deck Bindings',
+                        redirect: '/streamdeck', 
+                        class:'', 
+                        id:4,
                         html:false
                     }
                 ],
@@ -86,7 +93,7 @@ const schema = {
         isUpdaterDownloading:false //used from the mainProcess to regulate UI state
 
     },
-    CommandsState:[]
+    UICommandsState:[]
 }
 
 export default schema

@@ -166,6 +166,74 @@ div {
 }
 /* Finish submenu style section End */
 
+/*Settings structure*/
+.settingsSection{
+  display: block;
+  margin-bottom: 50px;
+}
+
+/*Settings Style*/
+.twitchBtn {
+  padding: 6px 15px;
+  color:white;
+  background :#9146ff;
+  border-radius: 6px;
+  outline: none;
+  border:none;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: bold;
+}
+
+.twitchBtn:hover{
+  background: #6441a5
+}
+
+.twitchBtn i{
+  display: inline;
+  vertical-align: 'middle';
+  padding:0px 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.twitchBtn i p{
+  display: inline;
+  align-content: center;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+}
+
+.checkBtn {
+  padding: 10px 10px;
+  color:black;
+  background :#f2f2f2;
+  border-radius: 6px;
+  outline: none;
+  border:none;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: bold;
+}
+
+.checkBtn:hover{
+  background: #ddd
+}
+
+.settingsSection select{ 
+  background :#f2f2f2;
+  padding: 5px 5px;
+  outline:none;
+  border-radius: 6px;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.settingsSection select option{ 
+  background :#f2f2f2;
+  outline:none;
+  border-radius: 6px;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+}
+
 /*MAIN STRUCTURE*/
 .center-panel {
   display: block;
@@ -201,6 +269,8 @@ div {
 .doneBtn:hover {
   background-color: #267326;
 }
+
+
 
 .askPrefix {
   margin: 0px;

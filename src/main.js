@@ -11,7 +11,6 @@ const langLib = require('./js/langLib').default
 const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 
-
 //request app singleInstance
 app.requestSingleInstanceLock()
 

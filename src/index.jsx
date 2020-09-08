@@ -11,11 +11,10 @@ import CreateList from './components/list';
 import CreateHeader from './components/header';
 import CreateSettings from './components/settings';
 import CreateSubMenu from './components/subMenu';
+import CreateSettingsStreamDeck from './components/subMenus/settingsStreamDeck'
 
-const langObj = getLang()
 
 console.log('This line is begin called before app rendering')
-//{langObj.labels[0]}
 
 // Render the app into the root div
 const render = () => {
@@ -29,6 +28,7 @@ const render = () => {
                 <Switch>
                     <Route exact path='/' component={CreateList}/>
                     <Route excat path='/settings' component={CreateSettings} />
+                    <Route exact path='/streamdeck' component={CreateSettingsStreamDeck} />
                 </Switch>
             </div>
         </Router>
