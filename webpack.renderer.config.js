@@ -5,6 +5,8 @@ const rules = require('./webpack.rules')
 //const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+//plugins 
+const Dotenv = require('dotenv-webpack');
 
 // Any directories you will be adding code/files into, need to be added to this array so webpack will pick them up
 module.exports = {

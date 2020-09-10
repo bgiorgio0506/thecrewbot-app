@@ -9,7 +9,18 @@ const CreateList = () => {
   let Inititems = []
   const [items, setState] = React.useState(Inititems)
   console.log(items);
+
   //update state
+  setInterval(()=>{
+    ipcRenderer.send('fetch-question-list')//call the main to fetch list
+  }, 180000)
+
+  //on main response
+  ipcRenderer.on('list-response', (event , questArr)=>{
+    console.log('receiving data '+ questArr)
+    setState(questArr)
+  })
+
   ipcRenderer.on('add-quest', (event, questArr) => {
     setState(questArr)
   })

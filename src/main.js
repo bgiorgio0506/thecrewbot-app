@@ -243,6 +243,10 @@ ipcMain.on('quit-app', function () {
   app.quit();
 });
 
+ipcMain.on('fetch-question-list', ()=>{
+  mainWindow.webContents.send('list-response', questQueue)
+})
+
 
 /**END IPC SECTION */
 

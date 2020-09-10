@@ -169,7 +169,7 @@ div {
 /*Settings structure*/
 .settingsSection{
   display: block;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 /*Settings Style*/
@@ -232,6 +232,52 @@ div {
   outline:none;
   border-radius: 6px;
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+}
+
+
+.note{
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.generalSettingsDiv{
+  width: 450px;
+  margin: 1px 10px;
+  display: inline-block;
+}
+
+.checkBoxBtn{
+  height: 25px;
+  width: 25px;
+  border-radius: 10px;
+  border: solid black;
+  background-color: #f2f2f2;
+  float: right;
+}
+
+.checkBoxBtn:hover{
+  background-color: #ddd;
+}
+
+.checkBoxBtn:after{
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkBoxBtn:checked , .checkBoxBtn:after{
+  background-color: grey;
+  content: "✓";
+}
+
+
+.checkBoxBtn:before{
+  background-color: white;
+  content: " ";
+}
+
+.settingsSection label{
+  font-size: 14;
 }
 
 /*MAIN STRUCTURE*/

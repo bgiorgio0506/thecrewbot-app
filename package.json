@@ -106,6 +106,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^6.0.0",
     "elgato-stream-deck": "^3.3.2",
+    "follow-redirects": "^1.13.0",
     "jquery": "^3.5.1",
     "path": "^0.12.7",
     "react": "^16.13.1",
