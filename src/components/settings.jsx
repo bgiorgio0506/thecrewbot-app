@@ -14,10 +14,11 @@ const CreateSettings = ()=>{
             <p className = 'section'>General</p>
             {
                 UISchema.UISchemaState.generalSettings.map((setting)=>{
+                    console.log(setting.checked)
                 return(
                 <div className ="generalSettingsDiv">
                     <label htmlFor={setting.id}>{setting.lebelText}</label>
-                    <input type={setting.inputType} className = {setting.className} id= {setting.id} onChange={()=>{
+                    <input type={setting.inputType} checked= {setting.checked} className = {setting.className} id= {setting.id} onChange={()=>{
                         setting.checked = !setting.checked
                         setting.onToggleChecked(setting.checked, setting.settingsPosition)
                         }}/>
@@ -29,7 +30,9 @@ const CreateSettings = ()=>{
         </div>
         <div className = "settingsSection">
             <p className= 'section'>Language</p>
-            <select name="lang" id="lang">
+            <select name="lang" id="lang" value={UISchema.UISchemaState.langSetting.currentSetting} onChange= {(e)=>{
+                UISchema.UISchemaState.langSetting.onToggleChecked(e.target.value)
+            }}>
                 {
                     LangLabelsArray.map((langLabel)=>{
                     return(<option value ={langLabel.value}>{langLabel.label}</option>)

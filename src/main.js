@@ -1,6 +1,6 @@
 'use strict'
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog} = require('electron')
+const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu} = require('electron')
 require('update-electron-app')()
 const utils = require('../src/helpers/utility')
 const tmi = require('tmi.js')
@@ -10,6 +10,7 @@ const settings = require('electron-settings')
 const langLib = require('./js/langLib').default
 const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
+const SimConnectApi = require('./js/SimConnectApi');
 
 //request app singleInstance
 app.requestSingleInstanceLock()
@@ -23,6 +24,7 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-d
 let mainWindow;
 let gotTheLock;
 let langObj = langLib() //get app lang
+let appTray;
 emitter.setMaxListeners(0);//set listener to max listener
 
 // Keep a reference for dev mode
@@ -31,6 +33,9 @@ let dev = true
 //Question queue global context
 let questQueue = [];
 let id = 0;
+
+//SimConnect start connection 
+SimConnectApi.connectToSim()
 
 //Init settings
 settings.setSync('config.channel', ['paolom346_']);
@@ -200,7 +205,22 @@ ClientBot.on('connected', ()=>{
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow();
+  /** TRY APP SECTION **/
+  //Note tray need to be set on app on ready event
+  if (settings.getSync(require('./schema/settings.config').default.UISchemaState.generalSettings[0].settingsPosition) === true) {
+    appTray = new Tray(path.join(__dirname, 'assets/icons/ico/ico1.ico'));
+    const contextMenu = Menu.buildFromTemplate(require('./schema/appTray.config').default.ContextMenu)
+    appTray.setContextMenu(contextMenu);
+
+    appTray.on('double-click', (event) => {
+      mainWindow.show();
+      event.preventDefault();
+    })
+  }
+  /**END TRAY APP SECTION */
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

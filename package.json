@@ -93,7 +93,7 @@
   },
   "icon": "file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico",
   "dependencies": {
-    "@babel/core": "^7.11.5",
+    "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
@@ -110,6 +110,7 @@
     "jquery": "^3.5.1",
     "node-fetch": "^2.6.1",
     "path": "^0.12.7",
+    "nodejs-simconnect":"file:nodejs-simconnect",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.2.0",
@@ -129,11 +130,12 @@
     "@electron-forge/plugin-webpack": "^6.0.0-beta.53",
     "@electron-forge/publisher-github": "^6.0.0-beta.53",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
-    "css-loader": "^4.2.1",
+    "css-loader": "^4.3.0",
     "dotenv-webpack": "^2.0.0",
-    "electron": "10.1.1",
+    "electron": "^10.1.2",
+    "electron-rebuild": "^2.0.3",
     "html-webpack-plugin": "^4.4.1",
-    "mini-css-extract-plugin": "^0.11.0",
+    "mini-css-extract-plugin": "^0.11.2",
     "node-loader": "^1.0.1",
     "style-loader": "^1.2.1"
   }

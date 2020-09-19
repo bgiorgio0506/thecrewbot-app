@@ -11,7 +11,7 @@ const schema = {
                 className : 'checkBoxBtn',
                 lebelText : 'Minimize on System tray on close',
                 settingsPosition : 'config.minimizeTraySetting',
-                checked : false,
+                checked : settings.getSync('config.minimizeTraySetting'),
                 onToggleChecked : (checked, position)=>{
                     console.log(checked)
                     if(checked){
@@ -26,14 +26,23 @@ const schema = {
                 className : 'checkBoxBtn',
                 lebelText : 'Start application on stream',
                 settingsPosition :'config.openOnStreamSetting', 
-                checked : false,
+                checked : settings.getSync('config.openOnStreamSetting'),
                 onToggleChecked : (checked, position)=>{
                     console.log(checked)
                     if(checked) return settings.setSync(position, true)
                     else return settings.setSync(position, false)
                 }
             }
-        ]
+        ], 
+        langSetting: {
+            id : 'lang',
+            settingsPosition : 'config.lang', 
+            currentSetting : settings.getSync('config.lang'),
+            onToggleChecked : (setting)=>{
+                console.log(setting)
+                settings.setSync('config.lang', setting)
+            }
+        }
     }
 }
 
