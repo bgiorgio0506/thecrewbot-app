@@ -11,6 +11,7 @@ const langLib = require('./js/langLib').default
 const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 const SimConnectApi = require('./js/SimConnectApi');
+const AutoLaunch = require('./js/AutoLaunch')
 
 //request app singleInstance
 app.requestSingleInstanceLock()
@@ -69,6 +70,16 @@ if (gotTheLock === false) {
       mainWindow.focus();
     }
   })
+}
+
+/**
+ * Auto Launch
+ * Set app hidden process on start up 
+ */
+if(settings.getSync('config.openOnStreamSetting') === true){
+  AutoLaunch.enableAutoLaunch()
+}else{
+  AutoLaunch.disableAutoLaunch()
 }
 
 

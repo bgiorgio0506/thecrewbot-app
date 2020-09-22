@@ -18,7 +18,6 @@ body {
 
 @media screen and (prefers-color-scheme: light),
 screen and (prefers-color-scheme: no-preference) {
-
   /* Light mode */
   body {
     color: #000;
@@ -71,7 +70,7 @@ div {
 /*MENU END SECTION*/
 
 /*Menu style*/
-.header a,i {
+.header a , i {
   -webkit-app-region: no-drag;
   float: left;
   color: black;
@@ -84,11 +83,11 @@ div {
   border-radius: 20px;
 }
 
-.header a.logo {
+.header a .logo {
   font-size: 25px;
 }
 
-.header a.logo:hover {
+.logo:hover {
   background: transparent;
 }
 
@@ -96,10 +95,6 @@ div {
   background-color: #ddd;
   color: black;
 }
-
-/*.header a.active {
-  font-size:bold;
-}*/
 
 .header i:hover {
   background-color: #ddd;
@@ -190,7 +185,6 @@ div {
 
 .twitchBtn i{
   display: inline;
-  vertical-align: 'middle';
   padding:0px 10px;
   font-weight: bold;
   color: white;
@@ -277,7 +271,7 @@ div {
 }
 
 .settingsSection label{
-  font-size: 14;
+  font-size: 14px;
 }
 
 /*MAIN STRUCTURE*/
@@ -326,7 +320,6 @@ div {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-
   /* Dark moe */
   body {
     color: #fff;

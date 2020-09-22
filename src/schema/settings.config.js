@@ -24,7 +24,7 @@ const schema = {
                 id: 'startAppOnStreamChkBox', 
                 inputType  : 'checkbox', 
                 className : 'checkBoxBtn',
-                lebelText : 'Start application on stream',
+                lebelText : 'Start application on startup',
                 settingsPosition :'config.openOnStreamSetting', 
                 checked : settings.getSync('config.openOnStreamSetting'),
                 onToggleChecked : (checked, position)=>{
