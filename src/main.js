@@ -1,6 +1,6 @@
 'use strict'
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu} = require('electron')
+const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, shell} = require('electron')
 require('update-electron-app')()
 const utils = require('../src/helpers/utility')
 const tmi = require('tmi.js')
@@ -23,6 +23,7 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-d
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let authWindow;
 let gotTheLock;
 let langObj = langLib() //get app lang
 let appTray;
@@ -93,7 +94,7 @@ function createWindow() {
     width: 1024, // width of the window
     height: 768, // height of the window
     show: false, // don't show until window is ready
-    frame:false, //frame less
+    frame:true, //frame less
     resizable:true,
     webPreferences: {
       nodeIntegration: true,
@@ -124,6 +125,45 @@ function createWindow() {
   })
 }
 
+/**OAuth Window */
+function createAuthWindow(path){
+  log.info(path)
+   // Create the browser window.
+   authWindow = new BrowserWindow({
+    width: 800, // width of the window
+    height: 368, // height of the window
+    show: false, // don't show until window is ready
+    frame:true, //frame less
+    resizable:true,
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity:false, 
+      enableRemoteModule:true
+    },
+    icon: nativeImage.createFromDataURL("file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico"),
+  })
+
+  authWindow.loadURL(path)
+
+  // Don't show the app window until it is ready and loaded
+  authWindow.once('ready-to-show', () => {
+    authWindow.show()
+    // Open the DevTools automatically if developing
+    if (dev) {
+      installExtension(REACT_DEVELOPER_TOOLS)
+        .catch(err => console.log('Error loading React DevTools: ', err))
+      authWindow.webContents.openDevTools()
+    }
+  })
+
+  // Emitted when the window is closed.
+  authWindow.on('closed', function() {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    authWindow = null
+  })
+}
 
 /** CHAT BOT SECTION **/
 //chatbot opts 
@@ -276,6 +316,11 @@ ipcMain.on('quit-app', function () {
 
 ipcMain.on('fetch-question-list', ()=>{
   mainWindow.webContents.send('list-response', questQueue)
+})
+
+ipcMain.on('open-auth', (e ,filePath)=>{
+  log.info('recived Oauth open')
+  createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`)
 })
 
 

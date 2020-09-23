@@ -19,7 +19,7 @@ function connectToSimInternal (){
     });
 
     if(!success){
-        console.log('Trying again in 5 sec!!')
+        console.log('Trying again in 30 sec!!')
     }
 }
 
@@ -48,7 +48,7 @@ exports.connectToSim = ()=>{
         console.log(success)
         SimConnectionInterval = setInterval(() => {
             connectToSimInternal();
-        }, 5000);
+        }, parseInt(process.env.SIMCONNECT_TIME_INTERVAL));
     }else{
         console.log(success)
         console.log('Connected success')

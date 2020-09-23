@@ -1,10 +1,11 @@
 // Import dependencies
 import React from 'react'
-import { ipcRenderer } from 'electron'
-import store from 'electron-store'
-import settings from 'electron-settings'
+import { ipcRenderer , shell} from 'electron'
 import getLang from '../js/langLib';
+import utils  from '../helpers/utility'
 import UISchema  from '../schema/settings.config'
+import {OAuth2Provider} from '../js/twitchLib' 
+import path from 'path'
 
 
 const CreateSettings = ()=>{
@@ -43,7 +44,19 @@ const CreateSettings = ()=>{
         <div className = "settingsSection">
             <p className= 'section'>Twitch</p>
             <p className= 'note'>*This button will connect the application to twitch</p>
-            <button className="twitchBtn"><p>Twitch <i class="fab fa-twitch"></i></p></button>
+            <button className="twitchBtn" onClick={(event)=>{
+                //Let's start OAuth2 flow 
+                const OAuth2Strategy = new OAuth2Provider()
+                OAuth2Strategy.startOAuth2Strategy().then((res)=>{
+                    console.log(res)
+                    if(typeof res !== 'object') utils.writeFile('OAuth.html', res).then((res)=>{
+                        console.log(res)
+                       ipcRenderer.send('open-auth',{path:path.join(process.env.APPDATA,'thecrewbot-app\\Temp%20Folder\\'), fileName: 'OAuth.html'})
+                    })
+                }).catch((err)=>{
+                    console.log(err)
+                })
+            }}><p>Twitch <i class="fab fa-twitch"></i></p></button>
         </div>
         <div className = "settingsSection">
             <p className= 'section'>About</p>
