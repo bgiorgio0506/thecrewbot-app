@@ -1,6 +1,6 @@
 'use strict'
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, shell} = require('electron')
+const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, session} = require('electron')
 require('update-electron-app')()
 const utils = require('../src/helpers/utility')
 const tmi = require('tmi.js')
@@ -12,6 +12,9 @@ const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 const SimConnectApi = require('./js/SimConnectApi');
 const AutoLaunch = require('./js/AutoLaunch')
+const filter = {
+  urls: ['https://*.twitch.tv/*']
+}
 
 //request app singleInstance
 app.requestSingleInstanceLock()
@@ -130,8 +133,8 @@ function createAuthWindow(path){
   log.info(path)
    // Create the browser window.
    authWindow = new BrowserWindow({
-    width: 800, // width of the window
-    height: 368, // height of the window
+    width: 400, // width of the window
+    height: 520, // height of the window
     show: false, // don't show until window is ready
     frame:true, //frame less
     resizable:true,
@@ -325,6 +328,9 @@ ipcMain.on('open-auth', (e ,filePath)=>{
 
 
 /**END IPC SECTION */
+
+
+
 
 
 /** UPDATER SECTION **/

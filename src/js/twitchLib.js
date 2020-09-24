@@ -23,7 +23,7 @@ exports.OAuth2Provider = class  OAuth2Provider{
             let options = {
                 hostname: 'localhost', 
                 port:process.env.SERVER_APP_PORT,
-                path: '/twitch/start/auth',
+                path: '/',
                 maxRedirexts: 20,
                 method: 'GET'
             }
