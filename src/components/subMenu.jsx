@@ -12,7 +12,15 @@ import utils from '../helpers/utility'
  * @param {String} route route of the componet
  */
 function getSubMenus(location) {
-    if (location.pathname.includes('/') === true  && location.pathname.length === 1 && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
+    if (location.pathname.includes('/app') === true  && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
+    else if(location.pathname.split('/').length > 2){
+        let parsedRoute  = location.pathname.split('/')
+        let labelIndex= utils.findIndexInObjArr(UISchema.UISchemaState.headerObjs, 'redirect', '/'+parsedRoute[1]);
+        if(labelIndex !== -1){
+            if(UISchema.UISchemaState.headerObjs[labelIndex].subMenus !== undefined && utils.isEmpty(UISchema.UISchemaState.headerObjs[labelIndex].subMenus) === false) 
+            return UISchema.UISchemaState.headerObjs[labelIndex].subMenus
+        }
+    }
     else {
         let headerMenuObjs = UISchema.UISchemaState.headerObjs
         let labelIndex = utils.findIndexInObjArr(headerMenuObjs, 'redirect', location.pathname)

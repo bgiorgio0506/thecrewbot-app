@@ -83,11 +83,11 @@ div {
   border-radius: 20px;
 }
 
-.header a .logo {
+.header a.logo {
   font-size: 25px;
 }
 
-.logo:hover {
+.header a.logo:hover {
   background: transparent;
 }
 

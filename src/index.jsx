@@ -24,11 +24,13 @@ const render = () => {
             <div id="app">
                 <CreateHeader/>
                 <CreateSubMenu />
-                <Redirect exact from="/" to="/" />
+                <Redirect exact from="/" to="/app/questions" />
                 <Switch>
-                    <Route exact path='/' component={CreateList}/>
-                    <Route excat path='/settings' component={CreateSettings} />
-                    <Route exact path='/streamdeck' component={CreateSettingsStreamDeck} />
+                    <Route exact path='/app/questions' component={CreateList}/>
+                    <Route excat path='/settings'>
+                        <Route exact path='/settings' component={CreateSettings}/>
+                        <Route  path='/settings/streamdeck' component={CreateSettingsStreamDeck} />
+                    </Route>
                 </Switch>
             </div>
         </Router>

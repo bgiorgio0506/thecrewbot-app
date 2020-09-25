@@ -7,7 +7,7 @@ const schema = {
                 <strong>THE</strong>CREWBOT
             </Fragment>), //if logo can be writed
             class:'logo', //css class
-            redirect:'/', //tbd
+            redirect:'/app', //tbd
             isImg: false, //for the future
             ImgSrc : '',// case the logo is img
             imgStyle:{}, // reactStyle props for img
@@ -22,7 +22,7 @@ const schema = {
             },
             {
                 title: 'Questions',
-                redirect: '#', 
+                redirect: '/app/questions', 
                 class:'',
                 id:2, 
                 html:false
@@ -64,7 +64,7 @@ const schema = {
                     },
                     {
                         title: 'Stream Deck Bindings',
-                        redirect: '/streamdeck', 
+                        redirect: '/settings/streamdeck', 
                         class:'', 
                         id:4,
                         html:false
