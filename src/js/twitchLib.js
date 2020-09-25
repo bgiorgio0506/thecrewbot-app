@@ -40,7 +40,14 @@ exports.OAuth2Provider = class  OAuth2Provider{
 
                     res.on('end', ()=>{
                         let responseBody =  Buffer.concat(chunks)
-                        return resolve(responseBody.toString())
+                        responseBody = responseBody.toString();
+                        try {
+                            let jsonBody = JSON.parse(responseBody)
+                            console.log(jsonBody)
+                            return resolve(jsonBody)
+                        } catch (error) {
+                            return resolve(responseBody.toString())
+                        }
                     })
             });
 

@@ -32,6 +32,7 @@ module.exports = {
     contentBase:'./',
     hot:true
   },
+  devtool:'source-map',
   target: 'electron-renderer',
   plugins: [
     //use dotenv in the renderer process

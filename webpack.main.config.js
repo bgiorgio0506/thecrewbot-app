@@ -12,6 +12,7 @@ module.exports = {
   externals: {
     'fs-extra': 'commonjs2 fs-extra',
   },
+  devtool:'source-map',
   devServer:{
     historyApiFallback: true
   },

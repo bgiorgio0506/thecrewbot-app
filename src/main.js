@@ -22,6 +22,7 @@ app.requestSingleInstanceLock()
 // Add React extension for development
 const emitter = new EventEmitter()
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -97,7 +98,7 @@ function createWindow() {
     width: 1024, // width of the window
     height: 768, // height of the window
     show: false, // don't show until window is ready
-    frame:true, //frame less
+    frame:false, //frame less
     resizable:true,
     webPreferences: {
       nodeIntegration: true,
@@ -273,6 +274,7 @@ app.on('ready', () => {
       event.preventDefault();
     })
   }
+
   /**END TRAY APP SECTION */
 })
 

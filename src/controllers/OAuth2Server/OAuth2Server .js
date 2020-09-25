@@ -25,8 +25,8 @@ app.use(passport.session());
 // Override passport profile function to get user profile from Twitch API
 OAuth2Strategy.prototype.userProfile = function(accessToken, done) {
   const options = {
-    hostname: 'https://api.twitch.tv',
-    path:'/helix/users',
+    hostname: 'api.twitch.tv',
+    path: '/helix/users',
     method: 'GET',
     headers: {
       'Client-ID': TWITCH_CLIENT_ID,
@@ -53,6 +53,9 @@ OAuth2Strategy.prototype.userProfile = function(accessToken, done) {
       done(JSON.parse(error));
     });
   });
+
+  //close the request
+  req.end()
 }
 
 
@@ -73,8 +76,7 @@ passport.use('twitch', new OAuth2Strategy({
     callbackURL: CALLBACK_URL,
     state: true,
     scope:SCOPES,
-    scopeSeparator:'+', 
-    passReqToCallback:true
+    scopeSeparator:'+'
   },
   function(accessToken, refreshToken, profile, done) {
     profile.accessToken = accessToken;
@@ -98,8 +100,8 @@ app.get('/twitch/auth', passport.authenticate('twitch', { successRedirect: '/', 
 app.get('/', function (req, res) {
   const OAuth2Store = new store({name:'data', encryptionKey: process.env.SESSION_SECRET});
   let OAuth2Data  = OAuth2Store.get('profile');
-  if(OAuth2Data === undefined) res.send('<html><head><title>Twitch Auth Sample</title></head><a href="http://localhost:5045/twitch/start/auth"><img src="http://ttv-api.s3.amazonaws.com/assets/connect_dark.png"></a></html>');
-  else res.send(JSON.stringify(profile))
+  if (OAuth2Data === undefined) res.send('<html><head><title>Twitch Auth </title><script src="https://kit.fontawesome.com/bb1bf338ca.js" crossorigin="anonymous"></script></head><body><h1 style="font-size: 20px;color: black;font-weight: bold;">Connect Twitch</h1></br><a style="text-decoration: none; font-size:16px; background:#9146ff; border-radius:10px; padding:6px 15px;color:white;" href="http://localhost:5045/twitch/start/auth"><i class="fab fa-twitch"></i> Connect with Twitch</a></body></html>');
+  else res.send(JSON.stringify(OAuth2Data))
 
 });
 
