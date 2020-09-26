@@ -62,7 +62,7 @@ exports.OAuth2Provider = class  OAuth2Provider{
         return new Promise((resolve, reject)=>{
             const OAuth2Store = new store({name:'data', encryptionKey: process.env.SESSION_SECRET});
             let OAuth2Data  = OAuth2Store.get('profile');
-            if(OAuth2Data === undefined ) return reject(new Error('No data stored'));
+            if(OAuth2Data === undefined ) return resolve(null);
             else return resolve(OAuth2Data);
         })
 

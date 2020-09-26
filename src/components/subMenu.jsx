@@ -1,5 +1,5 @@
 /*Import dependencies*/
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Link, useLocation, withRouter} from 'react-router-dom';
 import UISchema from '../schema/headers.config';
 import {ipcRenderer} from 'electron';
@@ -12,7 +12,7 @@ import utils from '../helpers/utility'
  * @param {String} route route of the componet
  */
 function getSubMenus(location) {
-    if (location.pathname.includes('/app') === true  && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
+    if (location.pathname.includes('/') === true  && location.pathname.length === 1 && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
     else if(location.pathname.split('/').length > 2){
         let parsedRoute  = location.pathname.split('/')
         let labelIndex= utils.findIndexInObjArr(UISchema.UISchemaState.headerObjs, 'redirect', '/'+parsedRoute[1]);
@@ -20,6 +20,9 @@ function getSubMenus(location) {
             if(UISchema.UISchemaState.headerObjs[labelIndex].subMenus !== undefined && utils.isEmpty(UISchema.UISchemaState.headerObjs[labelIndex].subMenus) === false) 
             return UISchema.UISchemaState.headerObjs[labelIndex].subMenus
         }
+    }
+    else if(location.pathname.split('/').length === 2 && utils.findIndexInObjArr(UISchema.UISchemaState.logoObj.subMenus, 'redirect', location.pathname) !== -1){
+        return UISchema.UISchemaState.logoObj.subMenus;
     }
     else {
         let headerMenuObjs = UISchema.UISchemaState.headerObjs
@@ -41,7 +44,11 @@ const CreateSubMenu = () => {
     let location = useLocation();
     let subMenu = getSubMenus(location)
     const activeLink = UISchema.UISchemaState.activeLink;
-
+    useEffect(()=>{
+        let index = utils.findIndexInObjArr(UISchema.UISchemaState.headerObjs, 'redirect', location.pathname)
+        if(index !== -1)
+        UISchema.UISchemaState.activeLink = UISchema.UISchemaState.headerObjs[index].id ;
+    })
     //let langObj = getLang()
 
     if (utils.isEmpty(subMenu) === true) return (<div className={"suvMenuSection"}></div>);

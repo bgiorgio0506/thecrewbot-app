@@ -12,6 +12,7 @@ import CreateHeader from './components/header';
 import CreateSettings from './components/settings';
 import CreateSubMenu from './components/subMenu';
 import CreateSettingsStreamDeck from './components/subMenus/settingsStreamDeck'
+import CreateAccount from './components/account';
 
 
 console.log('This line is begin called before app rendering')
@@ -24,9 +25,10 @@ const render = () => {
             <div id="app">
                 <CreateHeader/>
                 <CreateSubMenu />
-                <Redirect exact from="/" to="/app/questions" />
+                <Redirect exact from="/" to="/questions" />
                 <Switch>
-                    <Route exact path='/app/questions' component={CreateList}/>
+                    <Route exact path='/' component={CreateAccount}/>
+                    <Route exact path='/questions' component={CreateList}/>
                     <Route excat path='/settings'>
                         <Route exact path='/settings' component={CreateSettings}/>
                         <Route  path='/settings/streamdeck' component={CreateSettingsStreamDeck} />
