@@ -1,4 +1,6 @@
 const SimConnect = require('nodejs-simconnect')
+const event = require('events');
+const EventEmitter = new event.EventEmitter();
 // Open connection
 function connectToSimInternal (){
     
@@ -38,7 +40,7 @@ exports.connectToSim = ()=>{
     }, (error) => {
         // Happens for example when connection with SimConnect is lost unexpectedly. For crash details: ntstatus.h
         console.log("SimConnect error: " + error);
-
+        EventEmitter.emit('simconnect-error', error)
         // The connection must be re-opened
         connectToSimInternal();
     });
@@ -50,8 +52,12 @@ exports.connectToSim = ()=>{
             connectToSimInternal();
         }, parseInt(process.env.SIMCONNECT_TIME_INTERVAL));
     }else{
-        console.log(success)
         console.log('Connected success')
+        EventEmitter.emit('simconnect-connection-success')
         clearInterval(SimConnectionInterval)
     }
+}
+
+exports.on = (e, listener)=>{
+    return EventEmitter.on(e, listener)
 }

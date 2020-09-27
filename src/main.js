@@ -40,8 +40,6 @@ let dev = true
 let questQueue = [];
 let id = 0;
 
-//SimConnect start connection 
-SimConnectApi.connectToSim()
 
 //Init settings
 settings.setSync('config.channel', ['paolom346_']);
@@ -88,6 +86,15 @@ if(settings.getSync('config.openOnStreamSetting') === true){
 }
 
 
+
+SimConnectApi.on('simconnect-connection-success', () => {
+  mainWindow.webContents.send('simconnect-connection-success')
+})
+
+SimConnectApi.on('simconnect-error', (err) => {
+  console.log(err)
+  mainWindow.webContents.send('simconnect-error', err)
+})
 
 
 
@@ -274,8 +281,12 @@ app.on('ready', () => {
       event.preventDefault();
     })
   }
-
   /**END TRAY APP SECTION */
+
+  //SimConnect start connection 
+  setTimeout(()=>{
+    SimConnectApi.connectToSim()
+  },10000)
 })
 
 // Quit when all windows are closed.
@@ -327,6 +338,7 @@ ipcMain.on('open-auth', (e ,filePath)=>{
   log.info('recived Oauth open')
   createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`)
 })
+
 
 
 /**END IPC SECTION */

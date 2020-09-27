@@ -13,6 +13,7 @@ import CreateSettings from './components/settings';
 import CreateSubMenu from './components/subMenu';
 import CreateSettingsStreamDeck from './components/subMenus/settingsStreamDeck'
 import CreateAccount from './components/account';
+import CreateToolbar from './components/toolBar';
 
 
 console.log('This line is begin called before app rendering')
@@ -34,6 +35,7 @@ const render = () => {
                         <Route  path='/settings/streamdeck' component={CreateSettingsStreamDeck} />
                     </Route>
                 </Switch>
+                <CreateToolbar/>
             </div>
         </Router>
         , document.getElementById('root'));  // render empty list
