@@ -8,7 +8,7 @@ import utils from '../../helpers/utility'
 
 const CreateSettingsStreamDeck = ()=>{
 
-    return (<div>
+    return (<div className={'center-panel'}>
         <p>Sei StreamDeck Settings</p>
     </div>)
 }

@@ -1,4 +1,4 @@
-const {http} = require('follow-redirects');
+const {http, https} = require('follow-redirects');
 const store = require('electron-store');
 const TwitchConfig = require('../schema/twitchApi.config');
 require('../controllers/OAuth2Server/OAuth2Server ')
@@ -69,4 +69,84 @@ exports.OAuth2Provider = class  OAuth2Provider{
     }
 
 
+}
+
+/**
+ * @description a twitch api implementation
+ */
+exports.TwitchApi = class TwitchApi{
+    constructor(){
+        const OAuth2Store = new store({name:'data', encryptionKey:process.env.SESSION_SECRET});
+        this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
+        this.OAuth2Data = OAuth2Store.get('profile');
+        if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token')
+    }
+
+    getUser(){
+        return new Promise((resolve, reject)=>{
+            this.requestOptions = {
+                hostname: 'api.twitch.tv', 
+                path :`helix/users?id=${this.OAuth2Data.data[0].id}`, 
+                method:'GET', 
+                port:443,
+                headers: {
+                    'Client-Id': this.options.clientID,
+                    'Accept': 'application/vnd.twitchtv.v5+json',
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
+                }
+            }
+
+            let request = https.request(this.requestOptions, (res)=>{
+                let data= [];
+                res.on('data', (dataChuck)=>{
+                    data.push(dataChuck);
+                })
+
+                res.on('end', (dataChuck)=>{
+                    let jsonBody = Buffer.concat(data);
+                    jsonBody = JSON.stringify(jsonBody.toString())
+                    resolve(JSON.parse(jsonBody));
+                })
+
+                res.on('error', (err)=>{
+                    reject(err)
+                })
+            })
+             request.end()
+        })
+    }
+
+    getUserFllows(){
+        return new Promise((resolve, reject)=>{
+            this.requestOptions = {
+                hostname: 'api.twitch.tv', 
+                path :`helix/users/follows?to_id=${this.OAuth2Data.data[0].id}`, 
+                method:'GET', 
+                port:443,
+                headers: {
+                    'Client-Id': this.options.clientID,
+                    'Accept': 'application/vnd.twitchtv.v5+json',
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
+                }
+            }
+
+            let request = https.request(this.requestOptions, (res)=>{
+                let data= [];
+                res.on('data', (dataChuck)=>{
+                    data.push(dataChuck);
+                })
+
+                res.on('end', (dataChuck)=>{
+                    let jsonBody = Buffer.concat(data);
+                    jsonBody = JSON.stringify(jsonBody.toString())
+                    resolve(JSON.parse(jsonBody));
+                })
+
+                res.on('error', (err)=>{
+                    reject(err)
+                })
+            })
+             request.end()
+        })
+    }
 }

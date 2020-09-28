@@ -36,14 +36,14 @@ OAuth2Strategy.prototype.userProfile = function(accessToken, done) {
   };
 
   var req = https.request(options, function (res) {
-    var chunks = [];
+    var data = [];
   
-    res.on("data", function (chunk) {
-      chunks.push(chunk);
+    res.on("data", function (dataChunk) {
+      data.push(dataChunk);
     });
   
-    res.on("end", function (chunk) {
-      var body = Buffer.concat(chunks);
+    res.on("end", function (dataChunk) {
+      var body = Buffer.concat(data);
       console.log(body.toString());
       done(null, JSON.parse(body));
     });

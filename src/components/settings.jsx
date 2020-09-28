@@ -16,6 +16,7 @@ const CreateSettings = ()=>{
     const [startSettings, setStartCheckBox] = useState(UISchema.UISchemaState.generalSettings[1].checked);
     const [traySettings, setTrayCheckBox] = useState(UISchema.UISchemaState.generalSettings[0].checked)
     const [showModal, setShowModal] = useState(false);
+    const [messageModal, setMessage] = useState('')
 
     function hideModal(){
         setShowModal(false)
@@ -68,6 +69,7 @@ const CreateSettings = ()=>{
                     }
                 }).catch((err)=>{
                     console.log(err)
+                    setMessage(err)
                 })
             }}><p>Twitch <i class="fab fa-twitch"></i></p></button>
         </div>
@@ -78,7 +80,7 @@ const CreateSettings = ()=>{
         </div>
         <CreateModals show={showModal} handleClose={hideModal}>
             <p className={'modalTitle'}> Information</p>
-            <div className={'modalMessage'}>It happears you have already connected your account</div>
+            <div className={'modalMessage'}>{(messageModal)? 'It happears you have already connected your account': messageModal}</div>
         </CreateModals>
     </div>)
 }
