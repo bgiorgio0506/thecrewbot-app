@@ -90,7 +90,7 @@ exports.TwitchApi = class TwitchApi{
                 method:'GET', 
                 port:443,
                 headers: {
-                    'Client-Id': this.options.clientID,
+                    'Client-ID': this.options.clientID,
                     'Accept': 'application/vnd.twitchtv.v5+json',
                     'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
                 }
@@ -116,7 +116,7 @@ exports.TwitchApi = class TwitchApi{
         })
     }
 
-    getUserFllows(){
+    getUserFollows(){
         return new Promise((resolve, reject)=>{
             this.requestOptions = {
                 hostname: 'api.twitch.tv', 
@@ -124,7 +124,7 @@ exports.TwitchApi = class TwitchApi{
                 method:'GET', 
                 port:443,
                 headers: {
-                    'Client-Id': this.options.clientID,
+                    'Client-ID': this.options.clientID,
                     'Accept': 'application/vnd.twitchtv.v5+json',
                     'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
                 }
@@ -149,4 +149,48 @@ exports.TwitchApi = class TwitchApi{
              request.end()
         })
     }
+
+    getUserSubs(){
+        return new Promise((resolve, reject)=>{
+            this.requestOptions = {
+                hostname: 'api.twitch.tv', 
+                path :`helix/subscriptions?broadcaster_id=${this.OAuth2Data.data[0].id}`, 
+                method:'GET', 
+                port:443,
+                headers: {
+                    'Client-ID': this.options.clientID,
+                    'Accept': 'application/vnd.twitchtv.v5+json',
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
+                }
+            }
+
+            let request = https.request(this.requestOptions, (res)=>{
+                let data= [];
+                res.on('data', (dataChuck)=>{
+                    data.push(dataChuck);
+                })
+
+                res.on('end', (dataChuck)=>{
+                    let jsonBody = Buffer.concat(data);
+                    jsonBody = JSON.stringify(jsonBody.toString())
+                    resolve(JSON.parse(jsonBody));
+                })
+
+                res.on('error', (err)=>{
+                    reject(err)
+                })
+            })
+             request.end()
+        })
+    }
+}
+
+exports.TwitchWebhooks = class TwitchWebhooks{
+    constructor(){
+        const OAuth2Store = new store({name:'data', encryptionKey:process.env.SESSION_SECRET});
+        this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
+        this.OAuth2Data = OAuth2Store.get('profile');
+        if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token')
+    }
+    
 }
