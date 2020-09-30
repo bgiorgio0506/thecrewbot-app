@@ -40,5 +40,3 @@ exports.writeFile = (fileName, content)=>{
     })
   })
 }
-
-//C:\Users\Giorgiopc\AppData\Roaming\thecrewbot-app
