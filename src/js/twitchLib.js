@@ -186,11 +186,70 @@ exports.TwitchApi = class TwitchApi{
 }
 
 exports.TwitchWebhooks = class TwitchWebhooks{
-    constructor(){
+    constructor(netInfo){
+        this.userNetInfo = netInfo //user net info for webhook
         const OAuth2Store = new store({name:'data', encryptionKey:process.env.SESSION_SECRET});
         this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
         this.OAuth2Data = OAuth2Store.get('profile');
         if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token')
+    }
+
+    //ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
+    subscribeUsers(){
+
+    }
+
+    subscribeSubs(){
+        
+    }
+
+    subscribeFollows(){
+        const options = {
+            url: 'https://api.twitch.tv/helix/webhooks/hub',
+            method: 'POST',
+            headers: {
+                'Client-ID':this.options.clientID,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'hub.mode': 'subscribe',
+                'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=117191228',
+                'hub.callback': 'http://localhost',//change it to public ip
+                'hub.lease_seconds': '864000',
+                'hub.secret': process.env.SESSION_SECRET
+            })
+  };
+
+    }
+
+    receiveUsers(){
+
+    }
+
+    receiveSubs(){
+        
+    }
+
+    receiveFollows(){
+        
+    }
+
+    //Event to send out
+    on(){
+
+    }
+
+    once(){
+
+    }
+
+    //unsub ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
+    unSubAll(){
+
+    }
+
+    unSubTopic(){
+        
     }
     
 }

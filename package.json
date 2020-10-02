@@ -125,7 +125,6 @@
     "react-router-dom": "^5.2.0",
     "request": "^2.88.2",
     "tmi.js": "^1.5.0",
-    "twitch": "^4.2.4",
     "update-electron-app": "^2.0.1",
     "url": "^0.11.0"
   },
