@@ -135,13 +135,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // write out the data to a log for now
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'last_webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/last_webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -193,13 +193,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // write out the data to a log for now
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'last_webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/last_webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -251,13 +251,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // write out the data to a log for now
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'last_webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/last_webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -309,13 +309,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // write out the data to a log for now
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
-                    __dirname,
-                    'last_webhooks.log'
+                    process.env.APPDATA,
+                    'thecrewbot-app/last_webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -332,7 +332,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
     });
 
 
-var server = app.listen(process.env.WEBHOOK_APP_PORT, function (err) {
+var server = app.listen(process.env.WEBHOOK_APP_PORT, "0.0.0.0", function (err) {
     if (err) throw err;
-    console.log('Server is online and listening to port: ' + server.address().port);
+    console.log('Server WebHook is online and listening to port: ' + server.address().port);
 });

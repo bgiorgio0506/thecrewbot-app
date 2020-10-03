@@ -65,7 +65,9 @@ const CreateSettings = ()=>{
                        ipcRenderer.send('open-auth',{path:path.join(process.env.APPDATA,'thecrewbot-app\\Temp%20Folder\\'), fileName: 'OAuth.html'})
                     })
                     else {
+                        //ipcRenderer.send('open-auth',{path:path.join(process.env.APPDATA,'thecrewbot-app\\Temp%20Folder\\'), fileName: 'OAuth.html'})
                         setShowModal(true);
+                        setMessage('It happears you have already connected your account')
                     }
                 }).catch((err)=>{
                     console.log(err)
@@ -80,7 +82,7 @@ const CreateSettings = ()=>{
         </div>
         <CreateModals show={showModal} handleClose={hideModal}>
             <p className={'modalTitle'}> Information</p>
-            <div className={'modalMessage'}>{(messageModal)? 'It happears you have already connected your account': messageModal}</div>
+            <div className={'modalMessage'}>{messageModal}</div>
         </CreateModals>
     </div>)
 }

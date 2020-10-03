@@ -107,5 +107,5 @@ app.get('/', function (req, res) {
 
 var server = app.listen(process.env.SERVER_APP_PORT, function (err) {
     if (err) throw err;
-    console.log('Server is online and listening to port: ' + server.address().port);
+    console.log('Auth server is online and listening to port: ' + server.address().port);
 });

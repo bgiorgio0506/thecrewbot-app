@@ -11,10 +11,11 @@ const langLib = require('./js/langLib').default
 const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 const SimConnectApi = require('./js/SimConnectApi');
-const AutoLaunch = require('./js/AutoLaunch')
-const filter = {
-  urls: ['https://*.twitch.tv/*']
-}
+const AutoLaunch = require('./js/AutoLaunch');
+
+//Servers 
+require('./controllers/OAuth2Server/OAuth2Server ');
+require('./controllers/WebHook/webHookServer')
 
 //request app singleInstance
 app.requestSingleInstanceLock()
@@ -23,6 +24,16 @@ app.requestSingleInstanceLock()
 const emitter = new EventEmitter()
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 const url = require('url')
+const { TwitchWebhooks, OAuth2Provider } = require('./js/twitchLib')
+
+//refresh token on every open
+const OAuth2Client = new OAuth2Provider()
+OAuth2Client.refreshOAuth2Token().then((res)=>{
+  log.info('Token Refreshed');
+}).catch((err)=>{
+  log.error(err);
+  throw err;
+})
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -87,6 +98,7 @@ if(settings.getSync('config.openOnStreamSetting') === true){
 
 
 
+
 SimConnectApi.on('simconnect-connection-success', () => {
   mainWindow.webContents.send('simconnect-connection-success')
 })
@@ -95,7 +107,6 @@ SimConnectApi.on('simconnect-error', (err) => {
   console.log(err)
   mainWindow.webContents.send('simconnect-error', err)
 })
-
 
 
 /*** MAIN Window creation ****/
@@ -281,6 +292,16 @@ app.on('ready', () => {
       event.preventDefault();
     })
   }
+
+  const webHook = new TwitchWebhooks();
+  webHook.setIp().then((res) => {
+    console.log(res)
+    webHook.subscribeFollows().then((res) => {
+      log.info(res)
+    }).catch((err) => {
+      log.error(err)
+    })
+  })
   /**END TRAY APP SECTION */
 
   //SimConnect start connection 
@@ -351,7 +372,7 @@ ipcMain.on('open-auth', (e ,filePath)=>{
 //GitHub publisher
 const server = 'https://update.electronjs.org'
 const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
-if(dev === true){
+if(process.env.APP_DEBUG === 'false'){
   autoUpdater.setFeedURL(feed)
 
   setInterval(() => {

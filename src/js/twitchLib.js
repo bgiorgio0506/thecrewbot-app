@@ -1,7 +1,9 @@
 const {http, https} = require('follow-redirects');
 const store = require('electron-store');
 const TwitchConfig = require('../schema/twitchApi.config');
-require('../controllers/OAuth2Server/OAuth2Server ')
+const publicIp = require('public-ip');
+const qs = require('querystring');
+
 
 
 exports.OAuth2Provider = class  OAuth2Provider{
@@ -68,6 +70,48 @@ exports.OAuth2Provider = class  OAuth2Provider{
 
     }
 
+    /**
+     * @desription refresh token
+     */
+    refreshOAuth2Token(){
+        return new Promise((resolve, reject)=>{
+        const OAuth2Store = new store({name:'data', encryptionKey: process.env.SESSION_SECRET});
+        let OAuth2Data  = OAuth2Store.get('profile');
+        if(OAuth2Data === undefined ) return resolve(null);
+        else{
+            const options = {
+                hostname: 'id.twitch.tv', 
+                path: `/oauth2/token?grant_type=refresh_token&refresh_token=${OAuth2Data.refreshToken}&client_id=${this.options.clientID}&client_secret=${process.env.TWITCH_OAUTH_SECRET}&scope=${decodeURIComponent(this.options.scopes.join('+'))}`,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }, 
+
+            }
+            let request = https.request(options, (res)=>{
+                console.log(res.statusCode); 
+                let data = [];
+                res.on('data', (dataChuck)=>{
+                    data.push(dataChuck);
+                }); 
+
+                res.on('end', (dataChuck)=>{
+                    let parsedBody = JSON.parse(data.toString());
+                    OAuth2Data.accessToken = parsedBody.access_token;
+                    OAuth2Data.refreshToken = parsedBody.refresh_token;
+                    OAuth2Data.expires_in = parsedBody.expires_in;
+                    OAuth2Store.set({profile:OAuth2Data})
+                    resolve(true)
+                })
+                
+                res.on('error', (err)=>{
+                    reject(err)
+                })
+            })
+            request.end()
+        }
+        })
+    }
 
 }
 
@@ -186,14 +230,28 @@ exports.TwitchApi = class TwitchApi{
 }
 
 exports.TwitchWebhooks = class TwitchWebhooks{
-    constructor(netInfo){
-        this.userNetInfo = netInfo //user net info for webhook
+    constructor(){
         const OAuth2Store = new store({name:'data', encryptionKey:process.env.SESSION_SECRET});
         this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
         this.OAuth2Data = OAuth2Store.get('profile');
-        if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token')
+        if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token'); 
     }
 
+    /**
+     * @description set the public ip of the machine
+     * @returns {Promise<String>}
+     */
+    setIp(){
+        return new Promise((resolve, reject)=>{
+            publicIp.v4().then((ip)=>{
+                this.ip = ip;
+                resolve(ip)
+            }).catch((err)=>{
+                console.error(err)
+                return reject(err)
+            });
+        })
+    }
     //ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
     subscribeUsers(){
 
@@ -204,21 +262,48 @@ exports.TwitchWebhooks = class TwitchWebhooks{
     }
 
     subscribeFollows(){
-        const options = {
-            url: 'https://api.twitch.tv/helix/webhooks/hub',
-            method: 'POST',
-            headers: {
-                'Client-ID':this.options.clientID,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        return new Promise((resolve, reject)=>{
+            const options = {
+                hostname: 'api.twitch.tv', 
+                path: 'helix/webhooks/hub',
+                method: 'POST',
+                headers: {
+                    'Client-ID':this.options.clientID,
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var req = https.request(options, (res)=>{
+                let data = []
+                console.log(res.statusCode)
+                res.on('data', (chunck)=>{
+                    console.log(chunck)
+                    data.push(chunck)
+                })
+
+                res.on('close', (chunk)=>{
+                    console.log(data.toString())
+                    resolve(res.statusCode)
+                })
+
+                res.on('error', (err)=>{
+                    reject(new Error(err))
+                })
+            })
+
+        
+            let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
                 'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=117191228',
-                'hub.callback': 'http://localhost',//change it to public ip
-                'hub.lease_seconds': '864000',
+                'hub.callback': `http://${this.ip}:${process.env.WEBHOOK_APP_PORT}/twitch/webhook/follows`,//change it to public ip
+                'hub.lease_seconds': '30000',
                 'hub.secret': process.env.SESSION_SECRET
             })
-  };
+
+            req.write(postData)
+            req.end()
+        })
 
     }
 

@@ -118,6 +118,8 @@
     "passport-oauth": "^1.0.0",
     "passport-twitch": "^1.0.3",
     "path": "^0.12.7",
+    "public-ip": "^4.0.2",
+    "querystring": "^0.2.0",
     "raw-body": "^2.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
