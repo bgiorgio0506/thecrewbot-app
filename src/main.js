@@ -15,7 +15,7 @@ const AutoLaunch = require('./js/AutoLaunch');
 
 //Servers 
 require('./controllers/OAuth2Server/OAuth2Server ');
-require('./controllers/WebHook/webHookServer')
+require('./controllers/WebHook/webHookServer');
 
 //request app singleInstance
 app.requestSingleInstanceLock()
