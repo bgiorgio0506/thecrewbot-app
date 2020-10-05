@@ -9,6 +9,7 @@ const path         = require('path')
 const fs           = require('fs')
 const {https} = require('follow-redirects');
 
+
 // Define our constants, you will change these with your own
 const SESSION_SECRET   = process.env.SESSION_SECRET;
 const CALLBACK_URL     = TwitchConfig.OAuth2ProviderDefaultOptions.redirectUri;  // You can run locally with - http://localhost:3000/auth/twitch/callback
@@ -70,6 +71,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
                 // the signature passed so it should be a valid payload from Twitch
                 // we ok as quickly as possible
                 res.send('Ok');
+
 
                 // you can do whatever you want with the data
                 // it's in req.body

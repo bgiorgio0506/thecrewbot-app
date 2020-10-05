@@ -293,15 +293,10 @@ app.on('ready', () => {
     })
   }
 
-  const webHook = new TwitchWebhooks();
-  webHook.setIp().then((res) => {
+  const webHook = new TwitchWebhooks()
+  webHook.subscribeFollows().then((res)=>{
     console.log(res)
-    webHook.subscribeFollows().then((res) => {
-      log.info(res)
-    }).catch((err) => {
-      log.error(err)
-    })
-  })
+  }).catch(err=>{console.error(err)})
   /**END TRAY APP SECTION */
 
   //SimConnect start connection 

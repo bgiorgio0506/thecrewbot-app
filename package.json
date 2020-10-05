@@ -113,6 +113,7 @@
     "express-session": "^1.17.1",
     "follow-redirects": "^1.13.0",
     "jquery": "^3.5.1",
+    "ngrok": "^3.3.0",
     "nodejs-simconnect": "file:nodejs-simconnect-0.3.0.tgz",
     "passport": "^0.4.1",
     "passport-oauth": "^1.0.0",

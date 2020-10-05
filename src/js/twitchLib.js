@@ -1,8 +1,18 @@
 const {http, https} = require('follow-redirects');
 const store = require('electron-store');
 const TwitchConfig = require('../schema/twitchApi.config');
-const publicIp = require('public-ip');
-const qs = require('querystring');
+const ngrok = require('ngrok');
+const url = (async () => {
+    await ngrok.connect({
+        proto: 'http', // http|tcp|tls, defaults to http
+        addr: parseInt(process.env.WEBHOOK_APP_PORT), // port or network address, defaults to 80
+        region: 'eu', // one of ngrok regions (us, eu, au, ap, sa, jp, in), defaults to us
+        binPath: path => path.replace('app.asar', 'app.asar.unpacked'), // custom binary path, eg for prod in electron
+        onStatusChange: status => { log.info(status) }, // 'closed' - connection is lost, 'connected' - reconnected
+        onLogEvent: data => { log.info(data) }, // returns stdout messages from ngrok process
+    })
+});
+const log = require('electron-log')
 
 
 
@@ -235,23 +245,9 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
         this.OAuth2Data = OAuth2Store.get('profile');
         if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token'); 
+        //log.info(ngrok.getUrl())
     }
 
-    /**
-     * @description set the public ip of the machine
-     * @returns {Promise<String>}
-     */
-    setIp(){
-        return new Promise((resolve, reject)=>{
-            publicIp.v4().then((ip)=>{
-                this.ip = ip;
-                resolve(ip)
-            }).catch((err)=>{
-                console.error(err)
-                return reject(err)
-            });
-        })
-    }
     //ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
     subscribeUsers(){
 
@@ -296,7 +292,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
             let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
                 'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=117191228',
-                'hub.callback': `http://${this.ip}:${process.env.WEBHOOK_APP_PORT}/twitch/webhook/follows`,//change it to public ip
+                'hub.callback': `${ngrok.getUrl}/twitch/webhook/follows`,//change it to public ip
                 'hub.lease_seconds': '30000',
                 'hub.secret': process.env.SESSION_SECRET
             })
@@ -304,7 +300,6 @@ exports.TwitchWebhooks = class TwitchWebhooks{
             req.write(postData)
             req.end()
         })
-
     }
 
     receiveUsers(){
