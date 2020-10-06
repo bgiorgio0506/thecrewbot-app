@@ -3,5 +3,10 @@
       "@babel/preset-react", ["@babel/preset-env", {
         "modules": "commonjs"
       }]
-    ]
+    ],
+    "plugins": [
+      ["@babel/transform-runtime" ,{ 
+        "regenerator": true       
+        } ]
+  ]
   }

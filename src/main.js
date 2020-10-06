@@ -12,10 +12,13 @@ const UISchema  = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 const SimConnectApi = require('./js/SimConnectApi');
 const AutoLaunch = require('./js/AutoLaunch');
+const ltTunnel = require('localtunnel')
+
 
 //Servers 
 require('./controllers/OAuth2Server/OAuth2Server ');
-require('./controllers/WebHook/webHookServer');
+
+
 
 //request app singleInstance
 app.requestSingleInstanceLock()
@@ -278,7 +281,7 @@ ClientBot.on('connected', ()=>{
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', () => {
+app.on('ready', async() => {
   createWindow();
   /** TRY APP SECTION **/
   //Note tray need to be set on app on ready event
@@ -293,11 +296,27 @@ app.on('ready', () => {
     })
   }
 
-  const webHook = new TwitchWebhooks()
-  webHook.subscribeFollows().then((res)=>{
-    console.log(res)
-  }).catch(err=>{console.error(err)})
   /**END TRAY APP SECTION */
+
+  //open tunnel
+  const port = parseInt(process.env.WEBHOOK_APP_PORT); 
+  const tunnel = await ltTunnel({port:port, subdomain: 'thecrewbot'});
+  log.info('Local Tunnel open on url: '+ tunnel.url)
+
+ 
+
+
+  /**WebHook**/
+  const webHook = new TwitchWebhooks()
+  try {
+    //set url for follow
+    await webHook.setUrl(tunnel.url)
+    await webHook.subscribeFollows()
+
+  } catch (error) {
+    throw error;
+  }
+  /**End */
 
   //SimConnect start connection 
   setTimeout(()=>{

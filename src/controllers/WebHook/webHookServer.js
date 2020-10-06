@@ -8,12 +8,15 @@ const crypto       = require('crypto')
 const path         = require('path')
 const fs           = require('fs')
 const {https} = require('follow-redirects');
+const log = require('electron-log')
+const event  = require('events');
 
 
 // Define our constants, you will change these with your own
 const SESSION_SECRET   = process.env.SESSION_SECRET;
 const CALLBACK_URL     = TwitchConfig.OAuth2ProviderDefaultOptions.redirectUri;  // You can run locally with - http://localhost:3000/auth/twitch/callback
 const SCOPES = TwitchConfig.OAuth2ProviderDefaultOptions.scopes.join('+');
+const eventEmitter = new event.EventEmitter();
 
 
 // Initialize Express and middlewares
@@ -165,6 +168,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
         // the key contats a period so we are using array style access here
+        //log.info(req)
         if (req.query['hub.challenge']) {
             console.log('Got a challenge', req.query['hub.challenge']);
             // it's a challenge from Twitch
@@ -193,11 +197,10 @@ app.route('/twitch/webhook/live').get((req, res) => {
                 // you can do whatever you want with the data
                 // it's in req.body
 
+                log.info(req.body)
+                eventEmitter.emit('webhook.notification', {data:req.body.data, type: 'notification.follow'})
+
                 // write out the data to a log for now
-                fs.appendFileSync(path.join(
-                    process.env.APPDATA,
-                    'thecrewbot-app/webhooks.log'
-                ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
                     process.env.APPDATA,
@@ -338,3 +341,8 @@ var server = app.listen(process.env.WEBHOOK_APP_PORT, "0.0.0.0", function (err) 
     if (err) throw err;
     console.log('Server WebHook is online and listening to port: ' + server.address().port);
 });
+
+
+exports.on = (e, listener)=>{
+    return eventEmitter.on(e, listener);
+}

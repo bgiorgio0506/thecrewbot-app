@@ -1,20 +1,10 @@
 const {http, https} = require('follow-redirects');
 const store = require('electron-store');
 const TwitchConfig = require('../schema/twitchApi.config');
-const ngrok = require('ngrok');
-const url = (async () => {
-    await ngrok.connect({
-        proto: 'http', // http|tcp|tls, defaults to http
-        addr: parseInt(process.env.WEBHOOK_APP_PORT), // port or network address, defaults to 80
-        region: 'eu', // one of ngrok regions (us, eu, au, ap, sa, jp, in), defaults to us
-        binPath: path => path.replace('app.asar', 'app.asar.unpacked'), // custom binary path, eg for prod in electron
-        onStatusChange: status => { log.info(status) }, // 'closed' - connection is lost, 'connected' - reconnected
-        onLogEvent: data => { log.info(data) }, // returns stdout messages from ngrok process
-    })
-});
-const log = require('electron-log')
-
-
+const log = require('electron-log');
+const event = require('events')
+const eventEmitter = new event.EventEmitter()
+const webHookServer = require('../controllers/WebHook/webHookServer');
 
 exports.OAuth2Provider = class  OAuth2Provider{
 
@@ -246,8 +236,17 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         this.OAuth2Data = OAuth2Store.get('profile');
         if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token'); 
         //log.info(ngrok.getUrl())
+        
     }
 
+    setUrl(url){
+        return new Promise((resolve, reject)=>{
+            if(url){
+                this.url = url
+                return resolve(true)
+            }else return reject(new Error('url not provided'))
+        })
+    }
     //ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
     subscribeUsers(){
 
@@ -291,9 +290,9 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         
             let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
-                'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=117191228',
-                'hub.callback': `${ngrok.getUrl}/twitch/webhook/follows`,//change it to public ip
-                'hub.lease_seconds': '30000',
+                'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=110182041',
+                'hub.callback': `${this.url}/twitch/webhook/follows`,//change it to public ip
+                'hub.lease_seconds': '864000',
                 'hub.secret': process.env.SESSION_SECRET
             })
 
@@ -302,25 +301,20 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         })
     }
 
-    receiveUsers(){
-
+    openDataStream(){
+        webHookServer.on('webhook.notification', (data)=>{
+            eventEmitter.emit('webhook.notification', data)
+        })
     }
 
-    receiveSubs(){
-        
-    }
-
-    receiveFollows(){
-        
-    }
 
     //Event to send out
-    on(){
-
+    on(e ,listener){
+        return eventEmitter.on(e, listener)
     }
 
-    once(){
-
+    once(e, listener){
+        return eventEmitter.once(e, listener)
     }
 
     //unsub ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
@@ -328,7 +322,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
 
     }
 
-    unSubTopic(){
+    unSubTopic(topic){
         
     }
     
