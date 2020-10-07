@@ -45,7 +45,7 @@ app.use(bodyParser.json({
 }));
 
 app.route('/twitch/webhook/live').get((req, res) => {
-        console.log('Incoming Get request on /');
+        console.log('Incoming Get request on /twitch/webhook/live');
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -64,7 +64,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
             res.send('Ok');
         }
     }).post((req, res) => {
-        console.log('Incoming Post request on /');
+        console.log('Incoming Post request on /twitch/webhook/live');
         // the middleware above ran
         // and it prepared the tests for us
         // so check if we event generated a twitch_hub
@@ -78,16 +78,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // you can do whatever you want with the data
                 // it's in req.body
+                eventEmitter.emit('webhook.notification', {data:req.body.data, type: 'notification.stream'})
 
                 // write out the data to a log for now
-                fs.appendFileSync(path.join(
-                    __dirname,
-                    'webhooks.log'
-                ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
                     __dirname,
-                    'last_webhooks.log'
+                    'webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -105,7 +102,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
 
     app.route('/twitch/webhook/subs').get((req, res) => {
-        console.log('Incoming Get request on /');
+        console.log('Incoming Get request on /twitch/webhook/subs');
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -124,7 +121,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
             res.send('Ok');
         }
     }).post((req, res) => {
-        console.log('Incoming Post request on /');
+        console.log('Incoming Post request on /twitch/webhook/subs');
         // the middleware above ran
         // and it prepared the tests for us
         // so check if we event generated a twitch_hub
@@ -137,16 +134,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // you can do whatever you want with the data
                 // it's in req.body
+                eventEmitter.emit('webhook.notification', {data:req.body.data, type: 'notification.subs'})
 
                 // write out the data to a log for now
-                fs.appendFileSync(path.join(
-                    process.env.APPDATA,
-                    'thecrewbot-app/webhooks.log'
-                ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
                     process.env.APPDATA,
-                    'thecrewbot-app/last_webhooks.log'
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -163,7 +157,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
     });
 
     app.route('/twitch/webhook/follows').get((req, res) => {
-        console.log('Incoming Get request on /');
+        console.log('Incoming Get request on /twitch/webhook/follows');
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -183,7 +177,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
             res.send('Ok');
         }
     }).post((req, res) => {
-        console.log('Incoming Post request on /');
+        console.log('Incoming Post request on /twitch/webhook/follows');
         // the middleware above ran
         // and it prepared the tests for us
         // so check if we event generated a twitch_hub
@@ -204,7 +198,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
                     process.env.APPDATA,
-                    'thecrewbot-app/last_webhooks.log'
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -221,7 +215,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
     });
 
     app.route('/twitch/webhook/profile').get((req, res) => {
-        console.log('Incoming Get request on /');
+        console.log('Incoming Get request on /twitch/webhook/profile');
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -240,7 +234,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
             res.send('Ok');
         }
     }).post((req, res) => {
-        console.log('Incoming Post request on /');
+        console.log('Incoming Post request on /twitch/webhook/profile');
         // the middleware above ran
         // and it prepared the tests for us
         // so check if we event generated a twitch_hub
@@ -253,16 +247,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // you can do whatever you want with the data
                 // it's in req.body
+                eventEmitter.emit('webhook.notification', {data:req.body.data, type: 'notification.profile'})
 
                 // write out the data to a log for now
-                fs.appendFileSync(path.join(
-                    process.env.APPDATA,
-                    'thecrewbot-app/webhooks.log'
-                ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
                     process.env.APPDATA,
-                    'thecrewbot-app/last_webhooks.log'
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');
@@ -279,7 +270,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
     });
 
     app.route('/twitch/webhook/hypetrain').get((req, res) => {
-        console.log('Incoming Get request on /');
+        console.log('Incoming Get request on /twitch/webhook/hypetrain');
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -298,7 +289,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
             res.send('Ok');
         }
     }).post((req, res) => {
-        console.log('Incoming Post request on /');
+        console.log('Incoming Post request on /twitch/webhook/hypetrain');
         // the middleware above ran
         // and it prepared the tests for us
         // so check if we event generated a twitch_hub
@@ -311,16 +302,13 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
                 // you can do whatever you want with the data
                 // it's in req.body
+                eventEmitter.emit('webhook.notification', {data:req.body.data, type: 'notification.hypetrain'})
 
                 // write out the data to a log for now
-                fs.appendFileSync(path.join(
-                    process.env.APPDATA,
-                    'thecrewbot-app/webhooks.log'
-                ), JSON.stringify(req.body) + "\n");
                 // pretty print the last webhook to a file
                 fs.appendFileSync(path.join(
                     process.env.APPDATA,
-                    'thecrewbot-app/last_webhooks.log'
+                    'thecrewbot-app/webhooks.log'
                 ), JSON.stringify(req.body, null, 4));
             } else {
                 console.log('The Signature did not match');

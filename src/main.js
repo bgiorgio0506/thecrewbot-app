@@ -1,14 +1,14 @@
 'use strict'
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, session} = require('electron')
+const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, session } = require('electron')
 require('update-electron-app')()
 const utils = require('../src/helpers/utility')
 const tmi = require('tmi.js')
 const path = require('path');
-const log  = require('electron-log')
+const log = require('electron-log')
 const settings = require('electron-settings')
 const langLib = require('./js/langLib').default
-const UISchema  = require('./schema/headers.config').default
+const UISchema = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 const SimConnectApi = require('./js/SimConnectApi');
 const AutoLaunch = require('./js/AutoLaunch');
@@ -31,12 +31,6 @@ const { TwitchWebhooks, OAuth2Provider } = require('./js/twitchLib')
 
 //refresh token on every open
 const OAuth2Client = new OAuth2Provider()
-OAuth2Client.refreshOAuth2Token().then((res)=>{
-  log.info('Token Refreshed');
-}).catch((err)=>{
-  log.error(err);
-  throw err;
-})
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -62,8 +56,8 @@ settings.setSync('config.botPrefix', '!');
 
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
- if(process.env.APP_DEBUG.includes('true') === true) dev = true;
- else dev= false;
+  if (process.env.APP_DEBUG.includes('true') === true) dev = true;
+  else dev = false;
 }
 // Temporary fix for broken high-dpi scale factor on Windows (125% scaling)
 // info: https://github.com/electron/electron/issues/9691
@@ -93,24 +87,11 @@ if (gotTheLock === false) {
  * Auto Launch
  * Set app hidden process on start up 
  */
-if(settings.getSync('config.openOnStreamSetting') === true){
+if (settings.getSync('config.openOnStreamSetting') === true) {
   AutoLaunch.enableAutoLaunch()
-}else{
+} else {
   AutoLaunch.disableAutoLaunch()
 }
-
-
-
-
-SimConnectApi.on('simconnect-connection-success', () => {
-  mainWindow.webContents.send('simconnect-connection-success')
-})
-
-SimConnectApi.on('simconnect-error', (err) => {
-  console.log(err)
-  mainWindow.webContents.send('simconnect-error', err)
-})
-
 
 /*** MAIN Window creation ****/
 function createWindow() {
@@ -119,12 +100,12 @@ function createWindow() {
     width: 1024, // width of the window
     height: 768, // height of the window
     show: false, // don't show until window is ready
-    frame:false, //frame less
-    resizable:true,
+    frame: false, //frame less
+    resizable: true,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity:false, 
-      enableRemoteModule:true
+      webSecurity: false,
+      enableRemoteModule: true
     },
     icon: nativeImage.createFromDataURL("file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico"),
   })
@@ -142,7 +123,7 @@ function createWindow() {
     }
   })
   // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -151,19 +132,19 @@ function createWindow() {
 }
 
 /**OAuth Window */
-function createAuthWindow(path){
+function createAuthWindow(path) {
   log.info(path)
-   // Create the browser window.
-   authWindow = new BrowserWindow({
+  // Create the browser window.
+  authWindow = new BrowserWindow({
     width: 400, // width of the window
     height: 520, // height of the window
     show: false, // don't show until window is ready
-    frame:true, //frame less
-    resizable:true,
+    frame: true, //frame less
+    resizable: true,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity:false, 
-      enableRemoteModule:true
+      webSecurity: false,
+      enableRemoteModule: true
     },
     icon: nativeImage.createFromDataURL("file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico"),
   })
@@ -182,7 +163,7 @@ function createAuthWindow(path){
   })
 
   // Emitted when the window is closed.
-  authWindow.on('closed', function() {
+  authWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -194,20 +175,20 @@ function createAuthWindow(path){
 //chatbot opts 
 const ClientBot = new tmi.Client({
   options: { debug: true },
-connection: {
-      reconnect: true,
-      secure: true
-},
-  identity: {
-      username: process.env.TWITCH_BOT_USERNAME,
-      password: process.env.TWITCH_BOT_PASSWORD,
+  connection: {
+    reconnect: true,
+    secure: true
   },
-  channels:settings.getSync('config.channel')
+  identity: {
+    username: process.env.TWITCH_BOT_USERNAME,
+    password: process.env.TWITCH_BOT_PASSWORD,
+  },
+  channels: settings.getSync('config.channel')
 })
 
-ClientBot.connect().catch((error)=>{throw error;})
+ClientBot.connect().catch((error) => { throw error; })
 
-ClientBot.on('message', (channel, tags, message, self)=>{
+ClientBot.on('message', (channel, tags, message, self) => {
 
   //Command sys
   let prefix = settings.getSync('config.botPrefix')// get settings 
@@ -215,60 +196,60 @@ ClientBot.on('message', (channel, tags, message, self)=>{
 
   //get only bot command
   console.log(messageArr[0].includes('!'))
-  if(messageArr[0].includes(prefix) !== true) return;
-    const args = messageArr[0].slice(prefix.length).trim().split(/ +/g);
-    const command = args.shift().toLowerCase();
+  if (messageArr[0].includes(prefix) !== true) return;
+  const args = messageArr[0].slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
 
   //log.info(message, tags, channel, self)
-  if(command === 'domanda'){
-      let questObj = {}
-      let messageArr = message.split(' '); // split the string into an Array
-      messageArr.shift();// remove command string from message content
-      let quest = messageArr.join(' '); //join array
-      id = id+1// increment questId
-      //check if the same question is in the array
-      console.log(questQueue.length)
-      if(questQueue.length > 0){
-        questQueue.map((item)=>{
-          if(item.question.includes(quest) === true){
-            ClientBot.say(channel, langObj.botMess[2]+ item.user) //say no to the user
-          }else{
-            //build elements and push for render
-            questObj  = { id :id, user:tags.username, question:quest}
-            questQueue.push(questObj);
-            questQueue = utils.filterObjArr(questQueue)
-            console.log(questQueue)
-            mainWindow.webContents.send('add-quest',questQueue)// send event to UI
-          }
-        })
-      }else{
-        console.log('Calling here')
-        //if the array is empty take the first question
-        questObj  = { id : id, user:tags.username, question:quest}
-        questQueue.push(questObj);// push before render is committed
-        mainWindow.webContents.send('add-quest',questQueue)
-      }
+  if (command === 'domanda') {
+    let questObj = {}
+    let messageArr = message.split(' '); // split the string into an Array
+    messageArr.shift();// remove command string from message content
+    let quest = messageArr.join(' '); //join array
+    id = id + 1// increment questId
+    //check if the same question is in the array
+    console.log(questQueue.length)
+    if (questQueue.length > 0) {
+      questQueue.map((item) => {
+        if (item.question.includes(quest) === true) {
+          ClientBot.say(channel, langObj.botMess[2] + item.user) //say no to the user
+        } else {
+          //build elements and push for render
+          questObj = { id: id, user: tags.username, question: quest }
+          questQueue.push(questObj);
+          questQueue = utils.filterObjArr(questQueue)
+          console.log(questQueue)
+          mainWindow.webContents.send('add-quest', questQueue)// send event to UI
+        }
+      })
+    } else {
+      console.log('Calling here')
+      //if the array is empty take the first question
+      questObj = { id: id, user: tags.username, question: quest }
+      questQueue.push(questObj);// push before render is committed
+      mainWindow.webContents.send('add-quest', questQueue)
+    }
   }
 
   //status command
-  if(command === "status"){
+  if (command === "status") {
     if (questQueue.length > 0) {
-     let index = utils.findIndexInObjArr(questQueue, 'user', tags.username) //find the question in the erray
-     if (index === -1) {
-       ClientBot.say(channel,langObj.botMess[0]) // 404 not found
-     } else {
-        index = index+1;
+      let index = utils.findIndexInObjArr(questQueue, 'user', tags.username) //find the question in the erray
+      if (index === -1) {
+        ClientBot.say(channel, langObj.botMess[0]) // 404 not found
+      } else {
+        index = index + 1;
         ClientBot.say(channel, langObj.botMess[1] + index + langObj.symbols[0]) //send position in the array 
       }
-    }else  ClientBot.say(channel,langObj.botMess[0])
+    } else ClientBot.say(channel, langObj.botMess[0])
   }
 
-  if(command === "donate"){
-    ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip '+'  Grazie per il supporto '+ tags.username+ ' !!')
+  if (command === "donate") {
+    ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip ' + '  Grazie per il supporto ' + tags.username + ' !!')
   }
 })
 
-ClientBot.on('connected', ()=>{
+ClientBot.on('connected', () => {
   log.info('Joined channel & listening ');
 })
 
@@ -281,8 +262,9 @@ ClientBot.on('connected', ()=>{
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', async() => {
+app.on('ready', async () => {
   createWindow();
+
   /** TRY APP SECTION **/
   //Note tray need to be set on app on ready event
   if (settings.getSync(require('./schema/settings.config').default.UISchemaState.generalSettings[0].settingsPosition) === true) {
@@ -295,33 +277,52 @@ app.on('ready', async() => {
       event.preventDefault();
     })
   }
-
   /**END TRAY APP SECTION */
 
-  //open tunnel
-  const port = parseInt(process.env.WEBHOOK_APP_PORT); 
-  const tunnel = await ltTunnel({port:port, subdomain: 'thecrewbot'});
-  log.info('Local Tunnel open on url: '+ tunnel.url)
+  /**Tunnel Section **/
+  const port = parseInt(process.env.WEBHOOK_APP_PORT);
+  const tunnel = await ltTunnel({ port: port, subdomain: 'thecrewbot' });
+  log.info('Local Tunnel open on url: ' + tunnel.url)
+  /**End */
 
- 
-
-
-  /**WebHook**/
-  const webHook = new TwitchWebhooks()
+  /**OAuth Section**/
+  //refresh token on every restart 
   try {
-    //set url for follow
-    await webHook.setUrl(tunnel.url)
-    await webHook.subscribeFollows()
-
+    //wait of it
+    await OAuth2Client.refreshOAuth2Token().then((res) => {
+      log.info('Token Refreshed');
+    })
   } catch (error) {
     throw error;
   }
   /**End */
 
-  //SimConnect start connection 
-  setTimeout(()=>{
+
+  /**WebHook**/
+  const webHook = new TwitchWebhooks()
+  try {
+    //set url and subscribe to events
+    await webHook.setUrl(tunnel.url);
+    await webHook.subscribeFollows();
+    await webHook.subscribeUsers();
+    await webHook.subscribeStreams();
+    await webHook.subscribeSubs();
+  } catch (error) {
+    throw error;
+  }
+
+  webHook.openDataStream()
+  webHook.on('webhook.notification', (notification) => {
+    log.info(JSON.stringify(notification))
+  })
+  /**End */
+
+ /**SimConnect Section **/
+  setTimeout(() => {
     SimConnectApi.connectToSim()
-  },10000)
+  }, 10000)
+  /**End */
+
 })
 
 // Quit when all windows are closed.
@@ -342,7 +343,7 @@ app.on('activate', () => {
 })
 
 //when a question is marked as completed then delete the element
-ipcMain.on('rm-quest', (e ,id)=>{
+ipcMain.on('rm-quest', (e, id) => {
   questQueue = questQueue.filter(item => item.id !== id)
   //console.log(questQueue.length) //debug
 })
@@ -365,18 +366,28 @@ ipcMain.on('quit-app', function () {
   app.quit();
 });
 
-ipcMain.on('fetch-question-list', ()=>{
+ipcMain.on('fetch-question-list', () => {
   mainWindow.webContents.send('list-response', questQueue)
 })
 
-ipcMain.on('open-auth', (e ,filePath)=>{
+ipcMain.on('open-auth', (e, filePath) => {
   log.info('recived Oauth open')
   createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`)
 })
-
-
-
 /**END IPC SECTION */
+
+
+/** Classes Event Loop **/
+SimConnectApi.on('simconnect-connection-success', () => {
+  mainWindow.webContents.send('simconnect-connection-success')
+})
+
+SimConnectApi.on('simconnect-error', (err) => {
+  console.log(err)
+  mainWindow.webContents.send('simconnect-error', err)
+})
+/** End **/
+
 
 
 
@@ -386,7 +397,7 @@ ipcMain.on('open-auth', (e ,filePath)=>{
 //GitHub publisher
 const server = 'https://update.electronjs.org'
 const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
-if(process.env.APP_DEBUG === 'false'){
+if (process.env.APP_DEBUG === 'false') {
   autoUpdater.setFeedURL(feed)
 
   setInterval(() => {
@@ -401,22 +412,22 @@ if(process.env.APP_DEBUG === 'false'){
     log.error(dialog.showErrorBox("Error!", error.message));
     UISchema.UISchemaState.isUpdaterDownloading = false
     //if mainwindow.webcontent are defined
-    if(mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', error)
+    if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', error)
   });
 
   autoUpdater.on("update-not-available", info => {
     UISchema.UISchemaState.isUpdaterDownloading = false
-   //if mainwindow.webcontent are defined
-   if(mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState',  UISchema.UISchemaState.isUpdaterDownloading)
-  
+    //if mainwindow.webcontent are defined
+    if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', UISchema.UISchemaState.isUpdaterDownloading)
+
     log.info("update not available");
   });
 
-  
+
   autoUpdater.on("checking-for-update", () => {
     UISchema.UISchemaState.isUpdaterDownloading = true
-   //if mainwindow.webcontent are defined
-   if(mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', true)
+    //if mainwindow.webcontent are defined
+    if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', true)
     log.info("checking for update setting UIState to " + UISchema.UISchemaState.isUpdaterDownloading);
   });
 
@@ -426,10 +437,10 @@ if(process.env.APP_DEBUG === 'false'){
     autoUpdater.on('update-downloaded', function (event, releaseName) {
       // # restart app, then update will be applied
       log.info("update downloaded!");
-    if(settings.getSync('config.updateLater')=== true)return;
-      dialog.showMessageBox({type:'info', buttons:['Update now', 'Update Later'], title:'Update avaliable', message:'An update is available would you like to update?'}).then((res)=>{
-        if(res === 0 ) return autoUpdater.quitAndInstall();
-        if(res === 1) settings.set('config.updateLater', true)
+      if (settings.getSync('config.updateLater') === true) return;
+      dialog.showMessageBox({ type: 'info', buttons: ['Update now', 'Update Later'], title: 'Update avaliable', message: 'An update is available would you like to update?' }).then((res) => {
+        if (res === 0) return autoUpdater.quitAndInstall();
+        if (res === 1) settings.set('config.updateLater', true)
       })
     });
 

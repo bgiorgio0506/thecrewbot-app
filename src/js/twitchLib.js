@@ -229,6 +229,10 @@ exports.TwitchApi = class TwitchApi{
     }
 }
 
+
+/**
+ * @description Twitch Webhook implementation
+ */
 exports.TwitchWebhooks = class TwitchWebhooks{
     constructor(){
         const OAuth2Store = new store({name:'data', encryptionKey:process.env.SESSION_SECRET});
@@ -249,11 +253,139 @@ exports.TwitchWebhooks = class TwitchWebhooks{
     }
     //ref https://dev.twitch.tv/docs/api/reference/#get-webhook-subscriptions
     subscribeUsers(){
+        return new Promise((resolve, reject)=>{
+            const options = {
+                hostname: 'api.twitch.tv', 
+                path: 'helix/webhooks/hub',
+                method: 'POST',
+                headers: {
+                    'Client-ID':this.options.clientID,
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken,
+                    'Content-Type': 'application/json'
+                }
+            };
 
+            var req = https.request(options, (res)=>{
+                let data = []
+                
+                res.on('data', (chunck)=>{
+                    console.log(chunck)
+                    data.push(chunck)
+                })
+
+                res.on('close', (chunk)=>{
+                    console.log(data.toString())
+                    resolve(res.statusCode)
+                })
+
+                res.on('error', (err)=>{
+                    reject(new Error(err))
+                })
+            })
+
+        
+            let postData = JSON.stringify({
+                'hub.mode': 'subscribe',
+                'hub.topic': 'https://api.twitch.tv/helix/users?id=110182041',
+                'hub.callback': `${this.url}/twitch/webhook/profile`,//change it to public ip
+                'hub.lease_seconds': '864000',
+                'hub.secret': process.env.SESSION_SECRET
+            })
+
+            req.write(postData)
+            req.end()
+        })
     }
 
     subscribeSubs(){
+        return new Promise((resolve, reject)=>{
+            const options = {
+                hostname: 'api.twitch.tv', 
+                path: 'helix/webhooks/hub',
+                method: 'POST',
+                headers: {
+                    'Client-ID':this.options.clientID,
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var req = https.request(options, (res)=>{
+                let data = []
+
+                res.on('data', (chunck)=>{
+                    console.log(chunck)
+                    data.push(chunck)
+                })
+
+                res.on('close', (chunk)=>{
+                    console.log(data.toString())
+                    resolve(res.statusCode)
+                })
+
+                res.on('error', (err)=>{
+                    reject(new Error(err))
+                })
+            })
+
         
+            let postData = JSON.stringify({
+                'hub.mode': 'subscribe',
+                'hub.topic': 'https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=110182041&first=1',
+                'hub.callback': `${this.url}/twitch/webhook/subs`,//change it to public ip
+                'hub.lease_seconds': '864000',
+                'hub.secret': process.env.SESSION_SECRET
+            })
+
+            req.write(postData)
+            req.end()
+        })
+    }
+
+    subscribeStreams(){
+        log.info('Sub Stream')
+        return new Promise((resolve, reject)=>{
+            const options = {
+                hostname: 'api.twitch.tv', 
+                path: 'helix/webhooks/hub',
+                method: 'POST',
+                headers: {
+                    'Client-ID':this.options.clientID,
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var req = https.request(options, (res)=>{
+                let data = []
+            
+                res.on('data', (chunck)=>{
+                    console.log(chunck)
+                    data.push(chunck)
+                })
+
+                res.on('close', (chunk)=>{
+                    console.log(data.toString())
+                    resolve(res.statusCode)
+                })
+
+                res.on('error', (err)=>{
+                    reject(new Error(err))
+                })
+            })
+
+        
+            let postData = JSON.stringify({
+                'hub.mode': 'subscribe',
+                'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=110182041',
+                'hub.callback': `${this.url}/twitch/webhook/live`,//change it to public ip
+                'hub.lease_seconds': '864000',
+                'hub.secret': process.env.SESSION_SECRET
+            })
+
+            req.write(postData)
+            req.end()
+        })
     }
 
     subscribeFollows(){
@@ -271,7 +403,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
 
             var req = https.request(options, (res)=>{
                 let data = []
-                console.log(res.statusCode)
+            
                 res.on('data', (chunck)=>{
                     console.log(chunck)
                     data.push(chunck)
@@ -301,7 +433,12 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         })
     }
 
+    /**
+     * @description open stream from the express server 
+     * @returns {<void>}
+     */
     openDataStream(){
+        log.info('Opening WebHook Data Stream')
         webHookServer.on('webhook.notification', (data)=>{
             eventEmitter.emit('webhook.notification', data)
         })
@@ -309,6 +446,11 @@ exports.TwitchWebhooks = class TwitchWebhooks{
 
 
     //Event to send out
+    /**
+     * @description event forwarder
+     * @param {String} e event name
+     * @param {Function} listener listener function
+     */
     on(e ,listener){
         return eventEmitter.on(e, listener)
     }
