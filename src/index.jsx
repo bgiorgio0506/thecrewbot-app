@@ -14,6 +14,7 @@ import CreateSubMenu from './components/subMenu';
 import CreateSettingsStreamDeck from './components/subMenus/settingsStreamDeck'
 import CreateAccount from './components/account';
 import CreateToolbar from './components/toolBar';
+import CreateBotSettings from './components/subMenus/settingsBot';
 
 
 console.log('This line is begin called before app rendering')
@@ -33,6 +34,7 @@ const render = () => {
                     <Route excat path='/settings'>
                         <Route exact path='/settings' component={CreateSettings}/>
                         <Route  path='/settings/streamdeck' component={CreateSettingsStreamDeck} />
+                        <Route  path='/settings/bot' component={CreateBotSettings}/>
                     </Route>
                 </Switch>
                 <CreateToolbar/>

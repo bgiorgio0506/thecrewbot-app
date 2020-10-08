@@ -469,6 +469,64 @@ div {
   margin-right: 5px;
 }
 
+/**Channel list**/
+.channelItem{
+  width: 150px;
+  height: auto;
+  color:black;
+  font-size: 14px;
+  background :#ddd;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.channelList{
+  width: 350px;
+  height: auto;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 10px;
+  display: block;
+}
+
+.channelListWrapper{
+  display: inline-flex;
+}
+
+.manageChannel{
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  margin-top: 3px;
+  margin-left: 3px;
+  padding: 2px;
+  font-size: 13px;
+}
+
+.manageChannel:hover{
+  cursor: pointer;
+}
+
+.settingLabel{
+  font-size: 14px;
+}
+
+.inputSettingText{
+  border-radius: 10px;
+  border: solid black;
+  border-width: 2px;
+  background-color: #ddd;
+  outline: none;
+  padding: 3px;
+}
+
+.inputSettingWrapper{
+  display: inline-flex;
+}
+
 @media screen and (prefers-color-scheme: dark) {
   /* Dark moe */
   body {

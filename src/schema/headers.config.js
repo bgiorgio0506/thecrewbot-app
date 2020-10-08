@@ -50,7 +50,7 @@ const schema = {
                     },
                     {
                         title: 'Bot Settings',
-                        redirect: '#', 
+                        redirect: '/settings/bot', 
                         class:'', 
                         id:2,
                         html:false

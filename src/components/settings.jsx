@@ -1,6 +1,6 @@
 // Import dependencies
 import React, { useState } from 'react'
-import { ipcRenderer , shell} from 'electron'
+import { ipcRenderer } from 'electron'
 import getLang from '../js/langLib';
 import utils  from '../helpers/utility'
 import UISchema  from '../schema/settings.config'

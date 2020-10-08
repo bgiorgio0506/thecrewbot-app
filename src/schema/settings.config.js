@@ -42,7 +42,37 @@ const schema = {
                 console.log(setting)
                 settings.setSync('config.lang', setting)
             }
-        }
+        }, 
+        botSettings: [
+            {
+                id: 'botListenChannels', 
+                inputType  :'checkbox', 
+                className : 'checkBoxBtn',
+                lebelText : 'Minimize on System tray on close',
+                settingsPosition : 'config.minimizeTraySetting',
+                checked : settings.getSync('config.minimizeTraySetting'),
+                onToggleChecked : (checked, position)=>{
+                    console.log(checked)
+                    if(checked){
+                        return settings.setSync(position, true)
+                    }
+                    else return settings.setSync(position, false)
+                }
+            },
+            {
+                id: 'startAppOnStreamChkBox', 
+                inputType  : 'checkbox', 
+                className : 'checkBoxBtn',
+                lebelText : 'Start application on startup',
+                settingsPosition :'config.openOnStreamSetting', 
+                checked : settings.getSync('config.openOnStreamSetting'),
+                onToggleChecked : (checked, position)=>{
+                    console.log(checked)
+                    if(checked) return settings.setSync(position, true)
+                    else return settings.setSync(position, false)
+                }
+            }
+        ]
     }
 }
 
