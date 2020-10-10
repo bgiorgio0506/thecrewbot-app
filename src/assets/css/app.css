@@ -354,6 +354,7 @@ div {
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   font-size: 14px;
   justify-content: center;
+  margin-top: 2px;
 }
 
 .closeBtn {
@@ -506,7 +507,18 @@ div {
   font-size: 13px;
 }
 
-.manageChannel:hover{
+.managePrefix{
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  text-align: center;
+  margin-top: 3px;
+  margin-left: 3px;
+  padding: 5px;
+  font-size: 13px;
+}
+
+.managePrefix, .manageChannel:hover{
   cursor: pointer;
 }
 
@@ -515,7 +527,9 @@ div {
 }
 
 .inputSettingText{
-  border-radius: 10px;
+  width: 25px;
+  text-align: center;
+  border-radius: 8px;
   border: solid black;
   border-width: 2px;
   background-color: #ddd;
@@ -523,8 +537,53 @@ div {
   padding: 3px;
 }
 
+.inputChannelText{
+  margin-left: 5px;
+  margin-bottom: 2px;
+  text-align: center;
+  border-radius: 8px;
+  border: solid black;
+  border-width: 2px;
+  background-color: #ddd;
+  outline: none;
+  padding: 3px;
+}
+
+.inputSettingText:disabled{
+  border: solid #f2f2f2;
+}
+
 .inputSettingWrapper{
   display: inline-flex;
+}
+
+/**Input modal**/
+.inputModalHeader{
+  width: 400px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.inputModalBody{
+  width: 400px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.inputBtn{
+  margin : 12px 5px;
+  padding: 10px 10px;
+  color:black;
+  background :#f2f2f2;
+  border-radius: 6px;
+  outline: none;
+  border:none;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: bold;
+}
+
+.inputBtn:hover{
+  background-color: #ddd;
 }
 
 @media screen and (prefers-color-scheme: dark) {
