@@ -42,7 +42,7 @@ const CreateList = () => {
         <ul>
           {items.map((item) => {
             return (
-              <li class="genericQuest" id={item.id}><strong>{item.user}</strong>  <p class="askPrefix">chiede</p>  :  {item.question} <input type="button" class="doneBtn" value="Done" onClick={() => handleClick(item.id)} /> <br /></li>
+            <li class="genericQuest" id={item.id}><strong>{item.user}</strong> in <strong>[{item.channel}]</strong> <p class="askPrefix">chiede</p>  :  {item.question} <input type="button" class="doneBtn" value="Done" onClick={() => handleClick(item.id)} /> <br /></li>
             )
           })}
         </ul>
