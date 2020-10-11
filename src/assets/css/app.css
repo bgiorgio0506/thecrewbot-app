@@ -492,6 +492,7 @@ div {
 
 .channelListWrapper{
   display: inline-flex;
+  margin:5px 0px;
 }
 
 .manageChannel{

@@ -50,9 +50,9 @@ let id = 0;
 
 
 //Init settings
-settings.setSync('config.channel', ['paolom346_']);
 settings.setSync('config.updateLater', false);
-settings.setSync('config.botPrefix', '!');
+if(settings.getSync('config.channel')=== undefined) settings.setSync('config.channel', ['paolom346_']);
+if(settings.getSync('config.botPrefix') === undefined)settings.setSync('config.botPrefix', '!');
 
 // Determine the mode (dev or production)
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
@@ -173,20 +173,26 @@ function createAuthWindow(path) {
 
 /** CHAT BOT SECTION **/
 //chatbot opts 
-const ClientBot = new tmi.Client({
-  options: { debug: true },
-  connection: {
-    reconnect: true,
-    secure: true
-  },
-  identity: {
-    username: process.env.TWITCH_BOT_USERNAME,
-    password: process.env.TWITCH_BOT_PASSWORD,
-  },
-  channels: settings.getSync('config.channel')
-})
+const channels = settings.getSync('config.channel');
+  const ClientBot = new tmi.Client({
+    options: { 
+      clientId: process.env.TWITCH_OAUTH_CLIENT_ID,
+      debug: true },
+    connection: {
+      reconnect: true,
+      secure: true,
+      maxReconnectAttempts:100
+    },
+    identity: {
+      username: process.env.TWITCH_BOT_USERNAME,
+      password: process.env.TWITCH_BOT_PASSWORD,
+    },
+    channels: channels
+  })
+  
+  ClientBot.connect().catch((error) => { throw error; })
 
-ClientBot.connect().catch((error) => { throw error; })
+
 
 ClientBot.on('message', (channel, tags, message, self) => {
 
@@ -215,7 +221,7 @@ ClientBot.on('message', (channel, tags, message, self) => {
           ClientBot.say(channel, langObj.botMess[2] + item.user) //say no to the user
         } else {
           //build elements and push for render
-          questObj = { id: id, user: tags.username, question: quest }
+          questObj = { id: id, user: tags.username, question: quest, channel:channel }
           questQueue.push(questObj);
           questQueue = utils.filterObjArr(questQueue)
           console.log(questQueue)
@@ -225,7 +231,7 @@ ClientBot.on('message', (channel, tags, message, self) => {
     } else {
       console.log('Calling here')
       //if the array is empty take the first question
-      questObj = { id: id, user: tags.username, question: quest }
+      questObj = { id: id, user: tags.username, question: quest , channel:channel}
       questQueue.push(questObj);// push before render is committed
       mainWindow.webContents.send('add-quest', questQueue)
     }
