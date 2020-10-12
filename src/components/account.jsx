@@ -25,25 +25,25 @@ class CreateAccount extends Component {
                 this.setState({ isLoading: false, error: null, data: profile.data })
             }
             else {
-                this.setState({ isLoading: false, error: { message: 'Error downloading data' }, data: null })
+                this.setState({ isLoading: false, error: { message: 'Error downloading data. Please check you have connected your account correctly.' }, data: null, showModal: true })
             }
         })
     }
 
-    hideModal() {
-        this.setState({ showModal: false })
-    }
 
     render() {
         const { isLoading, error, data } = this.state;
         if (error) {
-            this.setState({ showModal: true })
-            return (<div className={'center-account-panel'}>
-                <CreateModals show={this.state.showModal} handleClose={this.hideModal}>
-                    <p className={'modalTitle'}>Erorr</p>
-                    <div className={'modalMessage'}>{error.message}</div>
-                </CreateModals>
-            </div>)
+            return (
+                <div className="center-panel">
+                    <div className={'center-account-panel'}>
+                        <CreateModals show={this.state.showModal} handleClose={() => this.setState({ showModal: false })}>
+                            <p className={'modalTitle'}>Error</p>
+                            <div className={'modalMessage'}>{error.message}</div>
+                        </CreateModals>
+                        <strong>Error loading profile data</strong>
+                    </div>
+                </div>)
         }
         if (isLoading) {
             return (<div className={'center-account-panel'}>
@@ -52,7 +52,7 @@ class CreateAccount extends Component {
         }
 
         if (data.data !== undefined) {
-            console.log(data)
+            //console.log(data)
             data.map((item) => {
                 return (<div className={'center-account-panel'}>
 

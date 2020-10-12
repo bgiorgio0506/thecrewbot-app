@@ -1,6 +1,6 @@
 /*Import dependencies*/
 import React, { useEffect } from 'react'
-import {Link, useLocation, withRouter} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import UISchema from '../schema/headers.config';
 import {ipcRenderer} from 'electron';
 import getLang from '../js/langLib';
@@ -48,6 +48,8 @@ const CreateSubMenu = () => {
         let index = utils.findIndexInObjArr(UISchema.UISchemaState.headerObjs, 'redirect', location.pathname)
         if(index !== -1)
         UISchema.UISchemaState.activeLink = UISchema.UISchemaState.headerObjs[index].id ;
+        else
+        UISchema.UISchemaState.activeLink = 1
     })
     //let langObj = getLang()
 

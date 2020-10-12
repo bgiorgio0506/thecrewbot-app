@@ -19,6 +19,7 @@ const CreateBotSettings = () => {
     const [messageModal, setMessage] = useState('');
     const [channels, setChannels] = useState(settings.getSync('config.channel'));
     const [botPrefix, setPrefix] = useState(settings.getSync('config.botPrefix'));
+    const [useDefaultCommands, setDefaultCommands] = useState(settings.getSync('config.useDefaultCommands'))
 
     let disabled;
     let botPrefixSetting = '';
@@ -123,6 +124,20 @@ const CreateBotSettings = () => {
         </div>
         <div className={"settingsSection"}>
             <p className={"section"}>Advanced Setting</p>
+            <p className='note'>*This settings will allow the use of commands by the bot </p>
+            {
+                UISchema.UISchemaState.botSettings.map((setting)=>{
+                return(
+                <div className ="generalSettingsDiv">
+                    <label htmlFor={setting.id}>{setting.lebelText}</label>
+                    <input type={setting.inputType} checked= {useDefaultCommands} className = {setting.className} id= {setting.id} onChange={(event)=>{
+                        setDefaultCommands(event.target.checked)
+                        setting.onToggleChecked(event.target.checked, setting.settingsPosition);
+                        }}/>
+                    <br/>
+                </div>)
+                })
+            }
         </div>
         <CreateModals show={showModal} handleClose={hideModal}>
             <p className={'modalTitle'}> Information</p>

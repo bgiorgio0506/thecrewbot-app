@@ -314,7 +314,7 @@ app.on('ready', async () => {
     await webHook.subscribeStreams();
     await webHook.subscribeSubs();
   } catch (error) {
-    throw error;
+    log.error(error)
   }
 
   webHook.openDataStream()
