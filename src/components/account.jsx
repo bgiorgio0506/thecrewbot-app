@@ -4,12 +4,15 @@ import utils from '../helpers/utility'
 import twitchLib from '../js/twitchLib'
 import CreateModals from './common/modal';
 const twitchClient = new twitchLib.OAuth2Provider();
+const TwitchApi = new twitchLib.TwitchApi()
 
 class CreateAccount extends Component {
     constructor(props) {
         super(props)
         this.state = {
             data: [],
+            follow: 0,
+            subs: 0,
             isLoading: false,
             error: null,
             showModal: false
@@ -22,7 +25,21 @@ class CreateAccount extends Component {
 
 
             if (profile !== null) {
-                this.setState({ isLoading: false, error: null, data: profile.data })
+                TwitchApi.getUserFollows().then((follows)=>{
+                   follows = JSON.parse(follows);
+                    TwitchApi.getUserSubs().then((subs)=>{
+                    subs = JSON.parse(subs)
+                       if(subs.data !== undefined) subs = parseInt(subs.data.length);
+                       else subs = 0;
+                        this.setState({ isLoading: false, error: null, data: profile.data, follow:follows.total,subs:subs})
+                    }).catch((err)=>{
+                        console.info(err)
+                        this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
+                    })
+                }).catch((err)=>{
+                    console.info(err)
+                    this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
+                })
             }
             else {
                 this.setState({ isLoading: false, error: { message: 'Error downloading data. Please check you have connected your account correctly.' }, data: null, showModal: true })
@@ -80,6 +97,8 @@ class CreateAccount extends Component {
                         <p>ID {item.id}</p>
                         <p>Views {item.view_count}</p>
                         <p>Email {item.email}</p>
+                        <p>Follows {this.state.follow}</p>
+                        <p>Subs {this.state.subs}</p>
                     </div>)
                 })
             }
