@@ -13,7 +13,7 @@ const CreateList = () => {
   //update state
   setInterval(()=>{
     ipcRenderer.send('fetch-question-list')//call the main to fetch list
-  }, 180000)
+  }, 180000) 
 
   //on main response
   ipcRenderer.on('list-response', (event , questArr)=>{

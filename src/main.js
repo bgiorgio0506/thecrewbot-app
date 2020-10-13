@@ -2,9 +2,8 @@
 // Import parts of electron to use
 const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, session } = require('electron')
 require('update-electron-app')()
-const utils = require('../src/helpers/utility')
-const tmi = require('tmi.js')
 const path = require('path');
+const ChatBot = require('./js/botLib')
 const log = require('electron-log')
 const settings = require('electron-settings')
 const langLib = require('./js/langLib').default
@@ -17,6 +16,7 @@ const ltTunnel = require('localtunnel')
 
 //Servers 
 require('./controllers/OAuth2Server/OAuth2Server ');
+require('./schema/settings.config')
 
 
 
@@ -44,9 +44,7 @@ emitter.setMaxListeners(0);//set listener to max listener
 // Keep a reference for dev mode
 let dev = true
 
-//Question queue global context
-let questQueue = [];
-let id = 0;
+
 
 
 //Init settings
@@ -171,96 +169,7 @@ function createAuthWindow(path) {
   })
 }
 
-/** CHAT BOT SECTION **/
-//chatbot opts 
-const channels = settings.getSync('config.channel');
-  const ClientBot = new tmi.Client({
-    options: { 
-      clientId: process.env.TWITCH_OAUTH_CLIENT_ID,
-      debug: true },
-    connection: {
-      reconnect: true,
-      secure: true,
-      maxReconnectAttempts:100
-    },
-    identity: {
-      username: process.env.TWITCH_BOT_USERNAME,
-      password: process.env.TWITCH_BOT_PASSWORD,
-    },
-    channels: channels
-  })
-  
-  ClientBot.connect().catch((error) => { throw error; })
 
-
-
-ClientBot.on('message', (channel, tags, message, self) => {
-
-  //Command sys
-  let prefix = settings.getSync('config.botPrefix')// get settings 
-  let messageArr = message.split(' ')//split the message into array
-
-  //get only bot command
-  console.log(messageArr[0].includes('!'))
-  if (messageArr[0].includes(prefix) !== true) return;
-  const args = messageArr[0].slice(prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-
-  //log.info(message, tags, channel, self)
-  if (command === 'domanda') {
-    let questObj = {}
-    let messageArr = message.split(' '); // split the string into an Array
-    messageArr.shift();// remove command string from message content
-    let quest = messageArr.join(' '); //join array
-    id = id + 1// increment questId
-    //check if the same question is in the array
-    console.log(questQueue.length)
-    if (questQueue.length > 0) {
-      questQueue.map((item) => {
-        if (item.question.includes(quest) === true) {
-          ClientBot.say(channel, langObj.botMess[2] + item.user) //say no to the user
-        } else {
-          //build elements and push for render
-          questObj = { id: id, user: tags.username, question: quest, channel:channel }
-          questQueue.push(questObj);
-          questQueue = utils.filterObjArr(questQueue)
-          console.log(questQueue)
-          mainWindow.webContents.send('add-quest', questQueue)// send event to UI
-        }
-      })
-    } else {
-      console.log('Calling here')
-      //if the array is empty take the first question
-      questObj = { id: id, user: tags.username, question: quest , channel:channel}
-      questQueue.push(questObj);// push before render is committed
-      mainWindow.webContents.send('add-quest', questQueue)
-    }
-  }
-
-  //status command
-  if (command === "status") {
-    if (questQueue.length > 0) {
-      let index = utils.findIndexInObjArr(questQueue, 'user', tags.username) //find the question in the erray
-      if (index === -1) {
-        ClientBot.say(channel, langObj.botMess[0]) // 404 not found
-      } else {
-        index = index + 1;
-        ClientBot.say(channel, langObj.botMess[1] + index + langObj.symbols[0]) //send position in the array 
-      }
-    } else ClientBot.say(channel, langObj.botMess[0])
-  }
-
-  if (command === "donate") {
-    ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip ' + '  Grazie per il supporto ' + tags.username + ' !!')
-  }
-})
-
-ClientBot.on('connected', () => {
-  log.info('Joined channel & listening ');
-})
-
-
-/**** END CHATBOT SECTION ****/
 
 
 /*** EVENT HANDLING AND IPC CALLS ***/
@@ -270,6 +179,8 @@ ClientBot.on('connected', () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   createWindow();
+
+  await ChatBot.connect()
 
   /** TRY APP SECTION **/
   //Note tray need to be set on app on ready event
@@ -350,7 +261,7 @@ app.on('activate', () => {
 
 //when a question is marked as completed then delete the element
 ipcMain.on('rm-quest', (e, id) => {
-  questQueue = questQueue.filter(item => item.id !== id)
+  ChatBot.emit('rm-quest', id);
   //console.log(questQueue.length) //debug
 })
 
@@ -373,13 +284,17 @@ ipcMain.on('quit-app', function () {
 });
 
 ipcMain.on('fetch-question-list', () => {
-  mainWindow.webContents.send('list-response', questQueue)
+  ChatBot.emit('fetch-question-list');
+  //mainWindow.webContents.send('list-response', questQueue)
 })
+
 
 ipcMain.on('open-auth', (e, filePath) => {
   log.info('recived Oauth open')
   createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`)
 })
+
+
 /**END IPC SECTION */
 
 
@@ -394,6 +309,17 @@ SimConnectApi.on('simconnect-error', (err) => {
 })
 /** End **/
 
+/**ChatBot events */
+ChatBot.on('add-quest', (questQueue)=>{
+  mainWindow.webContents.send('add-quest', questQueue)
+})
+
+ChatBot.on('fetch-question-list-res', (questQueue)=>{
+  mainWindow.webContents.send('list-response', questQueue)
+})
+
+/**** END CHATBOT SECTION ****/
+
 
 
 
@@ -403,6 +329,12 @@ SimConnectApi.on('simconnect-error', (err) => {
 //GitHub publisher
 const server = 'https://update.electronjs.org'
 const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`
+
+ipcMain.on('check-update', ()=>{
+  autoUpdater.setFeedURL(feed);
+  autoUpdater.checkForUpdates()
+})
+
 if (process.env.APP_DEBUG === 'false') {
   autoUpdater.setFeedURL(feed)
 

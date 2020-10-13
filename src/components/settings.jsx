@@ -1,6 +1,6 @@
 // Import dependencies
 import React, { useState } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer} from 'electron'
 import getLang from '../js/langLib';
 import utils  from '../helpers/utility'
 import UISchema  from '../schema/settings.config'
@@ -16,7 +16,8 @@ const CreateSettings = ()=>{
     const [startSettings, setStartCheckBox] = useState(UISchema.UISchemaState.generalSettings[1].checked);
     const [traySettings, setTrayCheckBox] = useState(UISchema.UISchemaState.generalSettings[0].checked)
     const [showModal, setShowModal] = useState(false);
-    const [messageModal, setMessage] = useState('')
+    const [messageModal, setMessage] = useState('');
+
 
     function hideModal(){
         setShowModal(false)
@@ -78,7 +79,9 @@ const CreateSettings = ()=>{
         <div className = "settingsSection">
             <p className= 'section'>About</p>
             <p className="note">{'You are on version '+process.env.APP_VERSION}</p>
-            <button className="checkBtn">Check Update</button>
+            <button className="checkBtn" onClick={()=>{
+               ipcRenderer.send('check-update')
+            }}>Check Update</button>
         </div>
         <CreateModals show={showModal} handleClose={hideModal}>
             <p className={'modalTitle'}> Information</p>
