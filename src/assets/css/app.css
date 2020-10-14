@@ -409,6 +409,36 @@ div {
   margin-left: 20px;
 }
 
+.accountStat{
+  margin-left: 50px;
+  display: inline-flex;
+}
+
+.stat{
+  display: block;
+  text-align: center;
+}
+
+.sepStat{
+  height: 27px;
+  width: 1px;
+  background-color: #ddd;
+}
+
+.statInd{
+  font-size: 11px;
+  color: grey;
+}
+
+.statLabel{
+  vertical-align: middle;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  color: #000;
+  margin : 0px 40px;
+}
+
 .pAccountLabel{
   font-size: 18px;
   font-weight: bold;
