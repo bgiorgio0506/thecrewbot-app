@@ -5,7 +5,7 @@ const {app} = require('electron')
 let appAutoUpdater = new AutoLaunch({
     name: app.getName(),
     path: app.getPath('exe'),
-    isHidden:true
+    isHidden:false
 })
 
 //Enable Auto Launcher
