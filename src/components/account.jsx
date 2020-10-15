@@ -26,18 +26,24 @@ class CreateAccount extends Component {
             this.setState({ isLoading: true });
 
             if (profile !== null) {
-                TwitchApi.getUserFollows().then((follows) => {
-                    follows = JSON.parse(follows);
-                    TwitchApi.getUserSubs().then((subs) => {
-                        subs = JSON.parse(subs)
-                        if (subs.data !== undefined) subs = parseInt(subs.data.length);
-                        else subs = 0;
-                        this.setState({ isLoading: false, error: null, data: profile.data, follow: follows.total, subs: subs })
+                TwitchApi.getUser().then((UserProfile)=>{
+                    UserProfile = JSON.parse(UserProfile);
+                    TwitchApi.getUserFollows().then((follows) => {
+                        follows = JSON.parse(follows);
+                        TwitchApi.getUserSubs().then((subs) => {
+                            subs = JSON.parse(subs)
+                            if (subs.data !== undefined) subs = parseInt(subs.data.length);
+                            else subs = 0;
+                            this.setState({ isLoading: false, error: null, data: UserProfile.data, follow: follows.total, subs: subs })
+                        }).catch((err) => {
+                            console.info(err)
+                            this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
+                        })
                     }).catch((err) => {
                         console.info(err)
                         this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
                     })
-                }).catch((err) => {
+                }).catch((err)=>{
                     console.info(err)
                     this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
                 })
@@ -46,8 +52,27 @@ class CreateAccount extends Component {
                 this.setState({ isLoading: false, error: { message: 'Error downloading data. Please check you have connected your account correctly.' }, data: null, showModal: true })
             }
 
-            ipcRenderer.on('webhook.notification', (e, data) => {
+            ipcRenderer.on('webhook.notification', (e, notification) => {
                 //switch
+                console.log(notification)
+                switch(notification.type){
+                    case 'notification.profile':
+                        this.setState({data: notification.data});
+                        break;
+                    case 'notification.subs':
+                        //get the last notification and add to 
+                        let actualSub = this.state.subs;
+                        actualSub += 1;
+                        this.setState({subs:actualSub})
+                        break;
+                    case 'notification.follow':
+                        let actualFollow = this.state.follow;
+                        actualFollow +=1;
+                        this.setState({follow:actualFollow});
+                        break;
+                    default:
+                        console.log('Got wierd notification with unspecifided type');
+                }
             })
         })
     }

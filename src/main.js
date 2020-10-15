@@ -231,6 +231,7 @@ app.on('ready', async () => {
   webHook.openDataStream()
   webHook.on('webhook.notification', (notification) => {
     log.info(JSON.stringify(notification))
+    mainWindow.webContents.send('webhook.notification', notification)
   })
   /**End */
 

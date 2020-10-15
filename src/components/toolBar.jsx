@@ -15,6 +15,12 @@ const CreateToolbar = ()=>{
         setSimConnectState(false) // will display error one way or another
     })
  
+    ipcRenderer.on('webhook.notification', (e ,notification)=>{
+        if(notification.type.includes('notification.stream') === true){
+            console.log(notification.data)
+        }
+    })
+
     return(<div className= {'toolBar'}>
         <p className={'toolBarLabel'}> SimConnect status: {(simConnectState === false)? 'Awaiting Connection to sim' : 'Connected'}  | </p>
         <p id={'onAirLabel'}className={(isStreaming)? 'onAirLabel': 'offLineLabel'}> </p>

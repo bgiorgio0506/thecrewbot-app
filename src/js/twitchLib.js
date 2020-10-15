@@ -227,6 +227,81 @@ exports.TwitchApi = class TwitchApi{
              request.end()
         })
     }
+
+    //get top clips
+    getTopClips(){
+        return new Promise((resolve, reject)=>{
+            this.requestOptions = {
+                hostname: 'api.twitch.tv', 
+                path :`helix/clips?broadcaster_id=${this.OAuth2Data.data[0].id}$first=20`, 
+                method:'GET', 
+                port:443,
+                headers: {
+                    'Client-ID': this.options.clientID,
+                    'Accept': 'application/vnd.twitchtv.v5+json',
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
+                }
+            }
+
+            let request = https.request(this.requestOptions, (res)=>{
+                let data= [];
+                res.on('data', (dataChuck)=>{
+                    data.push(dataChuck);
+                })
+
+                res.on('end', (dataChuck)=>{
+                    let jsonBody = Buffer.concat(data);
+                    jsonBody = JSON.stringify(jsonBody.toString())
+                    resolve(JSON.parse(jsonBody));
+                })
+
+                res.on('error', (err)=>{
+                    reject(err)
+                })
+            })
+             request.end()
+        })
+    }
+
+    //get latest clips TODO 
+    /**NOTE: date RFC3339 for date format 
+     * refer to : ISO8601 definition of format 
+     * refer to : https://it.wikipedia.org/wiki/ISO_8601
+     * 
+    */
+    getLatestClips(){
+        return new Promise((resolve, reject)=>{
+            this.requestOptions = {
+                hostname: 'api.twitch.tv', 
+                path :`helix/clips?broadcaster_id=${this.OAuth2Data.data[0].id}$first=20`, 
+                method:'GET', 
+                port:443,
+                headers: {
+                    'Client-ID': this.options.clientID,
+                    'Accept': 'application/vnd.twitchtv.v5+json',
+                    'Authorization': 'Bearer ' + this.OAuth2Data.accessToken
+                }
+            }
+
+            let request = https.request(this.requestOptions, (res)=>{
+                let data= [];
+                res.on('data', (dataChuck)=>{
+                    data.push(dataChuck);
+                })
+
+                res.on('end', (dataChuck)=>{
+                    let jsonBody = Buffer.concat(data);
+                    jsonBody = JSON.stringify(jsonBody.toString())
+                    resolve(JSON.parse(jsonBody));
+                })
+
+                res.on('error', (err)=>{
+                    reject(err)
+                })
+            })
+             request.end()
+        })
+    }
 }
 
 
