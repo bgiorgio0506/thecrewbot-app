@@ -283,6 +283,15 @@ div {
   margin-left: 250px;
 }
 
+.misc-section{
+  display: block;
+  margin-top: 100px;
+}
+
+.misc-menu{
+  display: inline-flex;
+}
+
 /* Main Style*/
 .section {
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
@@ -317,6 +326,20 @@ div {
   padding: 0px;
   display: inline;
   font-style: italic;
+}
+
+.miscHeaderItem{
+  margin: 10px 25px;
+  text-decoration: none;
+  text-align: center;
+  font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+  color: #ddd;
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.miscActive{
+  color: #000;
 }
 
 /**Modal**/

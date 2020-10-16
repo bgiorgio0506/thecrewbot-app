@@ -88,7 +88,30 @@ const schema = {
                 id:3,
                 html: false
             }
-        ], 
+        ],
+        miscMenu:[
+           { 
+               title:"Lives",
+               redirect:"#", 
+               class: 'miscHeaderItem',
+               id:11,
+               html:false
+            },
+            { 
+                title:"Clips",
+                redirect:"#", 
+                class: 'miscHeaderItem',
+                id:21,
+                html:false
+             },
+             { 
+                title:"Videos",
+                redirect:"#", 
+                class:'miscHeaderItem',
+                id:31,
+                html:false
+             }
+        ],
         activeLink: 2, 
         isUpdaterDownloading:false //used from the mainProcess to regulate UI state
 

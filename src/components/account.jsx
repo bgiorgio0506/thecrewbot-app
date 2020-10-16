@@ -1,11 +1,16 @@
 /**Import Componets*/
 import { ipcRenderer } from 'electron';
 import React, { Component } from 'react';
-import utils from '../helpers/utility'
-import twitchLib from '../js/twitchLib'
+import {Link} from 'react-router-dom';
+import utils from '../helpers/utility';
+import twitchLib from '../js/twitchLib';
 import CreateModals from './common/modal';
 const twitchClient = new twitchLib.OAuth2Provider();
-const TwitchApi = new twitchLib.TwitchApi()
+const TwitchApi = new twitchLib.TwitchApi();
+
+//import schema 
+import UISchema from '../schema/headers.config'
+import CreateMiscMenu from './common/miscMenu';
 
 class CreateAccount extends Component {
     constructor(props) {
@@ -78,9 +83,12 @@ class CreateAccount extends Component {
     }
 
 
+   
+
 
     render() {
         const { isLoading, error, data, follow, subs } = this.state;
+
         if (error) {
             return (
                 <div className="center-panel">
@@ -130,6 +138,7 @@ class CreateAccount extends Component {
                                 </div>
                             </div>
                         </div>
+                        <CreateMiscMenu/>
                     </div>)
                 })
             }
