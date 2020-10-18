@@ -97,6 +97,7 @@ exports.OAuth2Provider = class  OAuth2Provider{
 
                 res.on('end', (dataChuck)=>{
                     let parsedBody = JSON.parse(data.toString());
+                    log.info(parsedBody)
                     OAuth2Data.accessToken = parsedBody.access_token;
                     OAuth2Data.refreshToken = parsedBody.refresh_token;
                     OAuth2Data.expires_in = parsedBody.expires_in;
@@ -126,11 +127,12 @@ exports.TwitchApi = class TwitchApi{
         if(this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token')
     }
 
+    /**NOTE for all methods ${this.OAuth2Data.data[0].id} use this after testing */
     getUser(){
         return new Promise((resolve, reject)=>{
             this.requestOptions = {
                 hostname: 'api.twitch.tv', 
-                path :`helix/users?id=${this.OAuth2Data.data[0].id}`, 
+                path :`helix/users?id=178126684`, 
                 method:'GET', 
                 port:443,
                 headers: {
@@ -164,7 +166,7 @@ exports.TwitchApi = class TwitchApi{
         return new Promise((resolve, reject)=>{
             this.requestOptions = {
                 hostname: 'api.twitch.tv', 
-                path :`helix/users/follows?to_id=${this.OAuth2Data.data[0].id}`, 
+                path :`helix/users/follows?to_id=178126684`, 
                 method:'GET', 
                 port:443,
                 headers: {
@@ -198,7 +200,7 @@ exports.TwitchApi = class TwitchApi{
         return new Promise((resolve, reject)=>{
             this.requestOptions = {
                 hostname: 'api.twitch.tv', 
-                path :`helix/subscriptions?broadcaster_id=${this.OAuth2Data.data[0].id}`, 
+                path :`helix/subscriptions?broadcaster_id=178126684`, 
                 method:'GET', 
                 port:443,
                 headers: {
@@ -231,9 +233,10 @@ exports.TwitchApi = class TwitchApi{
     //get top clips
     getTopClips(){
         return new Promise((resolve, reject)=>{
+            
             this.requestOptions = {
                 hostname: 'api.twitch.tv', 
-                path :`helix/clips?broadcaster_id=${this.OAuth2Data.data[0].id}$first=20`, 
+                path :`helix/clips?broadcaster_id=178126684$first=20`, 
                 method:'GET', 
                 port:443,
                 headers: {
@@ -361,7 +364,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         
             let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
-                'hub.topic': 'https://api.twitch.tv/helix/users?id=110182041',
+                'hub.topic': 'https://api.twitch.tv/helix/users?id=178126684',
                 'hub.callback': `${this.url}/twitch/webhook/profile`,//change it to public ip
                 'hub.lease_seconds': '864000',
                 'hub.secret': process.env.SESSION_SECRET
@@ -406,7 +409,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         
             let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
-                'hub.topic': 'https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=110182041&first=1',
+                'hub.topic': 'https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=178126684&first=1',
                 'hub.callback': `${this.url}/twitch/webhook/subs`,//change it to public ip
                 'hub.lease_seconds': '864000',
                 'hub.secret': process.env.SESSION_SECRET
@@ -452,7 +455,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         
             let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
-                'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=110182041',
+                'hub.topic': 'https://api.twitch.tv/helix/streams?user_id=178126684',
                 'hub.callback': `${this.url}/twitch/webhook/live`,//change it to public ip
                 'hub.lease_seconds': '864000',
                 'hub.secret': process.env.SESSION_SECRET
@@ -497,7 +500,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
         
             let postData = JSON.stringify({
                 'hub.mode': 'subscribe',
-                'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=110182041',
+                'hub.topic': 'https://api.twitch.tv/helix/users/follows?first=1&to_id=178126684',
                 'hub.callback': `${this.url}/twitch/webhook/follows`,//change it to public ip
                 'hub.lease_seconds': '864000',
                 'hub.secret': process.env.SESSION_SECRET

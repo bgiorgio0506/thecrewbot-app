@@ -16,8 +16,11 @@ const CreateToolbar = ()=>{
     })
  
     ipcRenderer.on('webhook.notification', (e ,notification)=>{
+        console.log(notification.type)
         if(notification.type.includes('notification.stream') === true){
             console.log(notification.data)
+            if(isStreaming) setStreamingState(false);
+            else setSimConnectState(true)
         }
     })
 

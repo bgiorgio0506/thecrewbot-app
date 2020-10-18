@@ -8,8 +8,7 @@ import CreateModals from './common/modal';
 const twitchClient = new twitchLib.OAuth2Provider();
 const TwitchApi = new twitchLib.TwitchApi();
 
-//import schema 
-import UISchema from '../schema/headers.config'
+//import components
 import CreateMiscMenu from './common/miscMenu';
 
 class CreateAccount extends Component {
@@ -37,6 +36,7 @@ class CreateAccount extends Component {
                         follows = JSON.parse(follows);
                         TwitchApi.getUserSubs().then((subs) => {
                             subs = JSON.parse(subs)
+                            console.log(subs)
                             if (subs.data !== undefined) subs = parseInt(subs.data.length);
                             else subs = 0;
                             this.setState({ isLoading: false, error: null, data: UserProfile.data, follow: follows.total, subs: subs })

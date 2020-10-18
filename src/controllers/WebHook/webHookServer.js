@@ -45,7 +45,7 @@ app.use(bodyParser.json({
 }));
 
 app.route('/twitch/webhook/live').get((req, res) => {
-        console.log('Incoming Get request on /twitch/webhook/live');
+        console.log('Incoming Get request on /twitch/webhook/live with status: '+ JSON.stringify(req.query));
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -102,7 +102,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
 
     app.route('/twitch/webhook/subs').get((req, res) => {
-        console.log('Incoming Get request on /twitch/webhook/subs');
+        console.log('Incoming Get request on /twitch/webhook/subs with status: '+  JSON.stringify(req.query));
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -157,7 +157,7 @@ app.route('/twitch/webhook/live').get((req, res) => {
     });
 
     app.route('/twitch/webhook/follows').get((req, res) => {
-        console.log('Incoming Get request on /twitch/webhook/follows');
+        console.log('Incoming Get request on /twitch/webhook/follows with status: '+  JSON.stringify(req.query));
         // Twitch will send a verfiy to your handler
         // in order to verify that it can be access
         // we'll test if the call is from Twitch
@@ -324,8 +324,12 @@ app.route('/twitch/webhook/live').get((req, res) => {
         }
     });
 
+    //Maintain the tunnel active
+    app.route('/heartbeat').get((req, res, next)=>{
+        res.send('Heartbeat received')
+    })
 
-var server = app.listen(process.env.WEBHOOK_APP_PORT, "0.0.0.0", function (err) {
+var server = app.listen(process.env.WEBHOOK_APP_PORT, function (err) {
     if (err) throw err;
     console.log('Server WebHook is online and listening to port: ' + server.address().port);
 });
