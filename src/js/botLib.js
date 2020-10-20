@@ -99,9 +99,10 @@ ClientBot.on('message', (channel, tags, message, self) => {
   if (command === "donate") {
     ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip ' + '  Grazie per il supporto ' + tags.username + ' !!')
   }
+
 })
 
-ClientBot.on('connected', () => {
+ClientBot.on('connected', (channel) => {
   log.info('Joined channel & listening ');
 })
 
