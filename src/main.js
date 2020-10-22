@@ -11,8 +11,8 @@ const UISchema = require('./schema/headers.config').default
 const { EventEmitter } = require('events')
 const SimConnectApi = require('./js/SimConnectApi');
 const AutoLaunch = require('./js/AutoLaunch');
-const serverUtils = require('./js/heartBeat')
-const Tunnel = require('localtunnel')
+const serverUtils = require('./js/heartBeat');
+const tunnel = require('reverse-tunnel-ssh')
 
 
 
@@ -201,23 +201,25 @@ app.on('ready', async () => {
 
   /**Tunnel Section **/
   const port = parseInt(process.env.WEBHOOK_APP_PORT);
-  const tunnel = new Tunnel(port,{ subdomain: 'thecrewbot'},()=>{
-    if(err) throw err
+  const config = {
+    username:'giorgiob',
+    host:'thecrewbot.it',
+    dstHost:'0.0.0.0',
+    dstPort: 8080, 
+    srcHost: '127.0.0.1',
+    //srcPort: port,
+    privateKey: process.env.SSH_KEY
+  }
+
+  const Tunnel  = tunnel(config, (err, TunnelConnection)=>{
+    if(err) throw err; 
+    log.info(TunnelConnection)
+  })
+
+  Tunnel.on('forward-in', (port)=>{
+    log.info('Forwarding from thecrewbot.it:' + port);
   });
-  //tunnel.on('close', async()=>{
-  //  //on tunnel close reopen
-  //  log.warn('Tunnel Connection reset')
-  //  await ltTunnel({ port: port, subdomain: 'thecrewbot'});
-  //})
-  //tunnel.on('error', async(error)=>{
-  //  //on tunnel error reopen
-  //  log.error(error)
-  //  await ltTunnel({ port: port, subdomain: 'thecrewbot' });
-  //})
 
-
-
-  log.info('Local Tunnel open on url: ' + tunnel.url)
   /**End */
 
   /**OAuth Section**/
@@ -237,7 +239,7 @@ app.on('ready', async () => {
   const webHook = new TwitchWebhooks()
   try {
     //set url and subscribe to events
-    await webHook.setUrl(tunnel.url);
+    await webHook.setUrl('https://thecrewbot.it');
     await webHook.subscribeFollows();
     await webHook.subscribeUsers();
     await webHook.subscribeStreams();
@@ -258,17 +260,6 @@ app.on('ready', async () => {
     SimConnectApi.connectToSim()
   }, 10000)
   /**End */
-
-  setInterval(async()=>{
-    log.info('Sending HeartBeat')
-    try {
-      let res = await serverUtils.sendHeartBeat()
-      log.info(res)
-    } catch (error) {
-      log.error(error)
-    }
-  }, 10000)
-
 })
 
 // Quit when all windows are closed.
