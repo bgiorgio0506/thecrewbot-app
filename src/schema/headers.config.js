@@ -92,7 +92,7 @@ const schema = {
         miscMenu:[
            { 
                title:"Lives",
-               redirect:"#", 
+               redirect:"/account/lives", 
                class: 'miscHeaderItem',
                id:11,
                html:false

@@ -326,10 +326,15 @@ app.route('/twitch/webhook/live').get((req, res) => {
 
     //Maintain the tunnel active
     app.route('/heartbeat').get((req, res, next)=>{
-        res.send('Heartbeat received')
+        log.info('200 OK')
+        res.json({status:200})
     })
 
-var server = app.listen(process.env.WEBHOOK_APP_PORT, function (err) {
+    app.route('/').get((req, res, next)=>{
+        res.send('Hey')
+    })
+
+var server = app.listen(process.env.WEBHOOK_APP_PORT,  function (err) {
     if (err) throw err;
     console.log('Server WebHook is online and listening to port: ' + server.address().port);
 });

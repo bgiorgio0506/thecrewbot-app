@@ -201,24 +201,32 @@ app.on('ready', async () => {
 
   /**Tunnel Section **/
   const port = parseInt(process.env.WEBHOOK_APP_PORT);
+  const serverPort  = parseInt(process.env.SSH_PORT);
   const config = {
-    username:'giorgiob',
-    host:'thecrewbot.it',
+    username:process.env.SSH_USERNAME,
+    host:process.env.SSH_HOST,
     dstHost:'0.0.0.0',
-    dstPort: 8080, 
+    dstPort: serverPort, 
     srcHost: '127.0.0.1',
-    //srcPort: port,
-    privateKey: process.env.SSH_KEY
+    srcPort: port,
+    privateKey: process.env.SSH_KEY,
+    keepaliveInterval : 30000,
+    keepaliveCountMax: 5,
   }
 
-  const Tunnel  = tunnel(config, (err, TunnelConnection)=>{
-    if(err) throw err; 
-    log.info(TunnelConnection)
+  let Tunnel  = tunnel(config, (err, TunnelConnection)=>{
+    if(err) throw err;
   })
 
   Tunnel.on('forward-in', (port)=>{
     log.info('Forwarding from thecrewbot.it:' + port);
   });
+
+  Tunnel.on('close', ()=>{
+    Tunnel  = tunnel(config, (err, TunnelConnection)=>{
+      if(err) throw err;
+    })  
+  })
 
   /**End */
 

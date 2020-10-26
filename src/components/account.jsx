@@ -1,7 +1,7 @@
 /**Import Componets*/
 import { ipcRenderer } from 'electron';
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import {Switch, Redirect, Route} from 'react-router-dom';
 import utils from '../helpers/utility';
 import twitchLib from '../js/twitchLib';
 import CreateModals from './common/modal';
@@ -10,6 +10,11 @@ const TwitchApi = new twitchLib.TwitchApi();
 
 //import components
 import CreateMiscMenu from './common/miscMenu';
+
+
+//import schema 
+import UISchema from '../schema/headers.config'
+import CreateLiveList from './subMenus/liveList';
 
 class CreateAccount extends Component {
     constructor(props) {
@@ -139,6 +144,9 @@ class CreateAccount extends Component {
                             </div>
                         </div>
                         <CreateMiscMenu/>
+                        <Switch>
+                            <Route exact path={`/account/lives`} render={()=>CreateLiveList}/>
+                        </Switch>
                     </div>)
                 })
             }

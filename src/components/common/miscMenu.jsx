@@ -14,7 +14,7 @@ const CreateMiscMenu = ()=>{
     <div className={'misc-menu'}>
         {
             UISchema.UISchemaState.miscMenu.map((menuItem)=>{
-            return(<Link id={menuItem.id} className={(menuItem.id === miscActiveLink )? "miscActive "+ menuItem.class : menuItem.class}  onClick={()=>{handleMiscClick(menuItem.id)}}>{menuItem.title}</Link>)
+            return(<Link id={menuItem.id} to={menuItem.redirect} className={(menuItem.id === miscActiveLink )? "miscActive "+ menuItem.class : menuItem.class}  onClick={()=>{handleMiscClick(menuItem.id)}}>{menuItem.title}</Link>)
             })
         }
     </div>

@@ -3,7 +3,7 @@ const {http, https} = require('follow-redirects');
 exports.sendHeartBeat = ()=>{
     return new Promise((resolve, reject)=>{
         let options = {
-            hostname: 'thecrewbot.loca.lt', 
+            hostname: 'thecrewbot.it', 
             path: '/heartbeat',
             maxRedirexts: 20,
             method: 'GET'
