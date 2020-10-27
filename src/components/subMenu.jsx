@@ -12,7 +12,10 @@ import utils from '../helpers/utility'
  * @param {String} route route of the componet
  */
 function getSubMenus(location) {
-    if (location.pathname.includes('/') === true  && location.pathname.length === 1 && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
+    if (location.pathname.includes('/account') === true  && location.pathname.length === 8 && UISchema.UISchemaState.logoObj.subMenus !== undefined) return UISchema.UISchemaState.logoObj.subMenus
+    else if(location.pathname.includes('/account/') === true){
+        return UISchema.UISchemaState.logoObj.subMenus
+    }
     else if(location.pathname.split('/').length > 2){
         let parsedRoute  = location.pathname.split('/')
         let labelIndex= utils.findIndexInObjArr(UISchema.UISchemaState.headerObjs, 'redirect', '/'+parsedRoute[1]);
@@ -53,7 +56,7 @@ const CreateSubMenu = () => {
     })
     //let langObj = getLang()
 
-    if (utils.isEmpty(subMenu) === true) return (<div className={"suvMenuSection"}></div>);
+    if (utils.isEmpty(subMenu) === true) return (<div className={"subMenuSection"}></div>);
     else return (<div className={"subMenuSection"}>
         {
             subMenu.map((label) => {

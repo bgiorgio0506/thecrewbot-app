@@ -1,7 +1,7 @@
 /**Import Componets*/
 import { ipcRenderer } from 'electron';
 import React, { Component } from 'react';
-import {Switch, Redirect, Route} from 'react-router-dom';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import utils from '../helpers/utility';
 import twitchLib from '../js/twitchLib';
 import CreateModals from './common/modal';
@@ -35,7 +35,7 @@ class CreateAccount extends Component {
             this.setState({ isLoading: true });
 
             if (profile !== null) {
-                TwitchApi.getUser().then((UserProfile)=>{
+                TwitchApi.getUser().then((UserProfile) => {
                     UserProfile = JSON.parse(UserProfile);
                     TwitchApi.getUserFollows().then((follows) => {
                         follows = JSON.parse(follows);
@@ -53,7 +53,7 @@ class CreateAccount extends Component {
                         console.info(err)
                         this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
                     })
-                }).catch((err)=>{
+                }).catch((err) => {
                     console.info(err)
                     this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
                 })
@@ -65,20 +65,20 @@ class CreateAccount extends Component {
             ipcRenderer.on('webhook.notification', (e, notification) => {
                 //switch
                 console.log(notification)
-                switch(notification.type){
+                switch (notification.type) {
                     case 'notification.profile':
-                        this.setState({data: notification.data});
+                        this.setState({ data: notification.data });
                         break;
                     case 'notification.subs':
                         //get the last notification and add to 
                         let actualSub = this.state.subs;
                         actualSub += 1;
-                        this.setState({subs:actualSub})
+                        this.setState({ subs: actualSub })
                         break;
                     case 'notification.follow':
                         let actualFollow = this.state.follow;
-                        actualFollow +=1;
-                        this.setState({follow:actualFollow});
+                        actualFollow += 1;
+                        this.setState({ follow: actualFollow });
                         break;
                     default:
                         console.log('Got wierd notification with unspecifided type');
@@ -88,7 +88,7 @@ class CreateAccount extends Component {
     }
 
 
-   
+
 
 
     render() {
@@ -116,10 +116,10 @@ class CreateAccount extends Component {
         }
 
 
-        return (<div className={'center-panel'}>
+        return (<div className={'AccountSection'}>
             {
                 data.map((item) => {
-                    return (<div className={'center-account-panel'}>
+                    return (
                         <div className={'AccountSection'}>
                             <img className={'accountImage'} src={item.profile_image_url} />
                             <div className={'accountLabel'}>
@@ -142,12 +142,7 @@ class CreateAccount extends Component {
                                     <label className={'statInd'} htmlFor="statCount">Subs</label>
                                 </div>
                             </div>
-                        </div>
-                        <CreateMiscMenu/>
-                        <Switch>
-                            <Route exact path={`/account/lives`} render={()=>CreateLiveList}/>
-                        </Switch>
-                    </div>)
+                        </div>)
                 })
             }
         </div>)

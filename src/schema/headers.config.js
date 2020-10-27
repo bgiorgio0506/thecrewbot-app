@@ -7,7 +7,7 @@ const schema = {
                 <strong>THE</strong>CREWBOT
             </Fragment>), //if logo can be writed
             class:'logo', //css class
-            redirect:'/', //tbd
+            redirect:'/account', //tbd
             isImg: false, //for the future
             ImgSrc : '',// case the logo is img
             imgStyle:{}, // reactStyle props for img
@@ -15,7 +15,7 @@ const schema = {
             //submenus
             subMenus:[{
                 title: 'Account',
-                redirect: '/', 
+                redirect: '/account', 
                 class:'',
                 id:1,
                 html:false
@@ -99,14 +99,14 @@ const schema = {
             },
             { 
                 title:"Clips",
-                redirect:"#", 
+                redirect:"/account/clips", 
                 class: 'miscHeaderItem',
                 id:21,
                 html:false
              },
              { 
                 title:"Videos",
-                redirect:"#", 
+                redirect:"/account/video", 
                 class:'miscHeaderItem',
                 id:31,
                 html:false
