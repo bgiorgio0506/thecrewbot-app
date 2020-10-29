@@ -642,6 +642,24 @@ div {
   background-color: #ddd;
 }
 
+/**Clips list**/
+.clipsSection{
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.clipItem{
+  display: inline-block;
+  margin: 10px;
+}
+
+.clipImgItem{
+  width: 380px;
+  height: 215px;
+  border-radius: 10px;
+  border: 2px #000 solid;
+}
+
 @media screen and (prefers-color-scheme: dark) {
   /* Dark moe */
   body {

@@ -237,7 +237,7 @@ exports.TwitchApi = class TwitchApi{
             
             this.requestOptions = {
                 hostname: 'api.twitch.tv', 
-                path :`helix/clips?broadcaster_id=178126684$first=20`, 
+                path :`helix/clips?broadcaster_id=178126684&first=5`, 
                 method:'GET', 
                 port:443,
                 headers: {
