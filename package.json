@@ -151,7 +151,7 @@
     "electron-rebuild": "^2.0.3",
     "html-webpack-plugin": "^4.5.0",
     "media-query-plugin": "^1.4.0",
-    "mini-css-extract-plugin": "^0.11.2",
+    "mini-css-extract-plugin": "^1.2.1",
     "node-loader": "^1.0.1",
     "style-loader": "^1.2.1",
     "webpack-obfuscator": "^2.4.2"
