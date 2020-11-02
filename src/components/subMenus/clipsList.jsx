@@ -27,44 +27,44 @@ const CreateClipsList = () => {
             setLives(res.data)
             setThumnails(thumb);
             setCurrentSlideStyle({
-                backgroundImage: "url('" + thumb[1] + "')"
+                backgroundImage: "url('" + thumb[currentSlide] + "')"
             });
 
             if(currentSlide>0){
                 setPreviousSlideStyle({
-                    backgroundImage: "url('"+thumb[currentSlide-1]+"')"
+                    background: "url('"+thumb[currentSlide-1]+"')"
                 });
             }else{
                 setPreviousSlideStyle({
-                    backgroundImage: "url('"+thumb[thumb.length-1]+"')"
+                    background: "url('"+thumb[thumb.length-1]+"')"
                 });
             }
 
             if(currentSlide === thumb.length-1){
                 setNextSlideStyle({
-                    backgroundImage: "url('"+thumb[0]+"')"
+                    background: "url('"+thumb[0]+"')"
                 });
             }else{
                 setNextSlideStyle({
-                    backgroundImage: "url('"+thumb[currentSlide+1]+"')"
+                    background: "url('"+thumb[currentSlide+1]+"')"
                 });
             } 
 
             setLoading(false)
 
         })
-    })
+    }, [currentSlide])
 
     function previous() {
         if (currentSlide > 0) {
             setCurrentSlide(currentSlide - 1);
         } else {
-            setCurrentSlide(thumb.length - 1);
+            setCurrentSlide(lives.length - 1);
         }
     }
 
     function next() {
-        if (currentSlide === thumb.length - 1) {
+        if (currentSlide === lives.length-1) {
             setCurrentSlide(0);
         } else {
             setCurrentSlide(currentSlide + 1);
@@ -74,20 +74,22 @@ const CreateClipsList = () => {
     if (loading === true) {
         return (<p>loading ...</p>)
     } else
+    console.log(currentSlide)
         return (<div className={'clipsSection'}>
             <section className="slideshow">
                 <div className="slide-holder">
-                <span  className={'slideShowController slidePrevious'} onClick={previous}><i class="fas fa-caret-left"></i></span>
+                <span  className={'slideShowController slidePrevious'} onClick={previous}><i class="fas fa-caret-left fa-5x"></i></span>
                     <section className="slide previous-slide">
-                        <div style={previousSlideStyle} className="slide-thumbnail"></div>
+                        <div style={previousSlideStyle} className="slide-thumbnail overlay"></div>
                     </section>
                     <section className="slide current-slide">
                         <div style={currentSlideStyle} className="slide-thumbnail"></div>
+                        <p className= {'clipStatLabel'}><i class="fas fa-eye"></i>{lives[currentSlide].view_count}</p>
                     </section>
                     <section className="slide next-slide">
-                        <div style={nextSlideStyle} className="slide-thumbnail"></div>
+                        <div style={nextSlideStyle} className="slide-thumbnail overlay"></div>
                     </section>
-                    <span  className={'slideShowController slideStart'} onClick={next}><i class="fas fa-caret-right"></i></span>
+                    <span  className={'slideShowController slideStart'} onClick={next}><i class="fas fa-caret-right fa-5x"></i></span>
                 </div>
             </section>
         </div>)

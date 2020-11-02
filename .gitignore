@@ -106,3 +106,4 @@ dist
 
 # Electron-Forge
 out/
+.swift-sfdc.json

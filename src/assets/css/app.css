@@ -697,8 +697,14 @@ section.slideshow section.slide div.slide-thumbnail{
   background-size: cover;
   background-position: center;
   border-radius: 6px;
+  filter: rgba(100, 100, 100, 1);
 }
 
+.overlay {
+  filter: opacity(0.6);
+  z-index: 2;
+  cursor: pointer;
+}
 
 section.slideshow div.slideshow-controller{
   margin-top: 10px;
@@ -718,13 +724,11 @@ section.slideshow div.slideshow-controller span{
 }
 
 .slideShowController{
-
   position: fixed;
 }
 
-.fa-caret-left{
-  width: 50px;
-  height: 50px;
+.slideShowController:hover{
+  cursor:pointer;
 }
 
 .slidePrevious{

@@ -100,6 +100,10 @@ ClientBot.on('message', (channel, tags, message, self) => {
     ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip ' + '  Grazie per il supporto ' + tags.username + ' !!')
   }
 
+  if(command === "lifecycle"){
+    ClientBot.say(channel, 'WebApi satus: 200 OK')
+  }
+
 })
 
 ClientBot.on('connected', (channel) => {
