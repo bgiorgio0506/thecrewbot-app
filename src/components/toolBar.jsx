@@ -19,8 +19,8 @@ const CreateToolbar = ()=>{
         console.log(notification.type)
         if(notification.type.includes('notification.stream') === true){
             console.log(notification.data)
-            if(isStreaming) setStreamingState(false);
-            else setSimConnectState(true)
+            if(isStreaming && notification.data.length === 0) setStreamingState(false);
+            else if(notification.data.length > 0 && isStreaming === false) setStreamingState(true)
         }
     })
 
