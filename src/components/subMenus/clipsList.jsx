@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import twitchLib from '../../js/twitchLib'
+import twitchLib from '../../js/twitchLib';
+
+//import componets
+import CreateLoading from '../common/loading';
 const TwitchApi = new twitchLib.TwitchApi();
 
 
@@ -14,11 +17,23 @@ const CreateClipsList = () => {
     const [currentSlideStyle, setCurrentSlideStyle] = useState({});
     const [nextSlideStyle, setNextSlideStyle] = useState({});
     const [previousSlideStyle, setPreviousSlideStyle] = useState({});
+    const [error, setError] = useState({});
+    const [showModal, setShowModal] = useState(false);
+
 
 
     useEffect(() => {
         TwitchApi.getTopClips().then((res) => {
             res = JSON.parse(res)
+
+            //if error is begin sent 
+            if(res.message !== undefined){
+                setError({
+                    message:res.message
+                });
+
+                return setShowModal(true)
+            }
 
             if(res.data !== undefined) res.data.map((live) => {
                 thumb.push(live.thumbnail_url);
@@ -52,6 +67,11 @@ const CreateClipsList = () => {
 
             setLoading(false)
 
+        }).catch((err)=>{
+            setError({
+                message: error
+            })
+            setShowModal(true)
         })
     }, [currentSlide])
 
@@ -71,9 +91,26 @@ const CreateClipsList = () => {
         }
     }
 
+    function hideModal() {
+        setShowModal(false)
+    }
+
+
     if (loading === true) {
-        return (<p>loading ...</p>)
-    } else
+        return (<CreateLoading/>)
+    } else if(error.message !== undefined){
+        return (
+            <div className="center-panel">
+                <div className={'center-account-panel'}>
+                    <CreateModals show={showModal} handleClose={hideModal}>
+                        <p className={'modalTitle'}>Error</p>
+                        <div className={'modalMessage'}>{error.message}</div>
+                    </CreateModals>
+                    <strong>Error loading profile data</strong>
+                </div>
+            </div>)
+    }
+    else
     console.log(currentSlide)
         return (<div className={'clipsSection'}>
             <section className="slideshow">

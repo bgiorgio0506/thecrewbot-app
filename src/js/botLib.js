@@ -4,6 +4,7 @@ const event = require('events');
 const utils = require('../helpers/utility');
 const log = require('electron-log');
 const langLib = require('./langLib').default;
+const config = require('../schema/commandConfig')
 
 let langObj = langLib() //get app lang
 
@@ -47,10 +48,11 @@ ClientBot.on('message', (channel, tags, message, self) => {
   let messageArr = message.split(' ')//split the message into array
 
   //get only bot command
-  console.log(messageArr[0].includes('!'))
+  console.log(messageArr[0].includes(prefix))
   if (messageArr[0].includes(prefix) !== true) return;
   const args = messageArr[0].slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+  let commandIndex = utils.findIndexInObjArr(config.configData.commands, 'commandString', command)
 
   //log.info(message, tags, channel, self)
   if (command === 'domanda') {
@@ -96,12 +98,19 @@ ClientBot.on('message', (channel, tags, message, self) => {
     } else ClientBot.say(channel, langObj.botMess[0])
   }
 
-  if (command === "donate") {
-    ClientBot.say(channel, 'Il link per le donazioni è https://streamlabs.com/paolom346_/tip ' + '  Grazie per il supporto ' + tags.username + ' !!')
+  //debug command
+  if(command === "totaldynamicommands"){
+    ClientBot.say(channel, config.configData.commands.length.toString())
   }
 
-  if(command === "lifecycle"){
-    ClientBot.say(channel, 'WebApi satus: 200 OK')
+
+
+  //dynamic bot commands
+  log.info(commandIndex+ ' '+ command)
+  if(commandIndex !== -1){
+    log.info(commandIndex)
+    let commandObj = config.configData.commands[commandIndex];
+    commandObj.commandFunction(ClientBot, channel)
   }
 
 })

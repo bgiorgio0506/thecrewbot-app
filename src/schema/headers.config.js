@@ -115,8 +115,7 @@ const schema = {
         activeLink: 2, 
         isUpdaterDownloading:false //used from the mainProcess to regulate UI state
 
-    },
-    UICommandsState:[]
+    }
 }
 
 export default schema

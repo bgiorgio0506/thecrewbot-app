@@ -9,8 +9,7 @@ const twitchClient = new twitchLib.OAuth2Provider();
 const TwitchApi = new twitchLib.TwitchApi();
 
 //import components
-import CreateMiscMenu from './common/miscMenu';
-
+import CreateLoading from '../components/common/loading'
 
 //import schema 
 import UISchema from '../schema/headers.config'
@@ -110,7 +109,7 @@ class CreateAccount extends Component {
             return (
                 <div className={'center-panel'}>
                     <div className={'center-account-panel'}>
-                        Loading ...
+                      <CreateLoading/>
                     </div>
                 </div>)
         }
