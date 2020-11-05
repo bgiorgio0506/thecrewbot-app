@@ -1,5 +1,5 @@
 // Import dependencies
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ipcRenderer } from 'electron'
 import getLang from '../js/langLib';
 
@@ -11,13 +11,12 @@ const CreateList = () => {
   console.log(items);
 
   //update state
-  setInterval(()=>{
+  useEffect(()=>{
     ipcRenderer.send('fetch-question-list')//call the main to fetch list
-  }, 180000) 
+  }, [items])
 
   //on main response
   ipcRenderer.on('list-response', (event , questArr)=>{
-    console.log('receiving data '+ questArr)
     setState(questArr)
   })
 
