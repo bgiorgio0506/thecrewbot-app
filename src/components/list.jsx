@@ -8,12 +8,6 @@ const CreateList = () => {
   const langObj = getLang()
   let Inititems = []
   const [items, setState] = React.useState(Inititems)
-  console.log(items);
-
-  //update state
-  useEffect(()=>{
-    ipcRenderer.send('fetch-question-list')//call the main to fetch list
-  }, [items])
 
   //on main response
   ipcRenderer.on('list-response', (event , questArr)=>{
@@ -21,6 +15,7 @@ const CreateList = () => {
   })
 
   ipcRenderer.on('add-quest', (event, questArr) => {
+    ipcRenderer.send('fetch-question-list');//call the main to fetch list
     setState(questArr)
   })
 

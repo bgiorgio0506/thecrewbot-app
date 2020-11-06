@@ -30,7 +30,7 @@ app.requestSingleInstanceLock()
 const emitter = new EventEmitter()
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
 const url = require('url')
-const { TwitchWebhooks, OAuth2Provider } = require('./js/twitchLib')
+const { TwitchWebhooks, OAuth2Provider, TwitchApi } = require('./js/twitchLib')
 
 //refresh token on every open
 const OAuth2Client = new OAuth2Provider()
@@ -263,6 +263,16 @@ app.on('ready', async () => {
   })
   /**End */
 
+  /**Api req */
+  const twitchApi = new TwitchApi();
+  try{
+    let activeLives  = JSON.parse(await twitchApi.getLives());
+    if(activeLives.data.length > 0) mainWindow.webContents.send('live-status', true);
+  }catch(err){
+    log.error(err)
+  }
+
+
  /**SimConnect Section **/
   setTimeout(() => {
     SimConnectApi.connectToSim()
@@ -321,7 +331,6 @@ ipcMain.on('open-auth', (e, filePath) => {
   log.info('recived Oauth open')
   createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`)
 })
-
 
 /**END IPC SECTION */
 

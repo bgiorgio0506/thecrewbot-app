@@ -15,6 +15,11 @@ const CreateToolbar = ()=>{
         setSimConnectState(false) // will display error one way or another
     })
  
+    //if a stream is already started
+    ipcRenderer.on('live-status', (e,status)=>{
+        setStreamingState(status)
+    })
+
     ipcRenderer.on('webhook.notification', (e ,notification)=>{
         console.log(notification.type)
         if(notification.type.includes('notification.stream') === true){
