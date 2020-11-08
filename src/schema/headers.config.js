@@ -27,6 +27,13 @@ const schema = {
                 id:2, 
                 html:false
             },
+            {
+                title: 'Pool answers',
+                redirect: '#', 
+                class:'',
+                id:3, 
+                html:false
+            },
         ]
         },
         headerObjs:[

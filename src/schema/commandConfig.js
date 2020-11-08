@@ -99,7 +99,7 @@ const config = {
             permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
-                   client.say(channel, 'Bot version returned: '+ process.env.APP_VERSION)
+                   client.say(channel, 'Bot version returned: '+ process.env.APP_VERSION+ ' permissions: 0')
                 } catch (error) {
                     throw error
                 }
