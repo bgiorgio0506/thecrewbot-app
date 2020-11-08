@@ -27,13 +27,6 @@ const schema = {
                 id:2, 
                 html:false
             },
-            {
-                title: 'Custom Commands',
-                redirect: '#', 
-                class:'', 
-                id:3,
-                html:false
-            },
         ]
         },
         headerObjs:[
@@ -82,10 +75,19 @@ const schema = {
                 html: false
             },
             {
-                title:"Commands", 
-                redirect:"#",
+                title:"Commands Panel", 
+                redirect:"/commands",
                 class: '',
                 id:3,
+                subMenus:[
+                    {
+                        title: 'Custom Commands',
+                        redirect: '#', 
+                        class:'', 
+                        id:3,
+                        html:false
+                    }
+                ],
                 html: false
             }
         ],

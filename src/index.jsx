@@ -20,6 +20,7 @@ import CreateBotSettings from './components/subMenus/settingsBot';
 import CreateLiveList from './components/subMenus/liveList';
 import CreateClipsList from './components/subMenus/clipsList';
 import CreateVideoList from './components/subMenus/videoList';
+import CreateCommand from './components/subMenus/commands';
 
 
 console.log('This line is begin called before app rendering')
@@ -43,6 +44,9 @@ const render = () => {
                                 <Route exact path={`/account/video`} component={CreateVideoList} />
                             </Switch>
                         </AccountLayOut>
+                    </Route>
+                    <Route exact path='/commands'>
+                        <Route exact path='/commands' component={CreateCommand}/>
                     </Route>
                     <Route exact path='/questions' component={CreateList} />
                     <Route excat path='/settings'>

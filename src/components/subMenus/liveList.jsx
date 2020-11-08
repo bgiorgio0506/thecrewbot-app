@@ -20,13 +20,13 @@ const CreateLiveList = () => {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        TwitchApi.getVideos().then((res) => {
+        TwitchApi.getLives().then((res) => {
            
 
 
             let dataRes = JSON.parse(res);
             console.log(dataRes.data)
-            setLength(dataRes.data.lenth)
+            setLength(dataRes.data.length)
             setLoading(false)
             setLiveInfo(dataRes.data)
         }).catch((err) => {
@@ -50,6 +50,9 @@ const CreateLiveList = () => {
             </CreateModals>
             <strong>Error loading profile data</strong>
         </div>
+    </div>)
+    else if(dataLength ===1)return(<div className= "center-panel" style={{marginLeft:'150px', marginTop:'100px'}}>
+        <strong>Live History not avail while ON AIR</strong>
     </div>)
     else return (<div>
         {

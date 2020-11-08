@@ -177,6 +177,7 @@ function createAuthWindow(path) {
 
 /*** EVENT HANDLING AND IPC CALLS ***/
 
+/**App event loop */
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -265,13 +266,16 @@ app.on('ready', async () => {
 
   /**Api req */
   const twitchApi = new TwitchApi();
-  try{
-    let activeLives  = JSON.parse(await twitchApi.getLives());
-    if(activeLives.data.length > 0) mainWindow.webContents.send('live-status', true);
-  }catch(err){
-    log.error(err)
-  }
-
+  setTimeout(async()=>{
+    try{
+      let activeLives  = JSON.parse(await twitchApi.getLives());
+      if(activeLives.data.length === 1) mainWindow.webContents.send('live-status', true);
+    }catch(err){
+      log.error(err)
+    }
+  
+  }, 2000)
+  /**End api req */
 
  /**SimConnect Section **/
   setTimeout(() => {
@@ -316,6 +320,9 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
   }
 })
 
+/**End app event loop */
+
+/**ipc Event loop */
 
 ipcMain.on('quit-app', function () {
   app.quit();
@@ -332,6 +339,8 @@ ipcMain.on('open-auth', (e, filePath) => {
   createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`)
 })
 
+/**end  ipc event loop*/
+
 /**END IPC SECTION */
 
 
@@ -346,7 +355,7 @@ SimConnectApi.on('simconnect-error', (err) => {
 })
 /** End **/
 
-/**ChatBot events */
+/**ChatBot event loop */
 ChatBot.on('add-quest', (questQueue)=>{
   mainWindow.webContents.send('add-quest', questQueue)
 })

@@ -3,6 +3,7 @@ const twitchApi = new TwitchApi()
 
 /**
  * @todo permissions
+ * //permission 0 == all, 1 == mod, 2 == author, others vary from 11 to 20
  */
 
 const config = {
@@ -11,9 +12,10 @@ const config = {
             commandString : 'paolo', 
             commandType: 'defaults', 
             isCommandActive: true,
+            permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
-                    let res = await twitchApi.getUser()
+                    let res = await twitchApi.getUser();
                     res = JSON.parse(res)
                     console.log(res)
                     if(res.data[0] !== undefined){
@@ -30,6 +32,7 @@ const config = {
             commandString : 'social', 
             commandType: 'defaults', 
             isCommandActive: true,
+            permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
                    client.say(channel, 'Socials link tbh use !social')
@@ -42,6 +45,7 @@ const config = {
             commandString : 'stick', 
             commandType: 'defaults', 
             isCommandActive: true,
+            permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
                    client.say(channel, 'Stick link tbh use !stick')
@@ -66,6 +70,7 @@ const config = {
             commandString : 'discord', 
             commandType: 'defaults', 
             isCommandActive: true,
+            permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
                    client.say(channel, 'Discord link tbh use !discord')
@@ -77,7 +82,8 @@ const config = {
         {
             commandString : 'donate',
             commandType: 'defaults', 
-            isCommandActive: true, 
+            isCommandActive: true,
+            permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
                    client.say(channel, 'Il link per le donazioni è streamlabs.com/paolom346_/tip Grazie per il supporto !!')
@@ -88,8 +94,9 @@ const config = {
         },
         {
             commandString : 'version',
-            commandType: 'defaults', 
+            commandType: 'debug', 
             isCommandActive: true, 
+            permissions:0,
             commandFunction: async(client, channel)=>{
                 try {
                    client.say(channel, 'Bot version returned: '+ process.env.APP_VERSION)
