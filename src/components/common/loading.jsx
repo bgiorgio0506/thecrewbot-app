@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-const CreateLoading = ()=>{
-    return(<p>Loading...</p>)
-}
+const CreateLoading = () => {
+    return (<p>Loading...</p>);
+};
 
-export default CreateLoading
+export default CreateLoading;

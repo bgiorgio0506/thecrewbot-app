@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
-const CreateError = (errorMess)=>{
-    return(<p>Error+ {errorMess}</p>)
-}
+const CreateError = (errorMess,) => {
+    return (<p>Error+ {errorMess}</p>);
+};
 
-export default CreateError
+export default CreateError;

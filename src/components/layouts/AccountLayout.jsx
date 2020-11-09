@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
+//import
+import CreateAccount from '../account';
+import CreateMiscMenu from '../common/miscMenu';
 
-//import 
-import CreateAccount from '../account'
-import CreateMiscMenu from '../common/miscMenu'
-
-const AccountLayOut = ({ children }) => {
+const AccountLayOut = ({ children, },) => {
     return (
         <div className={'center-panel'}>
             <div className={'center-account-panel'}>
@@ -12,7 +12,11 @@ const AccountLayOut = ({ children }) => {
                 <CreateMiscMenu />
                 {children}
             </div>
-        </div>)
-}
+        </div>);
+};
 
-export default AccountLayOut
+AccountLayOut.propTypes = {
+    children : PropTypes.elementType.isRequired,
+};
+
+export default AccountLayOut;

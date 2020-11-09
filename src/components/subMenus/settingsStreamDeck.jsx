@@ -1,16 +1,16 @@
 //Importing all depepndency
 import React from 'react';
-import {ipcRenderer, remote} from 'electron';
+import { ipcRenderer, remote, } from 'electron';
 import getLang from '../../js/langLib';
 import streamDeckApi from '../../js/streamDeckLib';
-import utils from '../../helpers/utility'
+import utils from '../../helpers/utility';
 
 
-const CreateSettingsStreamDeck = ()=>{
+const CreateSettingsStreamDeck = () => {
 
     return (<div className={'center-panel'}>
         <p>Sei StreamDeck Settings</p>
-    </div>)
-}
+    </div>);
+};
 
-export default CreateSettingsStreamDeck
+export default CreateSettingsStreamDeck;

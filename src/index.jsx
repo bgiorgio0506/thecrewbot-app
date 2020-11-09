@@ -1,8 +1,8 @@
 // Import dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route } from 'react-router-dom'
-import { Switch, Redirect } from 'react-router'
+import { HashRouter as Router, Route, } from 'react-router-dom';
+import { Switch, Redirect, } from 'react-router';
 import getLang from './js/langLib';
 import './assets/css/app.css';
 
@@ -14,20 +14,19 @@ import CreateList from './components/list';
 import CreateHeader from './components/header';
 import CreateSettings from './components/settings';
 import CreateSubMenu from './components/subMenu';
-import CreateSettingsStreamDeck from './components/subMenus/settingsStreamDeck'
+import CreateSettingsStreamDeck from './components/subMenus/settingsStreamDeck';
 import CreateToolbar from './components/toolBar';
 import CreateBotSettings from './components/subMenus/settingsBot';
 import CreateLiveList from './components/subMenus/liveList';
 import CreateClipsList from './components/subMenus/clipsList';
 import CreateVideoList from './components/subMenus/videoList';
-import CreateCommand from './components/subMenus/commands';
+import CreateCommand from './components/commands';
 
 
-console.log('This line is begin called before app rendering')
+console.log('This line is begin called before app rendering',);
 
 // Render the app into the root div
 const render = () => {
-    console.log('Called')
     ReactDOM.render(
         <Router>
             <div id="app">
@@ -39,9 +38,9 @@ const render = () => {
                         <AccountLayOut>
                             <Redirect from="/account" to="/account/lives"/>
                             <Switch>
-                                <Route exact path={`/account/lives`} component={CreateLiveList} />
-                                <Route exact path={`/account/clips`} component={CreateClipsList} />
-                                <Route exact path={`/account/video`} component={CreateVideoList} />
+                                <Route exact path={'/account/lives'} component={CreateLiveList} />
+                                <Route exact path={'/account/clips'} component={CreateClipsList} />
+                                <Route exact path={'/account/video'} component={CreateVideoList} />
                             </Switch>
                         </AccountLayOut>
                     </Route>
@@ -58,7 +57,7 @@ const render = () => {
                 <CreateToolbar />
             </div>
         </Router>
-        , document.getElementById('root'));  // render empty list
-}
+        , document.getElementById('root',),);  // render empty list
+};
 
-render()
+render();

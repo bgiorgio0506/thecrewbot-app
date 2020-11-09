@@ -1,89 +1,88 @@
 /**Import Componets*/
-import { ipcRenderer } from 'electron';
-import React, { Component } from 'react';
-import { Switch, Redirect, Route } from 'react-router-dom';
-import utils from '../helpers/utility';
+import { ipcRenderer, } from 'electron';
+import React, { Component, } from 'react';
 import twitchLib from '../js/twitchLib';
 import CreateModals from './common/modal';
 const twitchClient = new twitchLib.OAuth2Provider();
 const TwitchApi = new twitchLib.TwitchApi();
 
 //import components
-import CreateLoading from '../components/common/loading'
+import CreateLoading from '../components/common/loading';
 
-//import schema 
-import UISchema from '../schema/headers.config'
-import CreateLiveList from './subMenus/liveList';
+//import schema
 
 class CreateAccount extends Component {
-    constructor(props) {
-        super(props)
+    constructor(props,) {
+        super(props,);
         this.state = {
-            data: [],
-            follow: 0,
-            subs: 0,
-            isLoading: false,
-            error: null,
-            showModal: false
+            data      : [],
+            follow    : 0,
+            subs      : 0,
+            isLoading : false,
+            error     : null,
+            showModal : false,
         };
     }
 
     componentDidMount() {
 
-        twitchClient.getOAuth2Data().then((profile) => {
-            this.setState({ isLoading: true });
+        twitchClient.getOAuth2Data().then((profile,) => {
+            this.setState({ isLoading : true, },);
 
             if (profile !== null) {
-                TwitchApi.getUser().then((UserProfile) => {
-                    UserProfile = JSON.parse(UserProfile);
-                    TwitchApi.getUserFollows().then((follows) => {
-                        follows = JSON.parse(follows);
-                        TwitchApi.getUserSubs().then((subs) => {
-                            subs = JSON.parse(subs)
-                            console.log(subs)
-                            if (subs.data !== undefined) subs = parseInt(subs.data.length);
+                TwitchApi.getUser().then((UserProfile,) => {
+                    UserProfile = JSON.parse(UserProfile,);
+                    return TwitchApi.getUserFollows().then((follows,) => {
+                        follows = JSON.parse(follows,);
+                        return TwitchApi.getUserSubs().then((subs,) => {
+                            subs = JSON.parse(subs,);
+                            console.log(subs,);
+                            if (subs.data !== undefined) subs = parseInt(subs.data.length,);
                             else subs = 0;
-                            this.setState({ isLoading: false, error: null, data: UserProfile.data, follow: follows.total, subs: subs })
-                        }).catch((err) => {
-                            console.info(err)
-                            this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
-                        })
-                    }).catch((err) => {
-                        console.info(err)
-                        this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
-                    })
-                }).catch((err) => {
-                    console.info(err)
-                    this.setState({ isLoading: false, error: { message: 'Error downloading data.' }, data: null, showModal: true })
-                })
+                            return this.setState({ isLoading : false, error : null, data : UserProfile.data, follow : follows.total, subs : subs, },);
+                        },).catch((err,) => {
+                            console.info(err,);
+                            return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                        },);
+                    },).catch((err,) => {
+                        console.info(err,);
+                        return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                    },);
+                },).catch((err,) => {
+                    console.info(err,);
+                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                },);
             }
             else {
-                this.setState({ isLoading: false, error: { message: 'Error downloading data. Please check you have connected your account correctly.' }, data: null, showModal: true })
+                return this.setState({ isLoading : false, error : { message : 'Error downloading data. Please check you have connected your account correctly.', }, data : null, showModal : true, },);
             }
 
-            ipcRenderer.on('webhook.notification', (e, notification) => {
+            ipcRenderer.on('webhook.notification', (e, notification,) => {
                 //switch
-                console.log(notification)
+                console.log(notification,);
                 switch (notification.type) {
-                    case 'notification.profile':
-                        this.setState({ data: notification.data });
-                        break;
-                    case 'notification.subs':
-                        //get the last notification and add to 
-                        let actualSub = this.state.subs;
-                        actualSub += 1;
-                        this.setState({ subs: actualSub })
-                        break;
-                    case 'notification.follow':
-                        let actualFollow = this.state.follow;
-                        actualFollow += 1;
-                        this.setState({ follow: actualFollow });
-                        break;
-                    default:
-                        console.log('Got wierd notification with unspecifided type');
+                case 'notification.profile':
+                    this.setState({ data : notification.data, },);
+                    break;
+                case 'notification.subs':
+                    //get the last notification and add to
+                    var actualSub = this.state.subs;
+                    actualSub += 1;
+                    this.setState({ subs : actualSub, },);
+                    break;
+                case 'notification.follow':
+                    var actualFollow = this.state.follow;
+                    actualFollow += 1;
+                    this.setState({ follow : actualFollow, },);
+                    break;
+                default:
+                    console.log('Got wierd notification with unspecifided type',);
                 }
-            })
-        })
+            },);
+            return;
+        },).catch((err,) => {
+            throw err;
+        },);
     }
 
 
@@ -91,35 +90,35 @@ class CreateAccount extends Component {
 
 
     render() {
-        const { isLoading, error, data, follow, subs } = this.state;
+        const { isLoading, error, data, follow, subs, } = this.state;
 
         if (error) {
             return (
                 <div className="center-panel">
                     <div className={'center-account-panel'}>
-                        <CreateModals show={this.state.showModal} handleClose={() => this.setState({ showModal: false })}>
+                        <CreateModals show={this.state.showModal} handleClose={() => this.setState({ showModal : false, },)}>
                             <p className={'modalTitle'}>Error</p>
                             <div className={'modalMessage'}>{error.message}</div>
                         </CreateModals>
                         <strong>Error loading profile data</strong>
                     </div>
-                </div>)
+                </div>);
         }
         if (isLoading) {
             return (
                 <div className={'center-panel'}>
                     <div className={'center-account-panel'}>
-                      <CreateLoading/>
+                        <CreateLoading/>
                     </div>
-                </div>)
+                </div>);
         }
 
 
         return (<div className={'AccountSection'}>
             {
-                data.map((item) => {
+                data.map((item,) => {
                     return (
-                        <div className={'AccountSection'}>
+                        <div key={item.login} className={'AccountSection'}>
                             <img className={'accountImage'} src={item.profile_image_url} />
                             <div className={'accountLabel'}>
                                 <p className={'pAccountLabel'}>{item.login}</p>
@@ -141,10 +140,10 @@ class CreateAccount extends Component {
                                     <label className={'statInd'} htmlFor="statCount">Subs</label>
                                 </div>
                             </div>
-                        </div>)
-                })
+                        </div>);
+                },)
             }
-        </div>)
+        </div>);
     }
 }
 
