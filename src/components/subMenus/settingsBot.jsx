@@ -60,7 +60,6 @@ const CreateBotSettings = () => {
     function handleTextInput(event,) {
         const target = event.target;
         const value = target.value;
-        const name = target.name;
         console.log(value,);
         botPrefixSetting = value;
     }
@@ -68,7 +67,6 @@ const CreateBotSettings = () => {
     function handleChannelInput(event,) {
         const target = event.target;
         const value = target.value;
-        const name = target.name;
         console.log(value,);
         channelAdd = value;
     }

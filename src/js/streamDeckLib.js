@@ -1,5 +1,5 @@
 const { openStreamDeck, listStreamDecks, }  = require('elgato-stream-deck',);
-const path = require('path',);
+//const path = require('path',);
 
 /**
  * @description get streamDeck and return a streamdec typeof

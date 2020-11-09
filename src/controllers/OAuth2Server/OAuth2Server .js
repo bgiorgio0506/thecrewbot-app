@@ -42,7 +42,7 @@ OAuth2Strategy.prototype.userProfile = function(accessToken, done,) {
             data.push(dataChunk,);
         },);
 
-        res.on('end', function (dataChunk,) {
+        res.on('end', function () {
             var body = Buffer.concat(data,);
             console.log(body.toString(),);
             done(null, JSON.parse(body,),);

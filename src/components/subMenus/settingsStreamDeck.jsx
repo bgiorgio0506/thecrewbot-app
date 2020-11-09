@@ -1,9 +1,9 @@
 //Importing all depepndency
 import React from 'react';
-import { ipcRenderer, remote, } from 'electron';
-import getLang from '../../js/langLib';
-import streamDeckApi from '../../js/streamDeckLib';
-import utils from '../../helpers/utility';
+//import { ipcRenderer, remote, } from 'electron';
+//import getLang from '../../js/langLib';
+//import streamDeckApi from '../../js/streamDeckLib';
+//import utils from '../../helpers/utility';
 
 
 const CreateSettingsStreamDeck = () => {

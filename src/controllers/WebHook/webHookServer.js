@@ -1,21 +1,16 @@
 // Define our dependencies
-const TwitchConfig = require('../../schema/twitchApi.config',);
-const store = require('electron-store',);
 var express        = require('express',);
 var session        = require('express-session',);
 const bodyParser   = require('body-parser',);
 const crypto       = require('crypto',);
 const path         = require('path',);
 const fs           = require('fs',);
-const { https, } = require('follow-redirects',);
 const log = require('electron-log',);
 const event  = require('events',);
 
 
 // Define our constants, you will change these with your own
 const SESSION_SECRET   = process.env.SESSION_SECRET;
-const CALLBACK_URL     = TwitchConfig.OAuth2ProviderDefaultOptions.redirectUri;  // You can run locally with - http://localhost:3000/auth/twitch/callback
-const SCOPES = TwitchConfig.OAuth2ProviderDefaultOptions.scopes.join('+',);
 const eventEmitter = new event.EventEmitter();
 
 
@@ -28,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended : true, },),);
 // Express allows whats called middle ware
 // it runs before (or after) other parts of the route runs
 app.use(bodyParser.json({
-    verify : function(req, res, buf, encoding,) {
+    verify : function(req, res, buf,) {
         // is there a hub to verify against
         req.twitch_hub = false;
         if (req.headers && req.headers['x-hub-signature']) {
@@ -325,12 +320,12 @@ app.route('/twitch/webhook/hypetrain',).get((req, res,) => {
 },);
 
 //Maintain the tunnel active
-app.route('/heartbeat',).get((req, res, next,) => {
+app.route('/heartbeat',).get((req, res,) => {
     log.info('200 OK',);
     res.json({ status : 200, },);
 },);
 
-app.route('/',).get((req, res, next,) => {
+app.route('/',).get((req, res,) => {
     res.send('Hey',);
 },);
 

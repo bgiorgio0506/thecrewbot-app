@@ -1,5 +1,5 @@
 // Import dependencies
-import React, { useEffect, } from 'react';
+import React from 'react';
 import { ipcRenderer, } from 'electron';
 import getLang from '../js/langLib';
 

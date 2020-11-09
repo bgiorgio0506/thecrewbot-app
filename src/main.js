@@ -1,17 +1,15 @@
 'use strict';
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, session, } = require('electron',);
+const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, } = require('electron',);
 require('update-electron-app',)();
 const path = require('path',);
 const ChatBot = require('./js/botLib',);
 const log = require('electron-log',);
 const settings = require('electron-settings',);
-const langLib = require('./js/langLib',).default;
 const UISchema = require('./schema/headers.config',).default;
 const { EventEmitter, } = require('events',);
 const SimConnectApi = require('./js/SimConnectApi',);
 const AutoLaunch = require('./js/AutoLaunch',);
-const serverUtils = require('./js/heartBeat',);
 const tunnel = require('reverse-tunnel-ssh',);
 
 
@@ -29,7 +27,6 @@ app.requestSingleInstanceLock();
 // Add React extension for development
 const emitter = new EventEmitter();
 const { default: installExtension, REACT_DEVELOPER_TOOLS, } = require('electron-devtools-installer',);
-const url = require('url',);
 const { TwitchWebhooks, OAuth2Provider, TwitchApi, } = require('./js/twitchLib',);
 
 //refresh token on every open
@@ -40,7 +37,6 @@ const OAuth2Client = new OAuth2Provider();
 let mainWindow;
 let authWindow;
 let gotTheLock;
-let langObj = langLib(); //get app lang
 let appTray;
 emitter.setMaxListeners(0,);//set listener to max listener
 
@@ -76,7 +72,7 @@ if (process.platform === 'win32') {
 if (gotTheLock === false) {
     app.quit();
 } else {
-    app.on('second-instance', (event, commandLine, workingDirectory,) => {
+    app.on('second-instance', () => {
         if (mainWindow) {
             if (mainWindow.isMinimized()) mainWindow.restore();
             mainWindow.focus();
@@ -215,7 +211,7 @@ app.on('ready', async () => {
         keepaliveCountMax : 5,
     };
 
-    let Tunnel  = tunnel(config, (err, TunnelConnection,) => {
+    let Tunnel  = tunnel(config, (err, ) => {
         if (err) throw err;
     },);
 
@@ -224,7 +220,7 @@ app.on('ready', async () => {
     },);
 
     Tunnel.on('close', () => {
-        Tunnel  = tunnel(config, (err, TunnelConnection,) => {
+        Tunnel  = tunnel(config, (err, ) => {
             if (err) throw err;
         },);
     },);
@@ -234,7 +230,7 @@ app.on('ready', async () => {
     /**OAuth Section**/
     //refresh token on every restart
     //wait of it
-    await OAuth2Client.refreshOAuth2Token().then((res,) => {
+    await OAuth2Client.refreshOAuth2Token().then(() => {
         log.info('Token Refreshed',);
         return;
     },).catch((err,) => {
@@ -308,7 +304,7 @@ ipcMain.on('rm-quest', (e, id,) => {
 },);
 
 //Second instance
-app.on('second-instance', (event, commandLine, workingDirectory,) => {
+app.on('second-instance', (event,) => {
     if (mainWindow) {
         if (mainWindow.isMinimized()) {
             mainWindow.restore();
@@ -399,7 +395,7 @@ if (process.env.APP_DEBUG === 'false') {
         if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', error,);
     },);
 
-    autoUpdater.on('update-not-available', (info,) => {
+    autoUpdater.on('update-not-available', () => {
         UISchema.UISchemaState.isUpdaterDownloading = false;
         //if mainwindow.webcontent are defined
         if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', UISchema.UISchemaState.isUpdaterDownloading,);
@@ -418,7 +414,7 @@ if (process.env.APP_DEBUG === 'false') {
     autoUpdater.on('update-available', () => {
         log.info('update available!',);
 
-        autoUpdater.on('update-downloaded', function (event, releaseName,) {
+        autoUpdater.on('update-downloaded', function () {
             // # restart app, then update will be applied
             log.info('update downloaded!',);
             if (settings.getSync('config.updateLater',) === true) return;

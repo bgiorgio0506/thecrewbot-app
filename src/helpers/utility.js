@@ -14,7 +14,7 @@ exports.filterArray = (arr,) => {
 
 
 exports.filterObjArr = (arr,) => {
-    return arr.filter((value, index, array,) => {
+    return arr.filter((value, index,) => {
         index = index - 1;
         if (index == -1) return value; // first in the arr
         if (value.id != arr[index].id) {

@@ -115,7 +115,7 @@ ClientBot.on('message', (channel, tags, message, self,) => {
 
 },);
 
-ClientBot.on('connected', (channel,) => {
+ClientBot.on('connected', () => {
     log.info('Joined channel & listening ',);
 },);
 

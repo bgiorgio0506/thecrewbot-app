@@ -1,4 +1,4 @@
-const { http, https, } = require('follow-redirects',);
+const { https, } = require('follow-redirects',);
 
 exports.sendHeartBeat = () => {
     return new Promise((resolve, reject,) => {

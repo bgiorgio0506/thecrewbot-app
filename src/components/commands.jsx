@@ -1,5 +1,4 @@
-import { ipcRenderer, } from 'electron';
-import React, { useEffect, useState, } from 'react';
+import React from 'react';
 import CommandSchema from '../schema/commandConfig';
 
 const CreateCommand = () => {

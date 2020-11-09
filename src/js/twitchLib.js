@@ -61,7 +61,7 @@ exports.OAuth2Provider = class  OAuth2Provider{
      * @description returns OAuth2 profile data
      */
     getOAuth2Data(){
-        return new Promise((resolve, reject,) => {
+        return new Promise((resolve,) => {
             const OAuth2Store = new store({ name : 'data', encryptionKey : process.env.SESSION_SECRET, },);
             let OAuth2Data  = OAuth2Store.get('profile',);
             if (OAuth2Data === undefined ) return resolve(null,);
@@ -95,7 +95,7 @@ exports.OAuth2Provider = class  OAuth2Provider{
                         data.push(dataChuck,);
                     },);
 
-                    res.on('end', (dataChuck,) => {
+                    res.on('end', () => {
                         let parsedBody = JSON.parse(data.toString(),);
                         log.info(parsedBody,);
                         OAuth2Data.accessToken = parsedBody.access_token;
@@ -148,7 +148,7 @@ exports.TwitchApi = class TwitchApi{
                     data.push(dataChuck,);
                 },);
 
-                res.on('end', (dataChuck,) => {
+                res.on('end', () => {
                     let jsonBody = Buffer.concat(data,);
                     jsonBody = JSON.stringify(jsonBody.toString(),);
                     console.log(jsonBody,);
@@ -183,7 +183,7 @@ exports.TwitchApi = class TwitchApi{
                     data.push(dataChuck,);
                 },);
 
-                res.on('end', (dataChuck,) => {
+                res.on('end', () => {
                     let jsonBody = Buffer.concat(data,);
                     jsonBody = JSON.stringify(jsonBody.toString(),);
                     resolve(JSON.parse(jsonBody,),);
@@ -217,7 +217,7 @@ exports.TwitchApi = class TwitchApi{
                     data.push(dataChuck,);
                 },);
 
-                res.on('end', (dataChuck,) => {
+                res.on('end', () => {
                     let jsonBody = Buffer.concat(data,);
                     jsonBody = JSON.stringify(jsonBody.toString(),);
                     resolve(JSON.parse(jsonBody,),);
@@ -253,7 +253,7 @@ exports.TwitchApi = class TwitchApi{
                     data.push(dataChuck,);
                 },);
 
-                res.on('end', (dataChuck,) => {
+                res.on('end', () => {
                     let jsonBody = Buffer.concat(data,);
                     jsonBody = JSON.stringify(jsonBody.toString(),);
                     resolve(JSON.parse(jsonBody,),);
@@ -288,7 +288,7 @@ exports.TwitchApi = class TwitchApi{
                     data.push(dataChuck,);
                 },);
 
-                res.on('end', (dataChuck,) => {
+                res.on('end', () => {
                     let jsonBody = Buffer.concat(data,);
                     jsonBody = JSON.stringify(jsonBody.toString(),);
                     resolve(JSON.parse(jsonBody,),);
@@ -322,7 +322,7 @@ exports.TwitchApi = class TwitchApi{
                     data.push(dataChuck,);
                 },);
 
-                res.on('end', (dataChuck,) => {
+                res.on('end', () => {
                     let jsonBody = Buffer.concat(data,);
                     jsonBody = JSON.stringify(jsonBody.toString(),);
                     resolve(JSON.parse(jsonBody,),);
@@ -381,7 +381,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
                     data.push(chunck,);
                 },);
 
-                res.on('close', (chunk,) => {
+                res.on('close', () => {
                     console.log(data.toString(),);
                     resolve(res.statusCode,);
                 },);
@@ -426,7 +426,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
                     data.push(chunck,);
                 },);
 
-                res.on('close', (chunk,) => {
+                res.on('close', () => {
                     console.log(data.toString(),);
                     resolve(res.statusCode,);
                 },);
@@ -472,7 +472,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
                     data.push(chunck,);
                 },);
 
-                res.on('close', (chunk,) => {
+                res.on('close', () => {
                     console.log(data.toString(),);
                     resolve(res.statusCode,);
                 },);
@@ -517,7 +517,7 @@ exports.TwitchWebhooks = class TwitchWebhooks{
                     data.push(chunck,);
                 },);
 
-                res.on('close', (chunk,) => {
+                res.on('close', () => {
                     console.log(data.toString(),);
                     resolve(res.statusCode,);
                 },);
@@ -572,8 +572,8 @@ exports.TwitchWebhooks = class TwitchWebhooks{
 
     }
 
-    unSubTopic(topic,){
-
-    }
+    //unSubTopic(topic,){
+    //
+    //}
 
 };

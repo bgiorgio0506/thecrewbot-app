@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useState, } from 'react';
 import { ipcRenderer, } from 'electron';
 
 const CreateToolbar = () => {
@@ -11,7 +11,7 @@ const CreateToolbar = () => {
     },);
 
     ipcRenderer.on('simconnect-error', (e , err,) => {
-        console.log('Setting to true',);
+        console.log('Setting to true', err,);
         setSimConnectState(false,); // will display error one way or another
     },);
 
