@@ -4,13 +4,13 @@ import CommandSchema from '../schema/commandConfig';
 const CreateCommand = () => {
     return (<div className = "center-panel">
         <p className= 'section'>Command Dashboard</p>
-        <ul>
+        <div className={'commandWrapper'}>
             {
                 CommandSchema.configData.commands.map((cmd,) => {
-                    return (<p key={cmd.commandString}>{JSON.stringify(cmd,)}</p>);
+                    return (<div className= {'commandItem'} key={cmd.commandString}>{JSON.stringify(cmd,)}</div>);
                 },)
             }
-        </ul>
+        </div>
     </div>);
 };
 

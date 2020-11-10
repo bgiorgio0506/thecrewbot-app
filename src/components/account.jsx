@@ -25,29 +25,34 @@ class CreateAccount extends Component {
     }
 
     componentDidMount() {
-
+        /*eslint-disable promise/no-nesting*/
         twitchClient.getOAuth2Data().then((profile,) => {
             this.setState({ isLoading : true, },);
 
+            //async operation set finish loading only on last ops
             if (profile !== null) {
                 TwitchApi.getUser().then((UserProfile,) => {
                     UserProfile = JSON.parse(UserProfile,);
-                    return TwitchApi.getUserFollows().then((follows,) => {
-                        follows = JSON.parse(follows,);
-                        return TwitchApi.getUserSubs().then((subs,) => {
-                            subs = JSON.parse(subs,);
-                            console.log(subs,);
-                            if (subs.data !== undefined) subs = parseInt(subs.data.length,);
-                            else subs = 0;
-                            return this.setState({ isLoading : false, error : null, data : UserProfile.data, follow : follows.total, subs : subs, },);
-                        },).catch((err,) => {
-                            console.info(err,);
-                            return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
-                        },);
-                    },).catch((err,) => {
-                        console.info(err,);
-                        return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
-                    },);
+                    return this.setState({ isLoading : false, error : null, data : UserProfile.data, },);
+                },).catch((err,) => {
+                    console.info(err,);
+                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                },);
+
+                TwitchApi.getUserFollows().then((follows,) => {
+                    follows = JSON.parse(follows,);
+                    return this.setState({ isLoading : false, error : null,  follow : follows.total,  },);
+                },).catch((err,) => {
+                    console.info(err,);
+                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                },);
+
+                TwitchApi.getUserSubs().then((subs,) => {
+                    subs = JSON.parse(subs,);
+                    console.log(subs,);
+                    if (subs.data !== undefined) subs = parseInt(subs.data.length,);
+                    else subs = 0;
+                    return  this.setState({ isLoading : false, error : null,  subs : subs,  },);
                 },).catch((err,) => {
                     console.info(err,);
                     return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);

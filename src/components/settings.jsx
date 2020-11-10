@@ -58,6 +58,7 @@ const CreateSettings = () => {
             <p className= 'note'>*This button will connect the application to twitch</p>
             <button className="twitchBtn" onClick={() => {
                 //Let's start OAuth2 flow
+                /*eslint-disable promise/no-nesting*/
                 const OAuth2Strategy = new OAuth2Provider();
                 OAuth2Strategy.startOAuth2Strategy().then((res,) => {
                     if (typeof res !== 'object'){

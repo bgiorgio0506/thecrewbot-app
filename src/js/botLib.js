@@ -41,7 +41,7 @@ exports.connect = () => {
 
 
 
-ClientBot.on('message', (channel, tags, message, self,) => {
+ClientBot.on('message', (channel, tags, message,) => {
 
     //Command sys
     let prefix = settings.getSync('config.botPrefix',);// get settings

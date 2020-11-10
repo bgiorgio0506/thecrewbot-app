@@ -212,7 +212,7 @@ div {
   background: #ddd
 }
 
-.settingsSection select{ 
+.settingsSection select{
   background :#f2f2f2;
   padding: 5px 5px;
   outline:none;
@@ -222,7 +222,7 @@ div {
   font-size: 16px;
 }
 
-.settingsSection select option{ 
+.settingsSection select option{
   background :#f2f2f2;
   outline:none;
   border-radius: 6px;
@@ -487,7 +487,7 @@ div {
   overflow: hidden;
   position: absolute;
   bottom: 10px;
-  height: auto; 
+  height: auto;
   width: 768px;
   margin-left: 30px;
   display: inline-flex;
@@ -737,6 +737,18 @@ section.slideshow div.slideshow-controller span{
 .slideStart{
   right: 0px;
 }
+
+/**Commands**/
+.commandItem{
+    height: 47px;
+    align-content: center;
+    display: inline-flex;
+}
+
+.commandWrapper{
+    display: inline-block;
+}
+
 @media screen and (prefers-color-scheme: dark) {
   /* Dark moe */
   body {
