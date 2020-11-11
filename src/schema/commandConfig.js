@@ -51,6 +51,7 @@ const config = {
             commandString   : 'tutorials',
             commandType     : 'defaults',
             isCommandActive : true,
+            permissions     : 0,
             commandFunction : async function(client, channel,){
                 client.say(channel, 'Tutorials link tbh use !social to get my Youtube Channel',);
             },

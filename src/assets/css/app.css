@@ -743,10 +743,18 @@ section.slideshow div.slideshow-controller span{
     height: 47px;
     align-content: center;
     display: inline-flex;
+    border: 1px solid black;
+    margin: 10px 0px;
 }
 
 .commandWrapper{
     display: inline-block;
+}
+
+.commandString-Label{
+    font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 @media screen and (prefers-color-scheme: dark) {
