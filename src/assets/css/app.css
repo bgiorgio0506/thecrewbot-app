@@ -741,10 +741,10 @@ section.slideshow div.slideshow-controller span{
 /**Commands**/
 .commandItem{
     height: 47px;
+    width: 600px;
     align-content: center;
     display: inline-flex;
-    border: 1px solid black;
-    margin: 10px 0px;
+    margin: 7px 0px;
 }
 
 .commandWrapper{
@@ -755,6 +755,28 @@ section.slideshow div.slideshow-controller span{
     font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
     font-weight: bold;
     font-size: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.commandString-type {
+    font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.commandString-status {
+    font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 200px;
+    color: grey;
+}
+
+.activeCmd{
+    color: forestgreen;
 }
 
 @media screen and (prefers-color-scheme: dark) {

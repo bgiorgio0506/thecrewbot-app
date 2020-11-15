@@ -103,6 +103,20 @@ ClientBot.on('message', (channel, tags, message,) => {
         ClientBot.say(channel, config.configData.commands.length.toString(),);
     }
 
+    // debug mod command
+    if (command  === 'toggleactive' && tags.mod === true){
+        let commandPos = utils.findIndexInObjArr(config.configData.commands, 'commandString', messageArr[1],);
+        if (commandPos !== -1){
+            let commandObj = config.configData.commands[commandPos];
+            if (commandObj.isCommandActive === true) {
+                config.configData.commands[commandPos].isCommandActive = false;
+                ClientBot.say(channel, 'Command disactivated',);
+            } else {
+                config.configData.commands[commandPos].isCommandActive = true;
+                ClientBot.say(channel, 'Command activated',);
+            }
+        }
+    }
 
 
     //dynamic bot commands
@@ -110,7 +124,8 @@ ClientBot.on('message', (channel, tags, message,) => {
     if (commandIndex !== -1){
         log.info(commandIndex,);
         let commandObj = config.configData.commands[commandIndex];
-        commandObj.commandFunction(ClientBot, channel,);
+        if (commandObj.isCommandActive === true) commandObj.commandFunction(ClientBot, channel,);
+        else log.info('Command deactivated',);
     }
 
 },);

@@ -13,7 +13,6 @@ const CreateClipsList = () => {
     let thumb = [];
     const [lives, setLives,] = useState(res,);
     const [loading, setLoading,] = useState(true,);
-    const [thumbnails, setThumnails,] = useState([],);
     const [currentSlide, setCurrentSlide,] = useState(0,);
     const [currentSlideStyle, setCurrentSlideStyle,] = useState({},);
     const [nextSlideStyle, setNextSlideStyle,] = useState({},);
@@ -41,7 +40,6 @@ const CreateClipsList = () => {
             },);
             console.log(res.data,);
             setLives(res.data,);
-            setThumnails(thumb,);
             setCurrentSlideStyle({
                 backgroundImage : 'url(\'' + thumb[currentSlide] + '\')',
             },);

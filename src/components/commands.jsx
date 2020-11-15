@@ -18,10 +18,10 @@ const CreateCommand = () => {
             {
                 CommandSchema.configData.commands.map((cmd,) => {
                     return (<div className= {'commandItem'} key={cmd.commandString}>
-                        <p className= {'commandString-Label'}>Name: {cmd.commandString}</p>
-                        <p className= {'commandString-Label'}>Type: {cmd.commandType}</p>
-                        <p className= {'commandString-Label'}>Active: {cmd.isCommandActive}</p>
+                        <p className= {'commandString-Label'}>Command: {cmd.commandString}</p>
+                        <p className= {'commandString-type'}>Type : {cmd.commandType}</p>
                         <p className= {'commandString-Label'}>Permission: {getPermissionsLabel(cmd.permissions,)}</p>
+                        <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
                     </div>);
                 },)
             }
