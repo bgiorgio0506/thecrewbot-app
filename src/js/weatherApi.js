@@ -12,7 +12,6 @@ exports.getMetarByIcao =  (icao,) => {
             maxRedirects : 20,
         };
         let request = https.request(requestOptions, (res,) => {
-            console.log(request,);
             let data = [];
 
             res.on('data', (dataChuck,) => {
@@ -22,6 +21,7 @@ exports.getMetarByIcao =  (icao,) => {
             res.on('end', () => {
                 let jsonBody = Buffer.concat(data,);
                 jsonBody = JSON.stringify(jsonBody.toString(),);
+                console.log(jsonBody,);
                 resolve(JSON.parse(jsonBody,),);
             },);
 

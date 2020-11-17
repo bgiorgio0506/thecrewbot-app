@@ -85,28 +85,49 @@ const config = {
             },
         },
         {
-            commandString   : 'metar',
-            commandType     : 'weather',
-            isCommandActive : true,
-            permissions     : 0,
-            commandFunction : async function(client, channel, icao,){
+            commandString    : 'metar',
+            commandType      : 'weather',
+            isCommandActive  : true,
+            isCoolDownSet    : true,
+            isCoolDownActive : false,
+            coolDownTime     : 30000,
+            permissions      : 0,
+            commandFunction  : async function(client, channel, icao,){
                 if ( icao !== undefined && icao.length === 4 ){
                     let response  = await  wxApi.getMetarByIcao(icao,);
                     response = JSON.parse(response,);
                     client.say(channel, response.data[0].raw_text,);
+                    if (this.isCoolDownActive ===  false && this.isCoolDownSet === true ){
+                        this.isCoolDownActive = true;
+                        setTimeout(() => {
+                            this.isCoolDownActive = false;
+                            console.log('Out from cooldown',);
+                        }, parseInt(this.coolDownTime,),);
+                    }
                 } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
             },
         },
         {
-            commandString   : 'taf',
-            commandType     : 'weather',
-            isCommandActive : true,
-            permissions     : 0,
-            commandFunction : async function(client, channel, icao,){
+            commandString    : 'taf',
+            commandType      : 'weather',
+            isCommandActive  : true,
+            isCoolDownSet    : true,
+            isCoolDownActive : false,
+            coolDownTime     : 30000,
+            permissions      : 0,
+            commandFunction  : async function(client, channel, icao,){
+                console.log('Called with icao: '+icao,);
                 if ( icao !== undefined && icao.length === 4 ){
-                    let response  = await  wxApi.getTafByIcao(icao,);
+                    let response  = await  wxApi.getTafByIcao(icao,).catch((e,) => { console.log(e,); },);
                     response = JSON.parse(response,);
                     client.say(channel, response.data[0].raw_text,);
+                    if (this.isCoolDownActive ===  false && this.isCoolDownSet === true ){
+                        this.isCoolDownActive = true;
+                        setTimeout(() => {
+                            this.isCoolDownActive = false;
+                            console.log('Out from cooldown',);
+                        }, parseInt(this.coolDownTime,),);
+                    }
                 } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
             },
         },

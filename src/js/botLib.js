@@ -124,7 +124,17 @@ ClientBot.on('message', (channel, tags, message,) => {
     if (commandIndex !== -1){
         log.info(commandIndex,);
         let commandObj = config.configData.commands[commandIndex];
-        if (commandObj.isCommandActive === true) commandObj.commandFunction(ClientBot, channel, messageArr[1],);
+        if (commandObj.isCommandActive === true && commandObj.isCoolDownActive === false) {
+            commandObj.commandFunction(ClientBot, channel, messageArr[1],);
+            //commandObj.isCoolDownActive = true;
+            //if (commandObj.isCoolDownSet === true && commandObj.coolDownTime !== 0){
+            //    ClientBot.say(channel, 'Command on cooldown',);
+            //}
+            //setTimeout(() => {
+            //    commandObj.isCoolDownActive = false;
+            //}, commandObj.coolDownTime,);
+        }
+        else if ( commandObj.isCoolDownActive === true)  ClientBot.say(channel, 'Command on cooldown',);
         else log.info('Command deactivated',);
     }
 
