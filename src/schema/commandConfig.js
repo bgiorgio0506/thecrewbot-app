@@ -1,5 +1,6 @@
 const { TwitchApi, } = require('../js/twitchLib',);
 const twitchApi = new TwitchApi();
+const wxApi = require('../js/weatherApi',);
 
 /**
  * @todo permissions
@@ -81,6 +82,32 @@ const config = {
             permissions     : 0,
             commandFunction : async function(client, channel,){
                 client.say(channel, 'Bot version returned: '+ process.env.APP_VERSION+ ' permissions: 0',);
+            },
+        },
+        {
+            commandString   : 'metar',
+            commandType     : 'weather',
+            isCommandActive : true,
+            permissions     : 0,
+            commandFunction : async function(client, channel, icao,){
+                if ( icao !== undefined && icao.length === 4 ){
+                    let response  = await  wxApi.getMetarByIcao(icao,);
+                    response = JSON.parse(response,);
+                    client.say(channel, response.data[0].raw_text,);
+                } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
+            },
+        },
+        {
+            commandString   : 'taf',
+            commandType     : 'weather',
+            isCommandActive : true,
+            permissions     : 0,
+            commandFunction : async function(client, channel, icao,){
+                if ( icao !== undefined && icao.length === 4 ){
+                    let response  = await  wxApi.getTafByIcao(icao,);
+                    response = JSON.parse(response,);
+                    client.say(channel, response.data[0].raw_text,);
+                } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
             },
         },
     ],

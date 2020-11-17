@@ -124,7 +124,7 @@ ClientBot.on('message', (channel, tags, message,) => {
     if (commandIndex !== -1){
         log.info(commandIndex,);
         let commandObj = config.configData.commands[commandIndex];
-        if (commandObj.isCommandActive === true) commandObj.commandFunction(ClientBot, channel,);
+        if (commandObj.isCommandActive === true) commandObj.commandFunction(ClientBot, channel, messageArr[1],);
         else log.info('Command deactivated',);
     }
 
