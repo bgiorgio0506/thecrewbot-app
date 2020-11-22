@@ -1,5 +1,7 @@
 const { https, } = require('follow-redirects',);
 
+/**@todo rewrite api method with anxios */
+
 exports.getMetarByIcao =  (icao,) => {
     return new Promise((resolve, reject,) => {
         console.log('Called with icao: '+icao,);
