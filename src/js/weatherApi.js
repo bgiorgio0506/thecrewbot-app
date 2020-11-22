@@ -2,6 +2,7 @@ const { https, } = require('follow-redirects',);
 
 exports.getMetarByIcao =  (icao,) => {
     return new Promise((resolve, reject,) => {
+        console.log('Called with icao: '+icao,);
         let requestOptions = {
             method   : 'GET',
             hostname : process.env.WX_HOST_URI,
@@ -13,20 +14,23 @@ exports.getMetarByIcao =  (icao,) => {
         };
         let request = https.request(requestOptions, (res,) => {
             let data = [];
+            console.log(request,);
 
             res.on('data', (dataChuck,) => {
                 data.push(dataChuck,);
+                console.log(dataChuck,);
             },);
 
             res.on('end', () => {
                 let jsonBody = Buffer.concat(data,);
                 jsonBody = JSON.stringify(jsonBody.toString(),);
                 console.log(jsonBody,);
-                resolve(JSON.parse(jsonBody,),);
+                return resolve(JSON.parse(jsonBody,),);
             },);
 
             res.on('error', (err,) => {
-                reject(err,);
+                console.error(err,);
+                return reject(err,);
             },);
         },);
 
@@ -56,11 +60,11 @@ exports.getTafByIcao =  (icao,) => {
             res.on('end', () => {
                 let jsonBody = Buffer.concat(data,);
                 jsonBody = JSON.stringify(jsonBody.toString(),);
-                resolve(JSON.parse(jsonBody,),);
+                return resolve(JSON.parse(jsonBody,),);
             },);
 
             res.on('error', (err,) => {
-                reject(err,);
+                return reject(err,);
             },);
         },);
 

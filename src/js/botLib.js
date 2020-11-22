@@ -41,7 +41,7 @@ exports.connect = () => {
 
 
 
-ClientBot.on('message', (channel, tags, message,) => {
+ClientBot.on('message', async(channel, tags, message,) => {
 
     //Command sys
     let prefix = settings.getSync('config.botPrefix',);// get settings
@@ -122,20 +122,21 @@ ClientBot.on('message', (channel, tags, message,) => {
     //dynamic bot commands
     log.info(commandIndex+ ' '+ command,);
     if (commandIndex !== -1){
-        log.info(commandIndex,);
+        //pick the command obj
         let commandObj = config.configData.commands[commandIndex];
+        log.info(commandIndex, commandObj,);
+        //check for coolDown
         if (commandObj.isCommandActive === true && commandObj.isCoolDownActive === false) {
-            commandObj.commandFunction(ClientBot, channel, messageArr[1],);
-            //commandObj.isCoolDownActive = true;
-            //if (commandObj.isCoolDownSet === true && commandObj.coolDownTime !== 0){
-            //    ClientBot.say(channel, 'Command on cooldown',);
-            //}
-            //setTimeout(() => {
-            //    commandObj.isCoolDownActive = false;
-            //}, commandObj.coolDownTime,);
+            //check for permission setting
+            if (commandObj.permissions === 1)
+                //check user perm
+                if (tags.mod === true)
+                    await commandObj.commandFunction(ClientBot, channel, messageArr[1],);
+                else ClientBot.say(channel, 'You are not allowed to use this command please stop spamming',);
+            else await commandObj.commandFunction(ClientBot, channel, messageArr[1],);
         }
         else if ( commandObj.isCoolDownActive === true)  ClientBot.say(channel, 'Command on cooldown',);
-        else log.info('Command deactivated',);
+        else log.info('Command deactivated',); //command deactivated
     }
 
 },);
