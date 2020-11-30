@@ -5,8 +5,10 @@
       }]
     ],
     "plugins": [
-      ["@babel/transform-runtime" ,{ 
-        "regenerator": true       
+      ["@babel/transform-runtime" ,{
+        "regenerator": true,
+        "corejs":3,
+        "helpers": true
         } ]
   ]
   }

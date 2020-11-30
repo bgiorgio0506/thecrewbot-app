@@ -4,7 +4,7 @@ const event = require('events',);
 const utils = require('../helpers/utility',);
 const log = require('electron-log',);
 const langLib = require('./langLib',).default;
-const config = require('../schema/commandConfig',);
+const { configData, }= require('../schema/commandConfig',);
 
 let langObj = langLib(); //get app lang
 
@@ -52,7 +52,7 @@ ClientBot.on('message', async(channel, tags, message,) => {
     if (messageArr[0].includes(prefix,) !== true) return;
     const args = messageArr[0].slice(prefix.length,).trim().split(/ +/g,);
     const command = args.shift().toLowerCase();
-    let commandIndex = utils.findIndexInObjArr(config.configData.commands, 'commandString', command,);
+    let commandIndex = utils.findIndexInObjArr(configData.commands, 'commandString', command,);
 
     //log.info(message, tags, channel, self)
     if (command === 'domanda') {
@@ -100,19 +100,20 @@ ClientBot.on('message', async(channel, tags, message,) => {
 
     //debug command
     if (command === 'totaldynamicommands'){
-        ClientBot.say(channel, config.configData.commands.length.toString(),);
+        ClientBot.say(channel, configData.commands.length.toString(),);
     }
+
 
     // debug mod command
     if (command  === 'toggleactive' && tags.mod === true){
-        let commandPos = utils.findIndexInObjArr(config.configData.commands, 'commandString', messageArr[1],);
+        let commandPos = utils.findIndexInObjArr(configData.commands, 'commandString', messageArr[1],);
         if (commandPos !== -1){
-            let commandObj = config.configData.commands[commandPos];
+            let commandObj = configData.commands[commandPos];
             if (commandObj.isCommandActive === true) {
-                config.configData.commands[commandPos].isCommandActive = false;
+                configData.commands[commandPos].isCommandActive = false;
                 ClientBot.say(channel, 'Command disactivated',);
             } else {
-                config.configData.commands[commandPos].isCommandActive = true;
+                configData.commands[commandPos].isCommandActive = true;
                 ClientBot.say(channel, 'Command activated',);
             }
         }
@@ -120,24 +121,27 @@ ClientBot.on('message', async(channel, tags, message,) => {
 
 
     //dynamic bot commands
-    log.info(commandIndex+ ' '+ command,);
+    //log.info(commandIndex+ ' '+ command,);
     if (commandIndex !== -1){
         //pick the command obj
-        let commandObj = config.configData.commands[commandIndex];
-        log.info(commandIndex, commandObj,);
+        let commandObj = configData.commands[commandIndex];
+        log.info(commandIndex, commandObj.eventString,);
         //check for coolDown
         if (commandObj.isCommandActive === true && commandObj.isCoolDownActive === false) {
             //check for permission setting
             if (commandObj.permissions === 1)
-                //check user perm
+            //check user perm
                 if (tags.mod === true)
+                    //eventEmitter.emit(commandObj.eventString, { client : ClientBot, channel : channel, commandObject : commandObj ,icao : messageArr[1], },);
                     await commandObj.commandFunction(ClientBot, channel, messageArr[1],);
+                //await commandObj.commandFunction(ClientBot, channel, messageArr[1],);
                 else ClientBot.say(channel, 'You are not allowed to use this command please stop spamming',);
             else await commandObj.commandFunction(ClientBot, channel, messageArr[1],);
         }
         else if ( commandObj.isCoolDownActive === true)  ClientBot.say(channel, 'Command on cooldown',);
         else log.info('Command deactivated',); //command deactivated
     }
+
 
 },);
 
@@ -153,13 +157,16 @@ eventEmitter.on('rm-quest', (id,) => {
 
 eventEmitter.on('fetch-question-list', () => {
     log.info('Sending res',);
-    eventEmitter.emit('fetch-question-list-res', questQueue,);
+    return eventEmitter.emit('fetch-question-list-res', questQueue,);
 },);
 
+
+//outbound listening for internal events
 exports.on = (event, listener,) => {
-    eventEmitter.on(event, listener,);
+    return eventEmitter.on(event, listener,);
 };
 
+//inbound emit for internal listening
 exports.emit =(e, arg,) => {
-    eventEmitter.emit(e, arg,);
+    return eventEmitter.emit(e, arg,);
 };

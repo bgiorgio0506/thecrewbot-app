@@ -18,6 +18,8 @@ const tunnel = require('reverse-tunnel-ssh',);
 //Servers
 require('./controllers/OAuth2Server/OAuth2Server ',);
 require('./schema/settings.config',);
+require('./commands/commandsEvents',);
+
 
 
 
@@ -278,6 +280,13 @@ app.on('ready', async () => {
         SimConnectApi.connectToSim();
     }, 10000,);
     /**End */
+
+    //const wxApi  = require('./js/weatherApi',);
+    //setInterval(async() => {
+    //    let response = await wxApi.getMetarByIcao('LICC',);
+    //    console.log(response,);
+    //    console.count('Called',);
+    //}, 10000,);
 },);
 
 // Quit when all windows are closed.
