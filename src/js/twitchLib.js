@@ -124,7 +124,7 @@ exports.TwitchApi = class TwitchApi{
         const OAuth2Store = new store({ name : 'data', encryptionKey : process.env.SESSION_SECRET, },);
         this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
         this.OAuth2Data = OAuth2Store.get('profile',);
-        if (this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) throw new Error('Missing access token',);
+        if (this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) return log.error(new Error('Missing Token',),);
     }
 
     /**NOTE for all methods ${this.OAuth2Data.data[0].id} use this after testing */

@@ -13,7 +13,7 @@ const config = {
         {
             commandString    : 'paolo',
             commandType      : 'defaults',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.paolo',
@@ -35,7 +35,7 @@ const config = {
         {
             commandString    : 'social',
             commandType      : 'defaults',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.social',
@@ -106,12 +106,13 @@ const config = {
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
-            permissions      : 1,
+            permissions      : 0,
             eventString      : 'weather.metar', //event to be emitted
             commandFunction  : async function (client, channel, icao,) {
                 if (icao !== undefined && icao.length === 4) {
+                    let response = '';
                     try {
-                        let response = await wxApi.getMetarByIcao(icao,);
+                        response = await wxApi.getMetarByIcao(icao,);
                         response = JSON.parse(response,);
                         if (response.data[0] !== undefined)
                             client.say(channel, response.data[0].raw_text,);
@@ -119,7 +120,7 @@ const config = {
                     } catch (error) {
                         console.error(error,);
                     }
-                    if (this.isCoolDownActive === false && this.isCoolDownSet === true) {
+                    if (this.isCoolDownActive === false && this.isCoolDownSet === true && response !== undefined) {
                         this.isCoolDownActive = true;
                         setTimeout(() => {
                             this.isCoolDownActive = false;
@@ -136,13 +137,14 @@ const config = {
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
-            permissions      : 1,
+            permissions      : 0,
             commandFunction  : async function (client, channel, icao,) {
                 console.log('Called with icao: ' + icao,);
                 if (icao !== undefined && icao.length === 4) {
                     console.log('Called with icao: ' + icao,);
+                    let response = '';
                     try {
-                        let response = await wxApi.getTafByIcao(icao,);
+                        response = await wxApi.getTafByIcao(icao,);
                         response = JSON.parse(response,);
                         if (response.data[0] !== undefined)
                             client.say(channel, response.data[0].raw_text,);
@@ -150,7 +152,7 @@ const config = {
                     } catch (error) {
                         console.error(error,);
                     }
-                    if (this.isCoolDownActive ===  false && this.isCoolDownSet === true ){
+                    if (this.isCoolDownActive ===  false && this.isCoolDownSet === true && response !== undefined ){
                         this.isCoolDownActive = true;
                         setTimeout(() => {
                             this.isCoolDownActive = false;

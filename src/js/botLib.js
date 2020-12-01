@@ -142,6 +142,9 @@ ClientBot.on('message', async(channel, tags, message,) => {
         else log.info('Command deactivated',); //command deactivated
     }
 
+    //setInterval( () => {
+    //    ClientBot.say(channel, 'Solo per oggi i comandi !metar  e !taf saranno disponibili in chat in modalità BETA. Usa !metar <icao aeroporto> !taf <icao aeroporto>',);
+    //}, 300000,);
 
 },);
 
