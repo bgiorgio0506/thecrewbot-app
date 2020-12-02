@@ -53,8 +53,7 @@ ClientBot.on('message', async(channel, tags, message,) => {
     const args = messageArr[0].slice(prefix.length,).trim().split(/ +/g,);
     const command = args.shift().toLowerCase();
     let commandIndex = utils.findIndexInObjArr(configData.commands, 'commandString', command,);
-
-    //log.info(message, tags, channel, self)
+    const persistenConfig = settings.getSync('config.commadConfig',);
     if (command === 'domanda') {
         let questObj = {};
         let messageArr = message.split(' ',); // split the string into an Array
@@ -108,12 +107,12 @@ ClientBot.on('message', async(channel, tags, message,) => {
     if (command  === 'toggleactive' && tags.mod === true){
         let commandPos = utils.findIndexInObjArr(configData.commands, 'commandString', messageArr[1],);
         if (commandPos !== -1){
-            let commandObj = configData.commands[commandPos];
+            let commandObj = persistenConfig.commands[commandPos];
             if (commandObj.isCommandActive === true) {
-                configData.commands[commandPos].isCommandActive = false;
+                await configData.commands[commandPos].toggleActive(commandPos, false,);
                 ClientBot.say(channel, 'Command disactivated',);
             } else {
-                configData.commands[commandPos].isCommandActive = true;
+                await configData.commands[commandPos].toggleActive(commandPos,true,);
                 ClientBot.say(channel, 'Command activated',);
             }
         }
@@ -125,11 +124,12 @@ ClientBot.on('message', async(channel, tags, message,) => {
     if (commandIndex !== -1){
         //pick the command obj
         let commandObj = configData.commands[commandIndex];
-        log.info(commandIndex, commandObj.eventString,);
+        let persistentCommand = persistenConfig.commands[commandIndex];
+        log.info(commandIndex, persistentCommand,);
         //check for coolDown
-        if (commandObj.isCommandActive === true && commandObj.isCoolDownActive === false) {
+        if (persistentCommand.isCommandActive === true && commandObj.isCoolDownActive === false) {
             //check for permission setting
-            if (commandObj.permissions === 1)
+            if (persistentCommand.permissions === 1)
             //check user perm
                 if (tags.mod === true)
                     //eventEmitter.emit(commandObj.eventString, { client : ClientBot, channel : channel, commandObject : commandObj ,icao : messageArr[1], },);

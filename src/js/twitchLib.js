@@ -5,6 +5,7 @@ const log = require('electron-log',);
 const event = require('events',);
 const eventEmitter = new event.EventEmitter();
 const webHookServer = require('../controllers/WebHook/webHookServer',);
+const { net, } = require('electron',);
 
 exports.OAuth2Provider = class  OAuth2Provider{
 
@@ -28,9 +29,11 @@ exports.OAuth2Provider = class  OAuth2Provider{
                 path         : '/',
                 maxRedirexts : 20,
                 method       : 'GET',
+                protocol     : 'http:',
             };
 
-            let req = http.request(options, (res,) => {
+            const req = net.request(options,);
+            req.on('response', (res,) => {
                 let chunks = [];
                 res.on('data', (chunk,) => {
                     chunks.push(chunk,);
@@ -51,6 +54,14 @@ exports.OAuth2Provider = class  OAuth2Provider{
                         return resolve(responseBody.toString(),);
                     }
                 },);
+            },);
+
+            req.on('error', (err, ) => {
+                return reject(err,);
+            },);
+
+            req.on('redirect', () => {
+                req.followRedirect();
             },);
 
             req.end();
@@ -77,18 +88,20 @@ exports.OAuth2Provider = class  OAuth2Provider{
         return new Promise((resolve, reject,) => {
             const OAuth2Store = new store({ name : 'data', encryptionKey : process.env.SESSION_SECRET, },);
             let OAuth2Data  = OAuth2Store.get('profile',);
+            log.info(OAuth2Data,);
             if (OAuth2Data === undefined ) return resolve(null,);
             else {
                 const options = {
                     hostname : 'id.twitch.tv',
                     path     : `/oauth2/token?grant_type=refresh_token&refresh_token=${OAuth2Data.refreshToken}&client_id=${this.options.clientID}&client_secret=${process.env.TWITCH_OAUTH_SECRET}&scope=${decodeURIComponent(this.options.scopes.join('+',),)}`,
                     method   : 'POST',
-                    headers  : {
-                        'Content-Type' : 'application/x-www-form-urlencoded',
-                    },
-
+                    protocol : 'https:',
                 };
-                let request = https.request(options, (res,) => {
+
+                const req = net.request(options,);
+                req.setHeader('Content-Type','application/x-www-form-urlencoded',);
+
+                req.on('response', (res,) => {
                     console.log(res.statusCode,);
                     let data = [];
                     res.on('data', (dataChuck,) => {
@@ -102,14 +115,23 @@ exports.OAuth2Provider = class  OAuth2Provider{
                         OAuth2Data.refreshToken = parsedBody.refresh_token;
                         OAuth2Data.expires_in = parsedBody.expires_in;
                         OAuth2Store.set({ profile : OAuth2Data, },);
-                        resolve(true,);
+                        return resolve(true,);
                     },);
 
                     res.on('error', (err,) => {
-                        reject(err,);
+                        return reject(err,);
                     },);
                 },);
-                request.end();
+
+                req.on('error', (err,) => {
+                    throw err;
+                },);
+
+                req.on('redirect', () => {
+                    req.followRedirect();
+                },);
+
+                req.end();
             }
         },);
     }

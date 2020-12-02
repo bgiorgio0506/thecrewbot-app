@@ -17,7 +17,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.paolo',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 try {
                     let res = await twitchApi.getUser();
                     res = JSON.parse(res,);
@@ -39,7 +47,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.social',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 client.say(channel, 'Socials link tbh use !social',);
 
             },
@@ -51,7 +67,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.stick',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 client.say(channel, 'Stick link tbh use !stick',);
             },
         },
@@ -62,7 +86,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.tutorials',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 client.say(channel, 'Tutorials link tbh use !social to get my Youtube Channel',);
             },
         },
@@ -73,7 +105,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.discord',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 client.say(channel, 'Discord link tbh use !discord',);
             },
         },
@@ -84,7 +124,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.donate',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 client.say(channel, 'Il link per le donazioni è streamlabs.com/paolom346_/tip Grazie per il supporto !!',);
             },
         },
@@ -95,7 +143,15 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.version',
-            commandFunction  : async function (client, channel,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel,) {
                 client.say(channel, 'Bot version returned: ' + process.env.APP_VERSION + ' permissions: 0',);
             },
         },
@@ -108,7 +164,15 @@ const config = {
             coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'weather.metar', //event to be emitted
-            commandFunction  : async function (client, channel, icao,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel, icao,) {
                 if (icao !== undefined && icao.length === 4) {
                     let response = '';
                     try {
@@ -138,7 +202,15 @@ const config = {
             isCoolDownActive : false,
             coolDownTime     : 30000,
             permissions      : 0,
-            commandFunction  : async function (client, channel, icao,) {
+            toggleActive     : async function (index, value,){
+                let commandConfig = settings.getSync('config.commadConfig',);
+                if (Array.isArray(commandConfig.commands,) === true){
+                    commandConfig.commands[index].isCommandActive = value;
+                    this.isCommandActive = value;
+                    settings.setSync('config.commadConfig', commandConfig,);
+                } else throw new Error('The given obj is not array',);
+            },
+            commandFunction : async function (client, channel, icao,) {
                 console.log('Called with icao: ' + icao,);
                 if (icao !== undefined && icao.length === 4) {
                     console.log('Called with icao: ' + icao,);
@@ -165,7 +237,8 @@ const config = {
     ],
 };
 
+if (settings.getSync('config.commadConfig',) === undefined )
+    settings.setSync('config.commadConfig', config,);
 
-settings.setSync('config.commadConfig', config,);
 exports.configData = config;
 

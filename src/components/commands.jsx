@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState, } from 'react';
+import settings from 'electron-settings';
 //Schemas
-import CommandSchema from '../schema/commandConfig';
 import permissionSchema from '../schema/permissionConfig';
+import commandSchema  from '../schema/commandConfig';
 
+
+/**@todo use event for catching settings changes from outside */
 
 const CreateCommand = () => {
+    const [CommandConfig, setCommandConfig,]  = useState(commandSchema.configData,);
 
     function getPermissionsLabel (perm,) {
         let index = permissionSchema.indexOf(perm,);
@@ -12,11 +16,16 @@ const CreateCommand = () => {
         else return 'All';
     }
 
+    //setInterval( () => {
+    //    console.log('here',);
+    //    setCommandConfig(settings.getSync('config.commadConfig',),);
+    //}, 8000,);
+
     return (<div className = "center-panel">
         <p className= 'section'>Command Dashboard</p>
         <div className={'commandWrapper'}>
             {
-                CommandSchema.configData.commands.map((cmd,) => {
+                CommandConfig.commands.map((cmd,) => {
                     return (<div className= {'commandItem'} key={cmd.commandString}>
                         <p className= {'commandString-Label'}>Command: {cmd.commandString}</p>
                         <p className= {'commandString-type'}>Type : {cmd.commandType}</p>
