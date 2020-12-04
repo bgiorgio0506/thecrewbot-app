@@ -54,6 +54,7 @@ ClientBot.on('message', async(channel, tags, message,) => {
     const command = args.shift().toLowerCase();
     let commandIndex = utils.findIndexInObjArr(configData.commands, 'commandString', command,);
     const persistenConfig = settings.getSync('config.commadConfig',);
+
     if (command === 'domanda') {
         let questObj = {};
         let messageArr = message.split(' ',); // split the string into an Array
@@ -108,6 +109,7 @@ ClientBot.on('message', async(channel, tags, message,) => {
         let commandPos = utils.findIndexInObjArr(configData.commands, 'commandString', messageArr[1],);
         if (commandPos !== -1){
             let commandObj = persistenConfig.commands[commandPos];
+            eventEmitter.emit('command-setting-changed',);
             if (commandObj.isCommandActive === true) {
                 await configData.commands[commandPos].toggleActive(commandPos, false,);
                 ClientBot.say(channel, 'Command disactivated',);
@@ -142,9 +144,6 @@ ClientBot.on('message', async(channel, tags, message,) => {
         else log.info('Command deactivated',); //command deactivated
     }
 
-    //setInterval( () => {
-    //    ClientBot.say(channel, 'Solo per oggi i comandi !metar  e !taf saranno disponibili in chat in modalità BETA. Usa !metar <icao aeroporto> !taf <icao aeroporto>',);
-    //}, 300000,);
 
 },);
 

@@ -2,13 +2,14 @@ import React, { useState, } from 'react';
 import settings from 'electron-settings';
 //Schemas
 import permissionSchema from '../schema/permissionConfig';
-import commandSchema  from '../schema/commandConfig';
+import { ipcRenderer, } from 'electron';
 
 
 /**@todo use event for catching settings changes from outside */
 
 const CreateCommand = () => {
-    const [CommandConfig, setCommandConfig,]  = useState(commandSchema.configData,);
+    let initConfig = settings.getSync('config.commadConfig',);
+    const [CommandConfig, setCommandConfig,]  = useState(initConfig,);
 
     function getPermissionsLabel (perm,) {
         let index = permissionSchema.indexOf(perm,);
@@ -16,10 +17,11 @@ const CreateCommand = () => {
         else return 'All';
     }
 
-    //setInterval( () => {
-    //    console.log('here',);
-    //    setCommandConfig(settings.getSync('config.commadConfig',),);
-    //}, 8000,);
+    //ipcRenderer event loop
+    ipcRenderer.on('command-setting-changed',() => {
+        setCommandConfig(settings.getSync('config.commadConfig',),);
+        console.log('here',);
+    },);
 
     return (<div className = "center-panel">
         <p className= 'section'>Command Dashboard</p>

@@ -110,6 +110,7 @@ const config = {
                 if (Array.isArray(commandConfig.commands,) === true){
                     commandConfig.commands[index].isCommandActive = value;
                     this.isCommandActive = value;
+                    //see if we can put it in a common function
                     settings.setSync('config.commadConfig', commandConfig,);
                 } else throw new Error('The given obj is not array',);
             },

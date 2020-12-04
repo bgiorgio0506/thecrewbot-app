@@ -280,13 +280,6 @@ app.on('ready', async () => {
         SimConnectApi.connectToSim();
     }, 10000,);
     /**End */
-
-    //const wxApi  = require('./js/weatherApi',);
-    //setInterval(async() => {
-    //    let response = await wxApi.getMetarByIcao('LICC',);
-    //    console.log(response,);
-    //    console.count('Called',);
-    //}, 10000,);
 },);
 
 // Quit when all windows are closed.
@@ -367,6 +360,10 @@ ChatBot.on('add-quest', (questQueue,) => {
 
 ChatBot.on('fetch-question-list-res', (questQueue,) => {
     mainWindow.webContents.send('list-response', questQueue,);
+},);
+
+ChatBot.on('command-setting-changed', () => {
+    mainWindow.webContents.send('command-setting-changed',);
 },);
 
 /**** END CHATBOT SECTION ****/

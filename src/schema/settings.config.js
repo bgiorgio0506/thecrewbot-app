@@ -1,3 +1,4 @@
+import { nativeTheme, } from 'electron';
 import settings from 'electron-settings';
 
 const schema = {
@@ -30,6 +31,27 @@ const schema = {
                     console.log(checked,);
                     if (checked) return settings.setSync(position, true,);
                     else return settings.setSync(position, false,);
+                },
+            },
+            {
+                id               : 'darkModeChkBox',
+                inputType        : 'checkbox',
+                className        : 'checkBoxBtn',
+                lebelText        : 'Active dark mode',
+                settingsPosition : 'config.isDarkThemeOn',
+                checked          : settings.getSync('config.isDarkThemeOn',),
+                onToggleChecked  : (checked, position,) => {
+                    console.log(checked,);
+                    if (checked) {
+                        nativeTheme.themeSource= 'dark';
+                        nativeTheme.shouldUseDarkColors;
+                        return settings.setSync(position, true,);
+                    }
+                    else {
+                        nativeTheme.themeSource= 'ligh';
+                        nativeTheme.shouldUseDarkColors;
+                        return settings.setSync(position, false,);
+                    }
                 },
             },
         ],

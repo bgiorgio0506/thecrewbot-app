@@ -780,7 +780,7 @@ section.slideshow div.slideshow-controller span{
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  /* Dark moe */
+  /* Dark mode */
   body {
     color: #fff;
     background-color: #000;
