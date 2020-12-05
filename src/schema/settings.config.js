@@ -1,4 +1,4 @@
-import { nativeTheme, } from 'electron';
+import { ipcRenderer, } from 'electron';
 import settings from 'electron-settings';
 
 const schema = {
@@ -42,16 +42,8 @@ const schema = {
                 checked          : settings.getSync('config.isDarkThemeOn',),
                 onToggleChecked  : (checked, position,) => {
                     console.log(checked,);
-                    if (checked) {
-                        nativeTheme.themeSource= 'dark';
-                        nativeTheme.shouldUseDarkColors;
-                        return settings.setSync(position, true,);
-                    }
-                    else {
-                        nativeTheme.themeSource= 'ligh';
-                        nativeTheme.shouldUseDarkColors;
-                        return settings.setSync(position, false,);
-                    }
+                    ipcRenderer.send('toggle-dark-mode', checked,);
+                    return settings.setSync(position, checked,);
                 },
             },
         ],

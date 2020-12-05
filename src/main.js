@@ -1,6 +1,6 @@
 'use strict';
 // Import parts of electron to use
-const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, } = require('electron',);
+const { app, BrowserWindow, autoUpdater, ipcMain, nativeImage, dialog, Tray, Menu, nativeTheme, } = require('electron',);
 require('update-electron-app',)();
 const path = require('path',);
 const ChatBot = require('./js/botLib',);
@@ -81,6 +81,12 @@ if (gotTheLock === false) {
         }
     },);
 }
+
+
+/**Dark Mode */
+if (settings.getSync('config.isDarkThemeOn',) === true) nativeTheme.themeSource = 'dark';
+else nativeTheme.themeSource = 'light';
+
 
 /**
  * Auto Launch
@@ -299,11 +305,6 @@ app.on('activate', () => {
     }
 },);
 
-//when a question is marked as completed then delete the element
-ipcMain.on('rm-quest', (e, id,) => {
-    ChatBot.emit('rm-quest', id,);
-    //console.log(questQueue.length) //debug
-},);
 
 //Second instance
 app.on('second-instance', (event,) => {
@@ -335,6 +336,20 @@ ipcMain.on('fetch-question-list', () => {
 ipcMain.on('open-auth', (e, filePath,) => {
     log.info('recived Oauth open',);
     createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`,);
+},);
+
+//when a question is marked as completed then delete the element
+ipcMain.on('rm-quest', (e, id,) => {
+    ChatBot.emit('rm-quest', id,);
+    //console.log(questQueue.length) //debug
+},);
+
+
+ipcMain.on('toggle-dark-mode', (e,checked,) => {
+    log.info(checked,);
+    if (checked === true ){
+        nativeTheme.themeSource = 'dark';
+    } else nativeTheme.themeSource = 'light';
 },);
 
 /**end  ipc event loop*/

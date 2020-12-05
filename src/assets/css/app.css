@@ -785,6 +785,23 @@ section.slideshow div.slideshow-controller span{
     color: #fff;
     background-color: #000;
   }
+
+  .header{
+    background-color: black;
+    color: white;
+  }
+
+  .header a, i{
+    color: white;
+  }
+
+  .header a:hover{
+      color:white;
+  }
+
+  .section{
+      color: white;
+  }
 }
 
 h1 {

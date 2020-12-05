@@ -14,6 +14,7 @@ const CreateSettings = () => {
     let LangLabelsArray  = UISchema.UISchemaState.langLabels;
     const [startSettings, setStartCheckBox,] = useState(UISchema.UISchemaState.generalSettings[1].checked,);
     const [traySettings, setTrayCheckBox,] = useState(UISchema.UISchemaState.generalSettings[0].checked,);
+    const [darkModeSettings, setDarkModeCheckBox,] = useState(UISchema.UISchemaState.generalSettings[2].checked,);
     const [showModal, setShowModal,] = useState(false,);
     const [messageModal, setMessage,] = useState('',);
 
@@ -30,8 +31,9 @@ const CreateSettings = () => {
                     return (
                         <div key={setting.id} className ="generalSettingsDiv">
                             <label htmlFor={setting.id}>{setting.lebelText}</label>
-                            <input type={setting.inputType} checked= {(setting.id.includes('minimizeOnTrayChkBox',) === true) ? traySettings : startSettings } className = {setting.className} id= {setting.id} onChange={(event,) => {
+                            <input type={setting.inputType} checked= {(setting.id.includes('minimizeOnTrayChkBox',) === true) ? traySettings :(setting.id.includes('startAppOnStreamChkBox',) === true)? startSettings : darkModeSettings } className = {setting.className} id= {setting.id} onChange={(event,) => {
                                 if (setting.id.includes('minimizeOnTrayChkBox',) === true) setTrayCheckBox(event.target.checked,);
+                                else if (setting.id.includes('darkModeChkBox',) === true) setDarkModeCheckBox(event.target.checked,);
                                 else setStartCheckBox(event.target.checked,);
                                 setting.onToggleChecked(event.target.checked, setting.settingsPosition,);
                             }}/>
