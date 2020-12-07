@@ -783,11 +783,11 @@ section.slideshow div.slideshow-controller span{
   /* Dark mode */
   body {
     color: #fff;
-    background-color: #000;
+    background-color:#1e1e1e;
   }
 
   .header{
-    background-color: black;
+    background-color:#1e1e1e;
     color: white;
   }
 
@@ -797,10 +797,45 @@ section.slideshow div.slideshow-controller span{
 
   .header a:hover{
       color:white;
+      background: #37373d;
   }
 
   .section{
       color: white;
+  }
+
+  .subMenuSection a{
+      background: #323233;
+      color: #fff;
+  }
+
+  .subMenuSection a.active{
+    background: #616161;
+    color: #fff;
+  }
+
+  .miscActive{
+      color: #616161;
+  }
+
+  #updaterIcon{
+      color: #fff;
+  }
+
+  .channelList{
+      background-color: #37373d;
+  }
+
+  #updaterIcon:hover {
+    background-color:#1e1e1e;
+    color: #fff;
+}
+  .subMenuSection a:hover{
+      background: #37373d;
+  }
+
+  .statLabel{
+      color: #fff;
   }
 }
 
