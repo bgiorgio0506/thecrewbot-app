@@ -26,6 +26,9 @@ require('./commands/commandsEvents',);
 //request app singleInstance
 app.requestSingleInstanceLock();
 
+//get audio flag
+app.commandLine.appendSwitch('-autoplay-policy', 'no-user-gesture-required',);
+
 // Add React extension for development
 const emitter = new EventEmitter();
 const { default: installExtension, REACT_DEVELOPER_TOOLS, } = require('electron-devtools-installer',);

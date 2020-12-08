@@ -5,7 +5,6 @@ const log = require('electron-log',);
 const event = require('events',);
 const eventEmitter = new event.EventEmitter();
 const webHookServer = require('../controllers/WebHook/webHookServer',);
-const { net, } = require('electron',);
 
 exports.OAuth2Provider = class  OAuth2Provider{
 
@@ -29,20 +28,15 @@ exports.OAuth2Provider = class  OAuth2Provider{
                 path         : '/',
                 maxRedirexts : 20,
                 method       : 'GET',
-                protocol     : 'http:',
             };
-
-            const req = net.request(options,);
-            req.on('response', (res,) => {
+            let req = http.request(options, (res,) => {
                 let chunks = [];
                 res.on('data', (chunk,) => {
                     chunks.push(chunk,);
                 },);
-
                 res.on('error', (err,) => {
                     return reject(err,);
                 },);
-
                 res.on('end', () => {
                     let responseBody =  Buffer.concat(chunks,);
                     responseBody = responseBody.toString();
@@ -55,15 +49,6 @@ exports.OAuth2Provider = class  OAuth2Provider{
                     }
                 },);
             },);
-
-            req.on('error', (err, ) => {
-                return reject(err,);
-            },);
-
-            req.on('redirect', () => {
-                req.followRedirect();
-            },);
-
             req.end();
         },);
     }
@@ -95,19 +80,16 @@ exports.OAuth2Provider = class  OAuth2Provider{
                     hostname : 'id.twitch.tv',
                     path     : `/oauth2/token?grant_type=refresh_token&refresh_token=${OAuth2Data.refreshToken}&client_id=${this.options.clientID}&client_secret=${process.env.TWITCH_OAUTH_SECRET}&scope=${decodeURIComponent(this.options.scopes.join('+',),)}`,
                     method   : 'POST',
-                    protocol : 'https:',
+                    headers  : {
+                        'Content-Type' : 'application/x-www-form-urlencoded',
+                    },
                 };
-
-                const req = net.request(options,);
-                req.setHeader('Content-Type','application/x-www-form-urlencoded',);
-
-                req.on('response', (res,) => {
+                let request = https.request(options, (res,) => {
                     console.log(res.statusCode,);
                     let data = [];
                     res.on('data', (dataChuck,) => {
                         data.push(dataChuck,);
                     },);
-
                     res.on('end', () => {
                         let parsedBody = JSON.parse(data.toString(),);
                         log.info(parsedBody,);
@@ -115,23 +97,13 @@ exports.OAuth2Provider = class  OAuth2Provider{
                         OAuth2Data.refreshToken = parsedBody.refresh_token;
                         OAuth2Data.expires_in = parsedBody.expires_in;
                         OAuth2Store.set({ profile : OAuth2Data, },);
-                        return resolve(true,);
+                        resolve(true,);
                     },);
-
                     res.on('error', (err,) => {
-                        return reject(err,);
+                        reject(err,);
                     },);
                 },);
-
-                req.on('error', (err,) => {
-                    throw err;
-                },);
-
-                req.on('redirect', () => {
-                    req.followRedirect();
-                },);
-
-                req.end();
+                request.end();
             }
         },);
     }

@@ -58,7 +58,8 @@ const CreateSubMenu = () => {
     else return (<div className={'subMenuSection'}>
         {
             subMenu.map((label,) => {
-                return (<Link to={label.redirect} key={label.id} id={label.id} onClick={() => { handleClick(label.id,); }} className={
+                if (label.hide !== undefined) return;
+                else return (<Link to={label.redirect} key={label.id} id={label.id} onClick={() => { handleClick(label.id,); }} className={
                     label.class +
                     (label.id === activeLink ? ' active' : '')
                 }>{label.title}</Link>);

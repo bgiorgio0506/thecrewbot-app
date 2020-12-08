@@ -31,7 +31,7 @@ const render = () => {
             <div id="app">
                 <CreateHeader />
                 <CreateSubMenu />
-                <Redirect exact from="/account" to="/questions" />
+                <Redirect exact from="/account" to="/account/lives" />
                 <Switch>
                     <Route exact path='/account/:path?'>
                         <AccountLayOut>

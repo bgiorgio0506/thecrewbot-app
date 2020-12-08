@@ -55,7 +55,7 @@ const CreatHeader = () => {
                 {
                     items.map((item,) => {
                         if (item.html) return; //return(<li class ={item.class}><a href={item.redirect}> {item.title} </a></li>)
-                        else return (<Link to={item.redirect} >{item.title}</Link>);
+                        else return (<Link to={item.redirect}  className = {item.class}>{item.title}</Link>);
                     },)
                 }
             </div>

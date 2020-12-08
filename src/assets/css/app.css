@@ -800,6 +800,11 @@ section.slideshow div.slideshow-controller span{
       background: #37373d;
   }
 
+  .header i:hover{
+    color:white;
+    background: #37373d;
+  }
+
   .section{
       color: white;
   }
@@ -837,6 +842,22 @@ section.slideshow div.slideshow-controller span{
   .statLabel{
       color: #fff;
   }
+
+  .modal-main{
+    color: #fff;
+    background-color:#1e1e1e;
+  }
+
+  .closeBtn{
+    background: #616161;
+    color: white;
+  }
+
+  .closeBtn:hover{
+      background-color: #37373d;
+  }
+
+
 }
 
 h1 {
