@@ -16,10 +16,15 @@ let config = {
             commandString    : 'paolo',
             commandType      : 'defaults',
             isCommandActive  : false,
+            iisCoolDownSet   : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.paolo',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -41,10 +46,15 @@ let config = {
             commandString    : 'social',
             commandType      : 'defaults',
             isCommandActive  : false,
+            isCoolDownSet    : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.social',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -56,10 +66,15 @@ let config = {
             commandString    : 'stick',
             commandType      : 'defaults',
             isCommandActive  : true,
+            isCoolDownSet    : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.stick',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -70,10 +85,15 @@ let config = {
             commandString    : 'tutorials',
             commandType      : 'defaults',
             isCommandActive  : true,
+            isCoolDownSet    : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.tutorials',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -84,10 +104,15 @@ let config = {
             commandString    : 'discord',
             commandType      : 'defaults',
             isCommandActive  : true,
+            isCoolDownSet    : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.discord',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -98,10 +123,15 @@ let config = {
             commandString    : 'donate',
             commandType      : 'defaults',
             isCommandActive  : true,
+            isCoolDownSet    : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.donate',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -112,10 +142,15 @@ let config = {
             commandString    : 'version',
             commandType      : 'debug',
             isCommandActive  : true,
+            isCoolDownSet    : false,
             isCoolDownActive : false,
+            coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'default.version',
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
@@ -131,7 +166,10 @@ let config = {
             coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'weather.metar', //event to be emitted
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel, icao,) {
@@ -164,7 +202,10 @@ let config = {
             isCoolDownActive : false,
             coolDownTime     : 30000,
             permissions      : 0,
-            toggleActive     : async function (index, key , value,){
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel, icao,) {
