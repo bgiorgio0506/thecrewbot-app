@@ -111,10 +111,10 @@ ClientBot.on('message', async(channel, tags, message,) => {
             let commandObj = persistenConfig.commands[commandPos];
             eventEmitter.emit('command-setting-changed',);
             if (commandObj.isCommandActive === true) {
-                await configData.commands[commandPos].toggleActive(commandPos, false,);
+                await configData.commands[commandPos].toggleActive(commandPos, 'isCommandActive' , false,);
                 ClientBot.say(channel, 'Command disactivated',);
             } else {
-                await configData.commands[commandPos].toggleActive(commandPos,true,);
+                await configData.commands[commandPos].toggleActive(commandPos, 'isCommandActive' , true,);
                 ClientBot.say(channel, 'Command activated',);
             }
         }

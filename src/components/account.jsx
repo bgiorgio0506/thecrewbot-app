@@ -3,6 +3,8 @@ import { ipcRenderer, } from 'electron';
 import React, { Component, } from 'react';
 import twitchLib from '../js/twitchLib';
 import CreateModals from './common/modal';
+import utils  from '../helpers/utility';
+import path from 'path';
 const twitchClient = new twitchLib.OAuth2Provider();
 const TwitchApi = new twitchLib.TwitchApi();
 
@@ -36,15 +38,15 @@ class CreateAccount extends Component {
                     return this.setState({ isLoading : false, error : null, data : UserProfile.data, },);
                 },).catch((err,) => {
                     console.info(err,);
-                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', code : 403, }, data : null, showModal : true, },);
                 },);
 
                 TwitchApi.getUserFollows().then((follows,) => {
                     follows = JSON.parse(follows,);
-                    return this.setState({ isLoading : false, error : null,  follow : follows.total,  },);
+                    return this.setState({ isLoading : false, error : null, follow : follows.total, },);
                 },).catch((err,) => {
                     console.info(err,);
-                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', code : 500, }, data : null, showModal : true, },);
                 },);
 
                 TwitchApi.getUserSubs().then((subs,) => {
@@ -52,14 +54,14 @@ class CreateAccount extends Component {
                     console.log(subs,);
                     if (subs.data !== undefined) subs = parseInt(subs.data.length,);
                     else subs = 0;
-                    return  this.setState({ isLoading : false, error : null,  subs : subs,  },);
+                    return this.setState({ isLoading : false, error : null, subs : subs, },);
                 },).catch((err,) => {
                     console.info(err,);
-                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', }, data : null, showModal : true, },);
+                    return this.setState({ isLoading : false, error : { message : 'Error downloading data.', code : 500, }, data : null, showModal : true, },);
                 },);
             }
             else {
-                return this.setState({ isLoading : false, error : { message : 'Error downloading data. Please check you have connected your account correctly.', }, data : null, showModal : true, },);
+                return this.setState({ isLoading : false, error : { message : 'Error downloading data. Please check you have connected your account correctly.', code : 403, }, data : null, showModal : true, },);
             }
 
             ipcRenderer.on('webhook.notification', (e, notification,) => {
@@ -90,14 +92,11 @@ class CreateAccount extends Component {
         },);
     }
 
-
-
-
-
     render() {
         const { isLoading, error, data, follow, subs, } = this.state;
 
-        if (error) {
+        console.log(error,);
+        if (error && error.code !== 403) {
             return (
                 <div className="center-panel">
                     <div className={'center-account-panel'}>
@@ -109,11 +108,37 @@ class CreateAccount extends Component {
                     </div>
                 </div>);
         }
+        else if (error && error.code === 403) {
+            return (<div className="center-panel">
+                <div className={'center-account-panel'}>
+                    <CreateModals show={this.state.showModal} handleClose={() => {
+                        twitchClient.startOAuth2Strategy().then((res,) => {
+                            if (typeof res !== 'object') {
+                                return utils.writeFile('OAuth.html', res,).then(() => {
+                                    this.setState({ showModal : false, },);
+                                    return ipcRenderer.send('open-auth', { path : path.join(process.env.APPDATA, 'thecrewbot-app\\Temp%20Folder\\',), fileName : 'OAuth.html', },);
+                                },).catch((err,) => {
+                                    throw err;
+                                },);
+                            } else return this.setState({ isLoading : false, error : { message : 'Error while opening OAuth  Flow.', code : 500, }, data : null, showModal : true, },);
+                        },).catch((err,) => {
+                            console.log(err,);
+                            return this.setState({ isLoading : false, error : { message : 'Error while connecting to twitch server.', code : 404, }, data : null, showModal : true, },);
+                        },);
+                    }}>
+                        <p className={'modalTitle'}>Action Required</p>
+                        <div className={'modalMessage'}>Please link your account to twitch for the appliacation to work. </div>
+                    </CreateModals>
+                    <strong>Error loading profile data</strong>
+                </div>
+            </div>);
+        }
+
         if (isLoading) {
             return (
                 <div className={'center-panel'}>
                     <div className={'center-account-panel'}>
-                        <CreateLoading/>
+                        <CreateLoading />
                     </div>
                 </div>);
         }

@@ -2,13 +2,15 @@ const { TwitchApi, } = require('../js/twitchLib',);
 const twitchApi = new TwitchApi();
 const wxApi = require('../js/weatherApi',);
 const settings  = require('electron-settings',);
+const event = require('events',);
+const eventEmitter  = new event.EventEmitter();
 
 /**
  * @todo permissions
  * //permission 0 == all, 1 == mod, 2 == author, others vary from 11 to 20
  */
 
-const config = {
+let config = {
     commands : [
         {
             commandString    : 'paolo',
@@ -17,13 +19,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.paolo',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 try {
@@ -47,13 +44,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.social',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 client.say(channel, 'Socials link tbh use !social',);
@@ -67,13 +59,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.stick',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 client.say(channel, 'Stick link tbh use !stick',);
@@ -86,13 +73,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.tutorials',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 client.say(channel, 'Tutorials link tbh use !social to get my Youtube Channel',);
@@ -105,14 +87,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.discord',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    //see if we can put it in a common function
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 client.say(channel, 'Discord link tbh use !discord',);
@@ -125,13 +101,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.donate',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 client.say(channel, 'Il link per le donazioni è streamlabs.com/paolom346_/tip Grazie per il supporto !!',);
@@ -144,13 +115,8 @@ const config = {
             isCoolDownActive : false,
             permissions      : 0,
             eventString      : 'default.version',
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel,) {
                 client.say(channel, 'Bot version returned: ' + process.env.APP_VERSION + ' permissions: 0',);
@@ -165,13 +131,8 @@ const config = {
             coolDownTime     : 30000,
             permissions      : 0,
             eventString      : 'weather.metar', //event to be emitted
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel, icao,) {
                 if (icao !== undefined && icao.length === 4) {
@@ -203,13 +164,8 @@ const config = {
             isCoolDownActive : false,
             coolDownTime     : 30000,
             permissions      : 0,
-            toggleActive     : async function (index, value,){
-                let commandConfig = settings.getSync('config.commadConfig',);
-                if (Array.isArray(commandConfig.commands,) === true){
-                    commandConfig.commands[index].isCommandActive = value;
-                    this.isCommandActive = value;
-                    settings.setSync('config.commadConfig', commandConfig,);
-                } else throw new Error('The given obj is not array',);
+            toggleActive     : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async function (client, channel, icao,) {
                 console.log('Called with icao: ' + icao,);
@@ -240,6 +196,21 @@ const config = {
 
 if (settings.getSync('config.commadConfig',) === undefined )
     settings.setSync('config.commadConfig', config,);
+
+/**
+ * @description this is the general setting handler,
+ */
+eventEmitter.on('settings-handler', ({ index, key, value, },) => {
+    let commandConfig = settings.getSync('config.commadConfig',);
+    if (Array.isArray(commandConfig.commands,) === true){
+        commandConfig.commands[index][key] = value;
+        console.log(commandConfig.commands[index][key],);
+
+        //set  temp proprety;
+        config.commands[index][key] = value;
+        settings.setSync('config.commadConfig', commandConfig,);
+    } else throw new Error('The given obj is not array',);
+},);
 
 exports.configData = config;
 

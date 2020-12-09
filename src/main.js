@@ -176,6 +176,9 @@ function createAuthWindow(path,) {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
         authWindow = null;
+
+        // reload main window after auth
+        mainWindow.reload();
     },);
 }
 

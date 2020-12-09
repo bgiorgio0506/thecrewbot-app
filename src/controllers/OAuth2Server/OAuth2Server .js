@@ -101,7 +101,7 @@ app.get('/', function (req, res,) {
     const OAuth2Store = new store({ name : 'data', encryptionKey : process.env.SESSION_SECRET, },);
     let OAuth2Data  = OAuth2Store.get('profile',);
     if (OAuth2Data === undefined) res.send('<html><head><title>Twitch Auth </title><script src="https://kit.fontawesome.com/bb1bf338ca.js" crossorigin="anonymous"></script></head><body><h1 style="font-size: 20px;color: black;font-weight: bold;">Connect Twitch</h1></br><a style="text-decoration: none; font-size:16px; background:#9146ff; border-radius:10px; padding:6px 15px;color:white;" href="http://localhost:5045/twitch/start/auth"><i class="fab fa-twitch"></i> Connect with Twitch</a></body></html>',);
-    else res.send(JSON.stringify(OAuth2Data,),);
+    else res.send('<html><head><title>Twitch Auth</title></head><body><h1 style="font-size: 20px;color: black;font-weight: bold;">Twitch Authorization Service</h1></br>Authentication success please click close to refresh the application</br></body></html>',);
 
 },);
 
