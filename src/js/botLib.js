@@ -4,7 +4,7 @@ const event = require('events',);
 const utils = require('../helpers/utility',);
 const log = require('electron-log',);
 const langLib = require('./langLib',).default;
-const { configData, }= require('../schema/commandConfig',);
+const { configData, on, }= require('../schema/commandConfig',);
 
 let langObj = langLib(); //get app lang
 
@@ -151,6 +151,9 @@ ClientBot.on('connected', () => {
     log.info('Joined channel & listening ',);
 },);
 
+on('play-sound', (AudioPathFile,) => {
+    eventEmitter.emit('play-sound', AudioPathFile,);
+},);
 
 eventEmitter.on('rm-quest', (id,) => {
     questQueue = questQueue.filter((item,) => item.id !== id,);

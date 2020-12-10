@@ -4,13 +4,14 @@ const wxApi = require('../js/weatherApi',);
 const settings  = require('electron-settings',);
 const event = require('events',);
 const eventEmitter  = new event.EventEmitter();
+const path  = require('path',);
 
 /**
  * @todo permissions
- * //permission 0 == all, 1 == mod, 2 == author, others vary from 11 to 20
+ * //permission 0 == all, 1 == mod, 2 == author, 11 === sub, others vary from 11 to 20
  */
 
-let config = {
+const config = {
     commands : [
         {
             commandString    : 'paolo',
@@ -232,6 +233,27 @@ let config = {
                 } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
             },
         },
+        {
+            commandString    : 'ding',
+            commandType      : 'audio',
+            isCommandActive  : true,
+            isCoolDownSet    : true,
+            isCoolDownActive : false,
+            coolDownTime     : 30000,
+            permissions      : 11,
+            fileDirectory    : path.resolve(process.env.APPDATA, 'AudioFiles\\',),
+            fileName         : 'ding.mp3',
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            commandFunction : async (client, channel,) => {
+                let AudioPathFile = 'C:\\Users\\Giorgiopc\\AppData\\Roaming\\AudioFiles\\ding.mp3';
+                eventEmitter.emit('play-sound', AudioPathFile,);
+            },
+        },
     ],
 };
 
@@ -254,4 +276,6 @@ eventEmitter.on('settings-handler', ({ index, key, value, },) => {
 },);
 
 exports.configData = config;
-
+exports.on = (event , listener, ) => {
+    return eventEmitter.on(event,listener,);
+};

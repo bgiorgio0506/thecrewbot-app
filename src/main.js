@@ -387,6 +387,11 @@ ChatBot.on('command-setting-changed', () => {
     mainWindow.webContents.send('command-setting-changed',);
 },);
 
+ChatBot.on('play-sound', (AudioPathFile,) => {
+    console.log(AudioPathFile,);
+    mainWindow.webContents.send('play-sound', AudioPathFile,);
+},);
+
 /**** END CHATBOT SECTION ****/
 
 

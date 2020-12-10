@@ -23,6 +23,12 @@ const CreateCommand = () => {
         console.log('here',);
     },);
 
+    ipcRenderer.on('play-sound', (e, AudioPathFile,) => {
+        console.log(AudioPathFile,);
+        const audio = new Audio(AudioPathFile,);
+        audio.play();
+    },);
+
     return (<div className = "center-panel">
         <p className= 'section'>Command Dashboard</p>
         <div className={'commandWrapper'}>
