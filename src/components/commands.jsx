@@ -1,8 +1,8 @@
 import React, { useState, } from 'react';
 import settings from 'electron-settings';
+import { ipcRenderer, } from 'electron';
 //Schemas
 import permissionSchema from '../schema/permissionConfig';
-import { ipcRenderer, } from 'electron';
 
 
 /**@todo use event for catching settings changes from outside */
@@ -21,12 +21,6 @@ const CreateCommand = () => {
     ipcRenderer.on('command-setting-changed',() => {
         setCommandConfig(settings.getSync('config.commadConfig',),);
         console.log('here',);
-    },);
-
-    ipcRenderer.on('play-sound', (e, AudioPathFile,) => {
-        console.log(AudioPathFile,);
-        const audio = new Audio(AudioPathFile,);
-        audio.play();
     },);
 
     return (<div className = "center-panel">

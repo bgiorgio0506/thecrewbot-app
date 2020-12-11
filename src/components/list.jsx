@@ -2,7 +2,9 @@
 import React from 'react';
 import { ipcRenderer, } from 'electron';
 import getLang from '../js/langLib';
-
+/**
+ * @todo Audio play;
+ */
 // Create list component
 const CreateList = () => {
     const langObj = getLang();
@@ -17,6 +19,13 @@ const CreateList = () => {
     ipcRenderer.on('add-quest', (event, questArr,) => {
         ipcRenderer.send('fetch-question-list',);//call the main to fetch list
         setState(questArr,);
+    },);
+
+    //Audio tbh;
+    ipcRenderer.on('play-sound', (event, AudioPathFile,) => {
+        console.log(AudioPathFile,);
+        const audio = new Audio('C:\\Users\\Giorgiopc\\AppData\\Roaming\\AudioFiles\\ding.mp3',);
+        audio.play();
     },);
 
     const handleClick = (id,) => {

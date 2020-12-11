@@ -90,6 +90,10 @@ class CreateAccount extends Component {
         },).catch((err,) => {
             throw err;
         },);
+
+        ipcRenderer.on('play-sound', (e , AudioPathFile,) => {
+            console.log(AudioPathFile,);
+        },);
     }
 
     render() {

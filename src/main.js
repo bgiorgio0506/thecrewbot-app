@@ -27,7 +27,7 @@ require('./commands/commandsEvents',);
 app.requestSingleInstanceLock();
 
 //get audio flag
-app.commandLine.appendSwitch('-autoplay-policy', 'no-user-gesture-required',);
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required',);
 
 // Add React extension for development
 const emitter = new EventEmitter();
@@ -387,9 +387,9 @@ ChatBot.on('command-setting-changed', () => {
     mainWindow.webContents.send('command-setting-changed',);
 },);
 
+//audio event forward to renedere process
 ChatBot.on('play-sound', (AudioPathFile,) => {
     console.log(AudioPathFile,);
-    mainWindow.webContents.send('play-sound', AudioPathFile,);
 },);
 
 /**** END CHATBOT SECTION ****/

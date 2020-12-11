@@ -233,10 +233,10 @@ const config = {
                 } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
             },
         },
-        {
+        /*{
             commandString    : 'ding',
             commandType      : 'audio',
-            isCommandActive  : true,
+            isCommandActive  : false, // do not active the sound command for now;
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -253,7 +253,7 @@ const config = {
                 let AudioPathFile = 'C:\\Users\\Giorgiopc\\AppData\\Roaming\\AudioFiles\\ding.mp3';
                 eventEmitter.emit('play-sound', AudioPathFile,);
             },
-        },
+        },*/
     ],
 };
 

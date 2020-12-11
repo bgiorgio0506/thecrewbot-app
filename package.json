@@ -133,6 +133,7 @@
     "request": "^2.88.2",
     "reverse-tunnel-ssh": "^1.1.0",
     "shelljs": "^0.8.4",
+    "sound-play": "^1.0.5",
     "tmi.js": "^1.5.0",
     "update-electron-app": "^2.0.1",
     "url": "^0.11.0"

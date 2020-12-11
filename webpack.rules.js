@@ -44,15 +44,15 @@ module.exports.rulesDev = [
       test: /\.(eot|svg|ttf|woff|woff2)$/,
       use: [{ loader: 'file-loader?name=font/[name]__[hash:base64:5].[ext]' }],
       include: defaultInclude
-    }, 
+    },
     {
       test: /\.js$/,
-      exclude: [ 
-          path.resolve(__dirname, 'excluded_file_name.js') 
+      exclude: [
+          path.resolve(__dirname, 'excluded_file_name.js')
       ],
       enforce: 'post',
-      use: { 
-          loader: WebpackObfuscator.loader, 
+      use: {
+          loader: WebpackObfuscator.loader,
           options: {
               rotateStringArray: true
           }
@@ -103,7 +103,7 @@ module.exports.rulesDev = [
       include:defaultInclude
     },
     {
-      test: /\.(jpe?g|png|gif)$/,
+      test: /\.(jpe?g|png|mp3|gif)$/,
       use: [{ loader: 'file-loader?name=img/[name]__[hash:base64:5].[ext]' }],
       include: defaultInclude
     },
