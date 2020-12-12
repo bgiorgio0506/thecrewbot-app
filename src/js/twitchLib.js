@@ -5,6 +5,7 @@ const log = require('electron-log',);
 const event = require('events',);
 const eventEmitter = new event.EventEmitter();
 const webHookServer = require('../controllers/WebHook/webHookServer',);
+const { net, } = require('electron',);
 
 exports.OAuth2Provider = class  OAuth2Provider{
 
@@ -328,6 +329,69 @@ exports.TwitchApi = class TwitchApi{
             },);
             request.end();
         },);
+    }
+
+    //valid if called from main process
+    startCommercial(duration,){
+        return new Promise((resolve, reject,) => {
+            if (duration && typeof duration ==='number'){
+                this.duration = parseInt(duration,);
+            } else this.duration = parseInt(90,);
+
+            let postData = JSON.stringify({
+                'broadcaster_id' : '178126684',
+                'length'         : this.duration,
+            },);
+
+            let requestOptions = {
+                method   : 'POST',
+                hostname : 'api.twitch.tv',
+                path     : 'helix/channels/commercial',
+                protocol : 'https:',
+                redirect : 'follow',
+            };
+
+            const req = net.request(requestOptions,);
+
+            req.setHeader('Authorization', 'Bearer ' + this.OAuth2Data.accessToken,);
+            req.setHeader('Client-Id', this.options.clientID,);
+            req.setHeader('Content-Type', 'application/json',);
+
+
+            req.on('response', (res,) => {
+                let data = [];
+
+                console.log(`STATUS: ${res.statusCode}`,);
+                console.log(`HEADERS: ${JSON.stringify(res.headers,) }`,);
+                res.on('data', (dataChuck,) => {
+                    data.push(dataChuck,);
+                },);
+
+                res.on('end', () => {
+                    let jsonBody = Buffer.concat(data,);
+                    jsonBody = JSON.stringify(jsonBody.toString(),);
+                    return resolve(JSON.parse(jsonBody,),);
+                },);
+
+                res.on('error', (err,) => {
+                    console.error(err,);
+                    return reject(err,);
+                },);
+            },);
+
+            req.on('error', (err,) => {
+                throw err;
+            },);
+
+            req.on('redirect', () => {
+                req.followRedirect();
+            },);
+
+            req.write(postData,);
+
+            req.end();
+        },);
+
     }
 };
 

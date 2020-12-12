@@ -12,6 +12,7 @@ const path  = require('path',);
  */
 
 const config = {
+    version  : 12122020,
     commands : [
         {
             commandString    : 'paolo',
@@ -233,6 +234,36 @@ const config = {
                 } else client.say(channel, 'Invalid  Args [SyntaxError] invalid argumet at position 1',);
             },
         },
+        {
+            commandString    : 'commercial',
+            commandType      : 'moderation',
+            isCommandActive  : true,
+            isCoolDownSet    : true,
+            isCoolDownActive : false,
+            coolDownTime     : 30000,
+            permissions      : 1,
+            setPermission    : async function (index, key, value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            toggleActive : async function (index, key , value,){
+                eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
+            },
+            commandFunction : async function (client, channel, duration,){
+                let length = parseInt(duration,);
+                if (length !== 180 || length !== 150 || length !== 120 || length !== 90 || length !== 60 || length !== 30)
+                    length = 90;
+                let response = await twitchApi.startCommercial(length,);
+                response = JSON.parse(response,);
+                console.log(response,);
+                if (this.isCoolDownActive ===  false && this.isCoolDownSet === true && response !== undefined ){
+                    this.isCoolDownActive = true;
+                    setTimeout(() => {
+                        this.isCoolDownActive = false;
+                        console.log('Out from cooldown',);
+                    }, parseInt(this.coolDownTime,),);
+                }
+            },
+        },
         /*{
             commandString    : 'ding',
             commandType      : 'audio',
@@ -259,7 +290,8 @@ const config = {
 
 if (settings.getSync('config.commadConfig',) === undefined )
     settings.setSync('config.commadConfig', config,);
-
+else if (settings.getSync('config.commadConfig.version',) !== config.version)
+    settings.setSync('config.commadConfig', config,);
 /**
  * @description this is the general setting handler,
  */
