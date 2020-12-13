@@ -11,7 +11,7 @@ html,
 }
 
 body {
-  overflow-x: hidden;
+  overflow: hidden;
   margin: 0px;
   font-size: 16px;
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
@@ -36,6 +36,9 @@ div {
   display: block;
 }
 
+.flex-div {
+    display: flex;
+}
 
 ::-webkit-scrollbar{
   padding-right: 10px;
@@ -749,6 +752,8 @@ section.slideshow div.slideshow-controller span{
 
 .commandWrapper{
     display: inline-block;
+    height: 400px;
+    overflow-y: scroll;
 }
 
 .commandString-Label{

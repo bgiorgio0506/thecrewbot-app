@@ -226,7 +226,7 @@ app.on('ready', async () => {
     };
 
     let Tunnel  = tunnel(config, (err, ) => {
-        if (err) throw err;
+        if (err) dialog.showErrorBox('Connection Lost ', 'We have lost the connection between you and the thecrewbot server',);
     },);
 
     Tunnel.on('forward-in', (port,) => {
@@ -235,7 +235,7 @@ app.on('ready', async () => {
 
     Tunnel.on('close', () => {
         Tunnel  = tunnel(config, (err, ) => {
-            if (err) throw err;
+            if (err) dialog.showErrorBox('Error while closing connection', err,);
         },);
     },);
 

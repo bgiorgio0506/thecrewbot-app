@@ -17,7 +17,7 @@ const CreateList = () => {
     },);
 
     ipcRenderer.on('add-quest', (event, questArr,) => {
-        ipcRenderer.send('fetch-question-list',);//call the main to fetch list
+        //ipcRenderer.send('fetch-question-list',);//call the main to fetch list
         setState(questArr,);
     },);
 
@@ -35,13 +35,19 @@ const CreateList = () => {
 
     if (items.length === 0) {
         return (<div className="center-panel">
-            <p className='section'>{langObj.labels[0]}</p>
+            <div className={'flex-div'}>
+                <p className='section'>{langObj.labels[0]}</p>
+                <button style={{ margin : '10px 20px', padding : '5px 5px', }} onClick= {() => { ipcRenderer.send('fetch-question-list',); }} className= {'closeBtn'}>Refresh List</button>
+            </div>
             <ul><p><strong>{langObj.labels[1]}</strong></p></ul>
         </div>);
     } else {
         return (
             <div className="center-panel">
-                <p className='section'>{langObj.labels[0]}</p>
+                <div className={'flex-div'}>
+                    <p className='section'>{langObj.labels[0]}</p>
+                    <button style={{ margin : '10px 20px', padding : '5px 5px', }} onClick= {() => { ipcRenderer.send('fetch-question-list',); }} className= {'closeBtn'}>Refresh List</button>
+                </div>
                 <ul>
                     {items.map((item,) => {
                         return (
