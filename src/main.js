@@ -46,7 +46,7 @@ let appTray;
 emitter.setMaxListeners(0,);//set listener to max listener
 
 // Keep a reference for dev mode
-let dev = true;
+let dev = false;
 
 
 

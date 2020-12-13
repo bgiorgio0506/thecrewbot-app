@@ -4,7 +4,6 @@ const wxApi = require('../js/weatherApi',);
 const settings  = require('electron-settings',);
 const event = require('events',);
 const eventEmitter  = new event.EventEmitter();
-const path  = require('path',);
 
 /**
  * @todo permissions

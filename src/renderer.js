@@ -26,7 +26,6 @@
  * ```
  */
 
-import { ipcRenderer, } from 'electron';
 import './index.css';
 
 
