@@ -8,7 +8,6 @@ const log = require('electron-log',);
 const settings = require('electron-settings',);
 const UISchema = require('./schema/headers.config',).default;
 const { EventEmitter, } = require('events',);
-//const SimConnectApi = require('./js/SimConnectApi',);
 const AutoLaunch = require('./js/AutoLaunch',);
 const tunnel = require('reverse-tunnel-ssh',);
 
@@ -286,11 +285,6 @@ app.on('ready', async () => {
 
     }, 2000,);
     /**End api req */
-
-    ///**SimConnect Section **/
-    //setTimeout(() => {
-    //    SimConnectApi.connectToSim();
-    //}, 10000,);
     /**End */
 },);
 
@@ -363,16 +357,6 @@ ipcMain.on('toggle-dark-mode', (e,checked,) => {
 /**END IPC SECTION */
 
 
-/** Classes Event Loop **/
-//SimConnectApi.on('simconnect-connection-success', () => {
-//    mainWindow.webContents.send('simconnect-connection-success',);
-//},);
-//
-//SimConnectApi.on('simconnect-error', (err,) => {
-//    console.log(err,);
-//    mainWindow.webContents.send('simconnect-error', err,);
-//},);
-/** End **/
 
 /**ChatBot event loop */
 ChatBot.on('add-quest', (questQueue,) => {

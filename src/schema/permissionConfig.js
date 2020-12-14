@@ -18,5 +18,4 @@ const permission = [
         description : 'Only the Author  will be able to use this  command',
     },
 ];
-
 export default permission;
