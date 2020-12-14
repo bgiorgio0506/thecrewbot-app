@@ -149,6 +149,7 @@ ClientBot.on('message', async(channel, tags, message,) => {
 
 ClientBot.on('connected', () => {
     log.info('Joined channel & listening ',);
+    eventEmitter.emit('connected',);
 },);
 
 on('play-sound', (AudioPathFile,) => {

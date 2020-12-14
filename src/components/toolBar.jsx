@@ -2,18 +2,18 @@ import React, { useState, } from 'react';
 import { ipcRenderer, } from 'electron';
 
 const CreateToolbar = () => {
-    const [simConnectState, setSimConnectState,] = useState(false,);
+    const [botConnectState, setBotConnectState,] = useState(false,);
     const [isStreaming, setStreamingState,]= useState(false,);
 
-    ipcRenderer.on('simconnect-connection-success', () => {
+    ipcRenderer.on('connected', () => {
         console.log('Setting to true',);
-        setSimConnectState(true,);
+        setBotConnectState(true,);
     },);
 
-    ipcRenderer.on('simconnect-error', (e , err,) => {
-        console.log('Setting to true', err,);
-        setSimConnectState(false,); // will display error one way or another
-    },);
+    //ipcRenderer.on('simconnect-error', (e , err,) => {
+    //    console.log('Setting to true', err,);
+    //    setBotConnectState(false,); // will display error one way or another
+    //},);
 
     //if a stream is already started
     ipcRenderer.on('live-status', (e,status,) => {
@@ -30,7 +30,7 @@ const CreateToolbar = () => {
     },);
 
     return (<div className= {'toolBar'}>
-        <p className={'toolBarLabel'}> SimConnect status: {(simConnectState === false)? 'Awaiting Connection to sim' : 'Connected'}  | </p>
+        <p className={'toolBarLabel'}> Bot status: {(botConnectState === false)? 'Awaiting Connection' : 'Connected'}  | </p>
         <p id={'onAirLabel'}className={(isStreaming)? 'onAirLabel': 'offLineLabel'}> </p>
         <label htmlFor="onAirLabel"><p className={'toolBarLabel'}>{(isStreaming === true)? 'On Air':'Offline'}</p></label>
     </div>);

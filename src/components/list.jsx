@@ -48,13 +48,15 @@ const CreateList = () => {
                     <p className='section'>{langObj.labels[0]}</p>
                     <button style={{ margin : '10px 20px', padding : '5px 5px', }} onClick= {() => { ipcRenderer.send('fetch-question-list',); }} className= {'closeBtn'}>Refresh List</button>
                 </div>
-                <ul>
-                    {items.map((item,) => {
-                        return (
-                            <li key={item.id} className="genericQuest" id={item.id}><strong>{item.user}</strong> in <strong>[{item.channel}]</strong> <p className="askPrefix">chiede</p>  :  {item.question} <input type="button" className="doneBtn" value="Done" onClick={() => handleClick(item.id,)} /> <br /></li>
-                        );
-                    },)}
-                </ul>
+                <div style={{ height : '500px', overflowY : 'scroll', overflowX : 'hidden', }}>
+                    <ul>
+                        {items.map((item,) => {
+                            return (
+                                <li key={item.id} className="genericQuest" id={item.id}><strong>{item.user}</strong> in <strong>[{item.channel}]</strong> <p className="askPrefix">chiede</p>  :  {item.question} <input type="button" className="doneBtn" value="Done" onClick={() => handleClick(item.id,)} /> <br /></li>
+                            );
+                        },)}
+                    </ul>
+                </div>
             </div>
         );
     }

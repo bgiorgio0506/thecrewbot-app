@@ -8,7 +8,7 @@ const log = require('electron-log',);
 const settings = require('electron-settings',);
 const UISchema = require('./schema/headers.config',).default;
 const { EventEmitter, } = require('events',);
-const SimConnectApi = require('./js/SimConnectApi',);
+//const SimConnectApi = require('./js/SimConnectApi',);
 const AutoLaunch = require('./js/AutoLaunch',);
 const tunnel = require('reverse-tunnel-ssh',);
 
@@ -46,7 +46,7 @@ let appTray;
 emitter.setMaxListeners(0,);//set listener to max listener
 
 // Keep a reference for dev mode
-let dev = false;
+let dev = true;
 
 
 
@@ -287,10 +287,10 @@ app.on('ready', async () => {
     }, 2000,);
     /**End api req */
 
-    /**SimConnect Section **/
-    setTimeout(() => {
-        SimConnectApi.connectToSim();
-    }, 10000,);
+    ///**SimConnect Section **/
+    //setTimeout(() => {
+    //    SimConnectApi.connectToSim();
+    //}, 10000,);
     /**End */
 },);
 
@@ -364,14 +364,14 @@ ipcMain.on('toggle-dark-mode', (e,checked,) => {
 
 
 /** Classes Event Loop **/
-SimConnectApi.on('simconnect-connection-success', () => {
-    mainWindow.webContents.send('simconnect-connection-success',);
-},);
-
-SimConnectApi.on('simconnect-error', (err,) => {
-    console.log(err,);
-    mainWindow.webContents.send('simconnect-error', err,);
-},);
+//SimConnectApi.on('simconnect-connection-success', () => {
+//    mainWindow.webContents.send('simconnect-connection-success',);
+//},);
+//
+//SimConnectApi.on('simconnect-error', (err,) => {
+//    console.log(err,);
+//    mainWindow.webContents.send('simconnect-error', err,);
+//},);
 /** End **/
 
 /**ChatBot event loop */
@@ -390,6 +390,10 @@ ChatBot.on('command-setting-changed', () => {
 //audio event forward to renedere process
 ChatBot.on('play-sound', (AudioPathFile,) => {
     console.log(AudioPathFile,);
+},);
+
+ChatBot.on('connected', () => {
+    mainWindow.webContents.send('connected',);
 },);
 
 /**** END CHATBOT SECTION ****/

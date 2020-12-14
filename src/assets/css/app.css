@@ -307,7 +307,9 @@ div {
 .genericQuest {
   font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
   font-size: 15px;
-  margin: 10px 30px;
+  margin: 20px 30px;
+  width: 590px;
+  word-wrap:break-word;
 }
 
 .doneBtn {
@@ -317,6 +319,7 @@ div {
   border-radius: 4px;
   outline: none;
   border: none;
+  margin: 0px 500px;
 }
 
 .doneBtn:hover {
