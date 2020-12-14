@@ -393,7 +393,10 @@ ChatBot.on('play-sound', (AudioPathFile,) => {
 },);
 
 ChatBot.on('connected', () => {
-    mainWindow.webContents.send('connected',);
+    console.log('here',);
+    setTimeout(() => {
+        mainWindow.webContents.send('connected',);
+    },5000,);
 },);
 
 /**** END CHATBOT SECTION ****/
