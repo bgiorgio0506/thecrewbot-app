@@ -8,6 +8,6 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Install eslint
-      run: yarn global eslint add
+      run: yarn add global eslint
     - name: Lint
       run: eslint \"src/**/*.js\" \"src/**/*.jsx\" --fix
