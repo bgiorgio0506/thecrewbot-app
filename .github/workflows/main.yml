@@ -8,4 +8,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Lint
-      run: eslint \"src/**/*.js\" \"src/**/*.jsx\" --fix
+      run: yarn run lint
