@@ -23,6 +23,7 @@ const CreateCommand = () => {
         console.log('here',);
     },);
 
+
     return (<div className = "center-panel">
         <p className= 'section'>Command Dashboard</p>
         <div className="commandWrapper">
@@ -30,12 +31,16 @@ const CreateCommand = () => {
                 CommandConfig.commands.map((cmd,) => {
                     return (<div className= {'commandItem'} key={cmd.commandString}>
                         <p className= {'commandString-Label'}>Command: {cmd.commandString}</p>
-                        <p className= {'commandString-type'}>Type : {cmd.commandType}</p>
                         <p className= {'commandString-Label'}>Permission: {getPermissionsLabel(cmd.permissions,)}</p>
                         <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
                     </div>);
                 },)
             }
+        </div>
+        <div className={'controls'}>
+            <div className ={'addCommand'} onClick={() => { console.log('clicked',); } }>
+                <p className={'addButton'}>+</p>
+            </div>
         </div>
     </div>);
 };
@@ -44,3 +49,4 @@ export default CreateCommand;
 
 
 //{JSON.stringify(cmd,)}
+//onClick={() => { console.log('clicked',); } }

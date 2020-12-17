@@ -4,6 +4,7 @@ const wxApi = require('../js/weatherApi',);
 const settings  = require('electron-settings',);
 const event = require('events',);
 const eventEmitter  = new event.EventEmitter();
+const path = require('path',);
 
 /**
  * @todo permissions
@@ -11,7 +12,7 @@ const eventEmitter  = new event.EventEmitter();
  */
 
 const config = {
-    version  : 12122020,
+    version  : 19122020,
     commands : [
         {
             commandString    : 'paolo',
@@ -263,16 +264,16 @@ const config = {
                 }
             },
         },
-        /*{
+        {
             commandString    : 'ding',
             commandType      : 'audio',
-            isCommandActive  : false, // do not active the sound command for now;
+            isCommandActive  : true, // do not active the sound command for now;
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
             permissions      : 11,
-            fileDirectory    : path.resolve(process.env.APPDATA, 'AudioFiles\\',),
-            fileName         : 'ding.mp3',
+            filePath         : '',
+            fileName         : '',
             setPermission    : async function (index, key, value,){
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
@@ -280,10 +281,11 @@ const config = {
                 eventEmitter.emit('settings-handler', { index : index, key : key, value : value, },);
             },
             commandFunction : async (client, channel,) => {
-                let AudioPathFile = 'C:\\Users\\Giorgiopc\\AppData\\Roaming\\AudioFiles\\ding.mp3';
+                let AudioPathFile = path.resolve(process.env.APPDATA, 'thecrewbot-app\\AudioFiles\\ding.mp3',);
+                //'C:\\Users\\Giorgiopc\\AppData\\Roaming\\thecrewbot-app\\AudioFiles\\ding.mp3';
                 eventEmitter.emit('play-sound', AudioPathFile,);
             },
-        },*/
+        },
     ],
 };
 

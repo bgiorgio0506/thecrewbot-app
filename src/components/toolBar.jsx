@@ -10,10 +10,11 @@ const CreateToolbar = () => {
         setBotConnectState(true,);
     },);
 
-    //ipcRenderer.on('simconnect-error', (e , err,) => {
-    //    console.log('Setting to true', err,);
-    //    setBotConnectState(false,); // will display error one way or another
-    //},);
+    ipcRenderer.on('play-sound', (e, AudioPathFile,) => {
+        console.log(AudioPathFile,);
+        const audio = new Audio(require(AudioPathFile,),);
+        audio.play();
+    },);
 
     //if a stream is already started
     ipcRenderer.on('live-status', (e,status,) => {
