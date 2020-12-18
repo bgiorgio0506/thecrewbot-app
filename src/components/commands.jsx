@@ -52,7 +52,7 @@ const CreateCommand = () => {
                         </div>
                         <div>
                             <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => { console.log('cliecked',); }}></i>
-                            <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { console.log('cliecked',); }}></i>
+                            <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { console.log('clieck ed',); }}></i>
                         </div>
                     </div>);
                 },)
