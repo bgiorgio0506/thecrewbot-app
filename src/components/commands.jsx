@@ -26,13 +26,34 @@ const CreateCommand = () => {
 
     return (<div className = "center-panel">
         <p className= 'section'>Command Dashboard</p>
+        <div className = 'commandGrid'>
+            <div>
+                <p>Command</p>
+            </div>
+            <div>
+                <p>Permissions</p>
+            </div>
+            <div>
+                <p>Status</p>
+            </div>
+        </div>
         <div className="commandWrapper">
             {
                 CommandConfig.commands.map((cmd,) => {
                     return (<div className= {'commandItem'} key={cmd.commandString}>
-                        <p className= {'commandString-Label'}>Command: {cmd.commandString}</p>
-                        <p className= {'commandString-Label'}>Permission: {getPermissionsLabel(cmd.permissions,)}</p>
-                        <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
+                        <div>
+                            <p className= {'commandString-Label'}>{cmd.commandString}</p>
+                        </div>
+                        <div>
+                            <p className= {'commandString-Label'}>{getPermissionsLabel(cmd.permissions,)}</p>
+                        </div>
+                        <div>
+                            <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
+                        </div>
+                        <div>
+                            <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => { console.log('cliecked',); }}></i>
+                            <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { console.log('cliecked',); }}></i>
+                        </div>
                     </div>);
                 },)
             }

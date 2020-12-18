@@ -752,6 +752,19 @@ section.slideshow div.slideshow-controller span{
     display: inline-flex;
     margin: 7px 0px;
 }
+/**Remember to change it for white theme**/
+.commandItem:hover{
+  background-color: #323233;
+  border-radius: 10px;
+}
+
+.commandItem div{
+  width: 60px;
+  margin: 0px 40px;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-flex;
+}
 
 .commandWrapper{
     display: inline-block;
@@ -763,8 +776,6 @@ section.slideshow div.slideshow-controller span{
     font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
     font-weight: bold;
     font-size: 16px;
-    margin-left: 20px;
-    margin-right: 20px;
 }
 
 .commandString-type {
@@ -779,7 +790,6 @@ section.slideshow div.slideshow-controller span{
     font-family: 'Montserrat', "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
     font-weight: bold;
     font-size: 16px;
-    margin-left: 200px;
     color: grey;
 }
 
@@ -797,7 +807,7 @@ section.slideshow div.slideshow-controller span{
     height: 40px;
     border-radius: 50%;
     background-color: #323233;
-    margin: 70px 45%;
+    margin: 40px 45%;
 }
 
 .addCommand:hover{
@@ -808,6 +818,18 @@ section.slideshow div.slideshow-controller span{
     font-size: 30px;
     font-weight: bold;
 }
+
+.commandGrid{
+  display: flex;
+}
+
+.commandGrid div{
+  width: 60px;
+  margin: 5px 40px;
+  text-align: center;
+  
+}
+
 
 @media screen and (prefers-color-scheme: dark) {
   /* Dark mode */
