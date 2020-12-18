@@ -374,13 +374,14 @@ ChatBot.on('command-setting-changed', () => {
 //audio event forward to renedere process
 ChatBot.on('play-sound', (AudioPathFile,) => {
     console.log(AudioPathFile,);
+    mainWindow.webContents.send('play-sound',AudioPathFile,);
 },);
 
 ChatBot.on('connected', () => {
     console.log('here',);
     setTimeout(() => {
         mainWindow.webContents.send('connected',);
-    },5000,);
+    },10000,);
 },);
 
 /**** END CHATBOT SECTION ****/
