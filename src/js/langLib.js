@@ -11,7 +11,7 @@ const getLang = () => {
         //'/lang/'+ process.env.APP_DEF_LANG_FILE
         //let path = '../../lang/'+process.env.APP_DEF_LANG_FILE
         //let fileString = process.env.APP_DEF_LANG_FILE;
-        langpath = path.join('C:\\Users\\bgior\\OneDrive\\Desktop\\Progetti\\TheCrew\\thecrewbot-app\\', 'lang\\it.json',);
+        langpath = path.join('C:\\thecrewbot-app\\', 'lang\\it.json',);
         return require(langpath,);
     }
     else {
