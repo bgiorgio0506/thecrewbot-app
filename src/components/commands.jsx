@@ -4,17 +4,28 @@ import { ipcRenderer, } from 'electron';
 //Schemas
 import permissionSchema from '../schema/permissionConfig';
 
+//componets
+import CreateModals from '../components/common/modal';
+
 
 /**@todo use event for catching settings changes from outside */
 
 const CreateCommand = () => {
     let initConfig = settings.getSync('config.commadConfig',);
     const [CommandConfig, setCommandConfig,]  = useState(initConfig,);
+    const [showModal, setShowModal,] = useState(false,);
 
     function getPermissionsLabel (perm,) {
         let index = permissionSchema.indexOf(perm,);
         if (index !== -1) return permissionSchema[index].label;
         else return 'All';
+    }
+
+    function hideModal(event,){
+        let target = event.target;
+        if (target.innerHTLM.includes('No',) === true)
+            setShowModal(false,);
+        else setShowModal(false,);
     }
 
     //ipcRenderer event loop
@@ -51,7 +62,7 @@ const CreateCommand = () => {
                             <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
                         </div>
                         <div>
-                            <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => { console.log('cliecked',); }}></i>
+                            <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => setShowModal(true,)}></i>
                             <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { console.log('clieck ed',); }}></i>
                         </div>
                     </div>);
@@ -63,6 +74,10 @@ const CreateCommand = () => {
                 <p className={'addButton'}>+</p>
             </div>
         </div>
+        <CreateModals handleClose={hideModal} show={showModal} yesNoQuest={true}>
+            <p className={'modalTitle'}> Action Required</p>
+            <div className={'modalMessage'}>{'Would you like to delete the command'}</div>
+        </CreateModals>
     </div>);
 };
 
