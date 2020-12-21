@@ -9,8 +9,8 @@ const CreateModals = ({ handleClose, show, yesNoQuest,children, },) => {
         <section className="modal-main">
             {children}
             <div className={'display-flex'}>
-                <button onClick={handleClose} style={{ margin : '22px 5px', }} className = {'closeBtn'}>Yes</button>
-                <button onClick={handleClose} style={{ margin : '22px 5px', }} className = {'closeBtn'}>No</button>
+                <button onClick={handleClose} value={'Yes'} style={{ margin : '22px 5px', }} className = {'closeBtn'}>Yes</button>
+                <button onClick={handleClose} value={'No'} style={{ margin : '22px 5px', }} className = {'closeBtn'}>No</button>
             </div>
         </section>
     </div>);

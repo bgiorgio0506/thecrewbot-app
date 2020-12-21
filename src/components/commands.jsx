@@ -1,6 +1,7 @@
 import React, { useState, } from 'react';
 import settings from 'electron-settings';
 import { ipcRenderer, } from 'electron';
+import utils from '../helpers/utility';
 //Schemas
 import permissionSchema from '../schema/permissionConfig';
 
@@ -8,12 +9,16 @@ import permissionSchema from '../schema/permissionConfig';
 import CreateModals from '../components/common/modal';
 
 
-/**@todo use event for catching settings changes from outside */
+/**
+ * @todo use event for catching settings changes from outside
+ * 1. when adding commands change also initConfig just in case;
+*/
 
 const CreateCommand = () => {
     let initConfig = settings.getSync('config.commadConfig',);
     const [CommandConfig, setCommandConfig,]  = useState(initConfig,);
     const [showModal, setShowModal,] = useState(false,);
+    const [currentCommand, setCurrentCommand,] = useState('',);
 
     function getPermissionsLabel (perm,) {
         let index = permissionSchema.indexOf(perm,);
@@ -23,9 +28,13 @@ const CreateCommand = () => {
 
     function hideModal(event,){
         let target = event.target;
-        if (target.innerHTLM.includes('No',) === true)
+        if (target.value === 'No')
             setShowModal(false,);
-        else setShowModal(false,);
+        else {
+            console.log(currentCommand,);
+            let commandIndex = utils.findIndexInObjArr(initConfig.commands, 'commandString',currentCommand,);
+            console.log(commandIndex,);
+        }
     }
 
     //ipcRenderer event loop
@@ -62,7 +71,7 @@ const CreateCommand = () => {
                             <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
                         </div>
                         <div>
-                            <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => setShowModal(true,)}></i>
+                            <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => { setCurrentCommand(cmd.commandString,); setShowModal(true,); }}></i>
                             <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { console.log('clieck ed',); }}></i>
                         </div>
                     </div>);
@@ -76,7 +85,7 @@ const CreateCommand = () => {
         </div>
         <CreateModals handleClose={hideModal} show={showModal} yesNoQuest={true}>
             <p className={'modalTitle'}> Action Required</p>
-            <div className={'modalMessage'}>{'Would you like to delete the command'}</div>
+            <div className={'modalMessage'}>Would you like to delete the command: <strong>{currentCommand}</strong></div>
         </CreateModals>
     </div>);
 };
@@ -84,5 +93,3 @@ const CreateCommand = () => {
 export default CreateCommand;
 
 
-//{JSON.stringify(cmd,)}
-//onClick={() => { console.log('clicked',); } }
