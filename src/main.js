@@ -352,6 +352,11 @@ ipcMain.on('toggle-dark-mode', (e,checked,) => {
     } else nativeTheme.themeSource = 'light';
 },);
 
+ipcMain.on('remove-command', (e, commandIndex,) => {
+    console.log(commandIndex,);
+    ChatBot.removeCommand(commandIndex,);
+},);
+
 /**end  ipc event loop*/
 
 /**END IPC SECTION */

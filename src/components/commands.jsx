@@ -34,6 +34,17 @@ const CreateCommand = () => {
             console.log(currentCommand,);
             let commandIndex = utils.findIndexInObjArr(initConfig.commands, 'commandString',currentCommand,);
             console.log(commandIndex,);
+
+            //update UI
+            let currentState = CommandConfig.commands;
+            delete currentState[commandIndex];
+            console.table(currentState,);
+            setCommandConfig({ version : settings.getSync('config.commadConfig.version',), commands : currentState, },);
+
+            // modify file only from the bot lib
+            ipcRenderer.send('remove-command', commandIndex,);
+
+            setShowModal(false,);
         }
     }
 

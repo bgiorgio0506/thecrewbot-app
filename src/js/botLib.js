@@ -176,3 +176,14 @@ exports.on = (event, listener,) => {
 exports.emit =(e, arg,) => {
     return eventEmitter.emit(e, arg,);
 };
+
+exports.removeCommand = (commandIndex,) => {
+    let date = new Date();
+    let commandArr = configData.commands;
+    if (commandArr[commandIndex] !== undefined){
+        delete commandArr[commandIndex];
+        settings.setSync('config.commadConfig', commandArr,);
+        settings.setSync('config.commadConfig.version', date.toDateString(),);
+        configData.version = date.toDateString();
+    }
+};
