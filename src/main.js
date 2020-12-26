@@ -442,18 +442,13 @@ if (process.env.APP_DEBUG === 'false') {
 
     autoUpdater.on('update-available', () => {
         log.info('update available!',);
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', true,);
 
         autoUpdater.on('update-downloaded', function () {
             // # restart app, then update will be applied
             log.info('update downloaded!',);
             if (settings.getSync('config.updateLater',) === true) return;
-            dialog.showMessageBox({ type : 'info', buttons : ['Update now', 'Update Later',], title : 'Update avaliable', message : 'An update is available would you like to update?', },).then((res,) => {
-                if (res === 0) return autoUpdater.quitAndInstall();
-                else if (res === 1) return settings.set('config.updateLater', true,);
-                else return;
-            },).catch((err,) => {
-                throw err;
-            },);
+            else return autoUpdater.quitAndInstall();
         },);
 
     },);

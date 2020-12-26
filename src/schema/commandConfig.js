@@ -289,6 +289,8 @@ const config = {
     ],
 };
 
+
+//reset and overwrite
 if (settings.getSync('config.commadConfig',) === undefined )
     settings.setSync('config.commadConfig', config,);
 else if (settings.getSync('config.commadConfig.version',) !== config.version)

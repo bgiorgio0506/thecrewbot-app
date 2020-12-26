@@ -178,12 +178,10 @@ exports.emit =(e, arg,) => {
 };
 
 exports.removeCommand = (commandIndex,) => {
-    let date = new Date();
     let commandArr = configData.commands;
     if (commandArr[commandIndex] !== undefined){
         delete commandArr[commandIndex];
         settings.setSync('config.commadConfig', commandArr,);
-        settings.setSync('config.commadConfig.version', date.toDateString(),);
-        configData.version = date.toDateString();
+        settings.setSync('config.commadConfig.version', configData.version,);
     }
 };
