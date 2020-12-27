@@ -453,5 +453,9 @@ if (process.env.APP_DEBUG === 'false') {
 
     },);
 
+    autoUpdater.on('download-progress', (updaterOBj,) => {
+        log.info(JSON.stringify(updaterOBj,),);
+    },);
+
 
 }

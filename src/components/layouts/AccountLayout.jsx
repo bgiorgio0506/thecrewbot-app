@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState, } from 'react';
+import { ipcRenderer, } from 'electron';
 import PropTypes from 'prop-types';
 //import
 import CreateAccount from '../account';
 import CreateMiscMenu from '../common/miscMenu';
 
 const AccountLayOut = ({ children, },) => {
-    return (
+    const [isUpdating, setUpdating,] = useState(false,);
+
+    ipcRenderer.on('updateState', (status,) => {
+        setUpdating(status,);
+    },);
+    if (isUpdating) {
+        return (<div>Updating</div>);
+    } else return (
         <div className={'center-panel'}>
             <div className={'center-account-panel'}>
                 <CreateAccount />
