@@ -10,6 +10,7 @@ const UISchema = require('./schema/headers.config',).default;
 const { EventEmitter, } = require('events',);
 const AutoLaunch = require('./js/AutoLaunch',);
 const tunnel = require('reverse-tunnel-ssh',);
+const utils = require('./helpers/utility',);
 
 
 
@@ -242,12 +243,22 @@ app.on('ready', async () => {
 
     /**OAuth Section**/
     //refresh token on every restart
-    //wait of it
+    //wait for it
     await OAuth2Client.refreshOAuth2Token().then(() => {
         log.info('Token Refreshed',);
         return;
     },).catch((err,) => {
-        throw err;
+        if (err.status !== undefined) OAuth2Client.startOAuth2Strategy((res,) => {
+            if (typeof res !== 'object'){
+                /*eslint-disable promise/no-nesting*/
+                return utils.writeFile('OAuth.html', res,).then(() => {
+                    return createAuthWindow(`file:///${path.join(process.env.APPDATA,'thecrewbot-app\\Temp%20Folder\\',)}/${'OAuth.html'}`,);
+                },).catch((err,) => {
+                    throw err;
+                },);
+            }
+        },);
+        else throw err;
     },);
 
     /**End */
@@ -334,6 +345,7 @@ ipcMain.on('fetch-question-list', () => {
 
 
 ipcMain.on('open-auth', (e, filePath,) => {
+    log.info(filePath,);
     log.info('recived Oauth open',);
     createAuthWindow(`file:///${filePath.path}/${filePath.fileName}`,);
 },);
@@ -452,10 +464,5 @@ if (process.env.APP_DEBUG === 'false') {
         },);
 
     },);
-
-    autoUpdater.on('download-progress', (updaterOBj,) => {
-        log.info(JSON.stringify(updaterOBj,),);
-    },);
-
 
 }

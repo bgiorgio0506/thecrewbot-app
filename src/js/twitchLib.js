@@ -94,11 +94,14 @@ exports.OAuth2Provider = class  OAuth2Provider{
                     res.on('end', () => {
                         let parsedBody = JSON.parse(data.toString(),);
                         log.info(parsedBody,);
-                        OAuth2Data.accessToken = parsedBody.access_token;
-                        OAuth2Data.refreshToken = parsedBody.refresh_token;
-                        OAuth2Data.expires_in = parsedBody.expires_in;
-                        OAuth2Store.set({ profile : OAuth2Data, },);
-                        resolve(true,);
+                        if (parsedBody.status !== undefined && parseInt(parsedBody.status,) !== 200) reject(parsedBody,);
+                        else {
+                            OAuth2Data.accessToken = parsedBody.access_token;
+                            OAuth2Data.refreshToken = parsedBody.refresh_token;
+                            OAuth2Data.expires_in = parsedBody.expires_in;
+                            OAuth2Store.set({ profile : OAuth2Data, },);
+                            resolve(true,);
+                        }
                     },);
                     res.on('error', (err,) => {
                         reject(err,);

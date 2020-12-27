@@ -12,7 +12,14 @@ const AccountLayOut = ({ children, },) => {
         setUpdating(status,);
     },);
     if (isUpdating) {
-        return (<div>Updating</div>);
+        return (<div className={'updateOverLay'}>
+            <div className={'updaterWrapper'}>
+                <p className={'progressBarLabel'}>Updating...</p>
+                <div className={'loadingBarTrack'}>
+                    <div className = {'loadingBar'} style={{ width : '50%', }}></div>
+                </div>
+            </div>
+        </div>);
     } else return (
         <div className={'center-panel'}>
             <div className={'center-account-panel'}>

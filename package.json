@@ -37,6 +37,7 @@
           "config": {
             "name": "thecrewbot_app",
             "iconUrl": "file://C:/thecrewbot-app/src/assets/icons/ico/ico1.ico",
+            "loadingGif" : "src/assets/gif/thecrewbot.gif",
             "asar": {
               "unpackDir": "{src/}"
             }
