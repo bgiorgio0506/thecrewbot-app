@@ -16,7 +16,6 @@ const utils = require('./helpers/utility',);
 
 
 //Servers
-require('./controllers/OAuth2Server/OAuth2Server ',);
 require('./schema/settings.config',);
 require('./commands/commandsEvents',);
 
@@ -32,10 +31,10 @@ app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required',);
 // Add React extension for development
 const emitter = new EventEmitter();
 const { default: installExtension, REACT_DEVELOPER_TOOLS, } = require('electron-devtools-installer',);
-const { TwitchWebhooks, OAuth2Provider, TwitchApi, } = require('./js/twitchLib',);
 
-//refresh token on every open
-const OAuth2Client = new OAuth2Provider();
+//updater
+const server = 'https://update.electronjs.org';
+const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -209,94 +208,6 @@ app.on('ready', async () => {
         },);
     }
     /**END TRAY APP SECTION */
-
-    /**Tunnel Section **/
-    const port = parseInt(process.env.WEBHOOK_APP_PORT,);
-    const serverPort  = parseInt(process.env.SSH_PORT,);
-    const config = {
-        username          : process.env.SSH_USERNAME,
-        host              : process.env.SSH_HOST,
-        dstHost           : '0.0.0.0',
-        dstPort           : serverPort,
-        srcHost           : '127.0.0.1',
-        srcPort           : port,
-        privateKey        : process.env.SSH_KEY,
-        keepaliveInterval : 30000,
-        keepaliveCountMax : 5,
-    };
-
-    let Tunnel  = tunnel(config, (err, ) => {
-        if (err) dialog.showErrorBox('Connection Lost ', 'We have lost the connection between you and the thecrewbot server',);
-    },);
-
-    Tunnel.on('forward-in', (port,) => {
-        log.info('Forwarding from thecrewbot.it:' + port,);
-    },);
-
-    Tunnel.on('close', () => {
-        Tunnel  = tunnel(config, (err, ) => {
-            if (err) dialog.showErrorBox('Error while closing connection', err,);
-        },);
-    },);
-
-    /**End */
-
-    /**OAuth Section**/
-    //refresh token on every restart
-    //wait for it
-    await OAuth2Client.refreshOAuth2Token().then(() => {
-        log.info('Token Refreshed',);
-        return;
-    },).catch((err,) => {
-        if (err.status !== undefined) OAuth2Client.startOAuth2Strategy((res,) => {
-            if (typeof res !== 'object'){
-                /*eslint-disable promise/no-nesting*/
-                return utils.writeFile('OAuth.html', res,).then(() => {
-                    return createAuthWindow(`file:///${path.join(process.env.APPDATA,'thecrewbot-app\\Temp%20Folder\\',)}/${'OAuth.html'}`,);
-                },).catch((err,) => {
-                    throw err;
-                },);
-            }
-        },);
-        else throw err;
-    },);
-
-    /**End */
-
-
-    /**WebHook**/
-    const webHook = new TwitchWebhooks();
-    try {
-    //set url and subscribe to events
-        await webHook.setUrl('https://thecrewbot.it',);
-        await webHook.subscribeFollows();
-        await webHook.subscribeUsers();
-        await webHook.subscribeStreams();
-        await webHook.subscribeSubs();
-    } catch (error) {
-        log.error(error,);
-    }
-
-    webHook.openDataStream();
-    webHook.on('webhook.notification', (notification,) => {
-        log.info(JSON.stringify(notification,),);
-        mainWindow.webContents.send('webhook.notification', notification,);
-    },);
-    /**End */
-
-    /**Api req */
-    const twitchApi = new TwitchApi();
-    setTimeout(async() => {
-        try {
-            let activeLives  = JSON.parse(await twitchApi.getLives(),);
-            if (activeLives.data.length === 1) mainWindow.webContents.send('live-status', true,);
-        } catch (err){
-            log.error(err,);
-        }
-
-    }, 2000,);
-    /**End api req */
-    /**End */
 },);
 
 // Quit when all windows are closed.
@@ -369,6 +280,104 @@ ipcMain.on('remove-command', (e, commandIndex,) => {
     ChatBot.removeCommand(commandIndex,);
 },);
 
+ipcMain.on('start-services', async() => {
+    //service server
+    require('./controllers/OAuth2Server/OAuth2Server ',);
+    const { TwitchWebhooks, OAuth2Provider, TwitchApi, } = require('./js/twitchLib',);
+
+    //refresh token on every open
+    const OAuth2Client = new OAuth2Provider();
+
+
+    /**Tunnel Section **/
+    const port = parseInt(process.env.WEBHOOK_APP_PORT,);
+    const serverPort  = parseInt(process.env.SSH_PORT,);
+    const config = {
+        username          : process.env.SSH_USERNAME,
+        host              : process.env.SSH_HOST,
+        dstHost           : '0.0.0.0',
+        dstPort           : serverPort,
+        srcHost           : '127.0.0.1',
+        srcPort           : port,
+        privateKey        : process.env.SSH_KEY,
+        keepaliveInterval : 30000,
+        keepaliveCountMax : 5,
+    };
+
+    let Tunnel  = tunnel(config, (err, ) => {
+        if (err) dialog.showErrorBox('Connection Lost ', 'We have lost the connection between you and the thecrewbot server',);
+    },);
+
+    Tunnel.on('forward-in', (port,) => {
+        log.info('Forwarding from thecrewbot.it:' + port,);
+    },);
+
+    Tunnel.on('close', () => {
+        Tunnel  = tunnel(config, (err, ) => {
+            if (err) dialog.showErrorBox('Error while closing connection', err,);
+        },);
+    },);
+
+    /**End */
+
+    /**OAuth Section**/
+    //refresh token on every restart
+    //wait for it
+    await OAuth2Client.refreshOAuth2Token().then(() => {
+        log.info('Token Refreshed',);
+        return;
+    },).catch((err,) => {
+        if (err.status !== undefined) OAuth2Client.startOAuth2Strategy((res,) => {
+            if (typeof res !== 'object'){
+                /*eslint-disable promise/no-nesting*/
+                return utils.writeFile('OAuth.html', res,).then(() => {
+                    return createAuthWindow(`file:///${path.join(process.env.APPDATA,'thecrewbot-app\\Temp%20Folder\\',)}/${'OAuth.html'}`,);
+                },).catch((err,) => {
+                    throw err;
+                },);
+            }
+        },);
+        else throw err;
+    },);
+
+    /**End */
+
+
+    /**WebHook**/
+    const webHook = new TwitchWebhooks();
+    try {
+        //set url and subscribe to events
+        await webHook.setUrl('https://thecrewbot.it',);
+        await webHook.subscribeFollows();
+        await webHook.subscribeUsers();
+        await webHook.subscribeStreams();
+        await webHook.subscribeSubs();
+    } catch (error) {
+        log.error(error,);
+    }
+
+    webHook.openDataStream();
+    webHook.on('webhook.notification', (notification,) => {
+        log.info(JSON.stringify(notification,),);
+        mainWindow.webContents.send('webhook.notification', notification,);
+    },);
+    /**End */
+
+    /**Api req */
+    const twitchApi = new TwitchApi();
+    setTimeout(async() => {
+        try {
+            let activeLives  = JSON.parse(await twitchApi.getLives(),);
+            if (activeLives.data.length === 1) mainWindow.webContents.send('live-status', true,);
+        } catch (err){
+            log.error(err,);
+        }
+
+    }, 2000,);
+    /**End api req */
+    /**End */
+},);
+
 /**end  ipc event loop*/
 
 /**END IPC SECTION */
@@ -410,21 +419,25 @@ ChatBot.on('connected', () => {
 
 /** UPDATER SECTION **/
 //GitHub publisher
-const server = 'https://update.electronjs.org';
-const feed = `${server}/bgiorgio0506/thecrewbot-app/${process.platform}-${process.arch}/${app.getVersion()}`;
-
+//delay the start check
 ipcMain.on('check-update', () => {
     autoUpdater.setFeedURL(feed,);
-    autoUpdater.checkForUpdates();
+    setTimeout(() => {
+        autoUpdater.checkForUpdates();
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : true, message : 'Contacting the server...', },);
+    },2000,);
 },);
 
 if (process.env.APP_DEBUG === 'false') {
     autoUpdater.setFeedURL(feed,);
 
-    setInterval(() => {
-        autoUpdater.checkForUpdates();
-        log.info('Checking Update...',);
-    }, 3600000,);
+    //delay the updateperiodic check
+    setTimeout(() => {
+        setInterval(() => {
+            autoUpdater.checkForUpdates();
+            log.info('Checking Update...',);
+        }, 3600000,);
+    },60000,);
 
     autoUpdater.on('error', (error,) => {
         log.error('AutoUpdater Error: ',);
@@ -433,14 +446,15 @@ if (process.env.APP_DEBUG === 'false') {
         log.error(dialog.showErrorBox('Error!', error.message,),);
         UISchema.UISchemaState.isUpdaterDownloading = false;
         //if mainwindow.webcontent are defined
-        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', error,);
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : error, message : 'An error accured while contacting the server', percentage : 0, },);
+        ipcMain.emit('start-services',);
     },);
 
     autoUpdater.on('update-not-available', () => {
         UISchema.UISchemaState.isUpdaterDownloading = false;
         //if mainwindow.webcontent are defined
-        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', UISchema.UISchemaState.isUpdaterDownloading,);
-
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : false, message : '', },);
+        ipcMain.emit('start-services',);
         log.info('update not available',);
     },);
 
@@ -448,21 +462,28 @@ if (process.env.APP_DEBUG === 'false') {
     autoUpdater.on('checking-for-update', () => {
         UISchema.UISchemaState.isUpdaterDownloading = true;
         //if mainwindow.webcontent are defined
-        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', true,);
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : true, message : 'Checking for updates',  percentage : 25, },);
         log.info('checking for update setting UIState to ' + UISchema.UISchemaState.isUpdaterDownloading,);
     },);
 
     autoUpdater.on('update-available', () => {
         log.info('update available!',);
-        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', true,);
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : true, message : 'Updating...', percentage : 50, },);
 
         autoUpdater.on('update-downloaded', function () {
             // # restart app, then update will be applied
             log.info('update downloaded!',);
-            if (settings.getSync('config.updateLater',) === true) return;
-            else return autoUpdater.quitAndInstall();
+            if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : true, message : 'Installing Updates ...', percentage : 75, },);
+            setTimeout(() => {
+                if (settings.getSync('config.updateLater',) === true) return;
+                else return autoUpdater.quitAndInstall();
+            }, 3000,);
         },);
 
+    },);
+
+    autoUpdater.on('before-quit-for-update', () => {
+        if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : true, message : 'Restarting ...', percentage : 100, },);
     },);
 
 }

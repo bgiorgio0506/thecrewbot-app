@@ -4,8 +4,8 @@ const TwitchConfig = require('../schema/twitchApi.config',);
 const log = require('electron-log',);
 const event = require('events',);
 const eventEmitter = new event.EventEmitter();
-const webHookServer = require('../controllers/WebHook/webHookServer',);
 const { net, } = require('electron',);
+const webHookServer = require('../controllers/WebHook/webHookServer',);
 
 exports.OAuth2Provider = class  OAuth2Provider{
 

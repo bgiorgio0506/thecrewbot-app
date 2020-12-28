@@ -330,7 +330,7 @@ app.route('/',).get((req, res,) => {
 },);
 
 var server = app.listen(process.env.WEBHOOK_APP_PORT,  function (err,) {
-    if (err) throw err;
+    if (err) log.error(err,);
     console.log('Server WebHook is online and listening to port: ' + server.address().port,);
 },);
 

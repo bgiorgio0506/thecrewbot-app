@@ -1,5 +1,6 @@
 //Import deps
 import React from 'react';
+import log from 'electron-log';
 import { Link, } from 'react-router-dom';
 import { ipcRenderer , remote, } from 'electron';
 import UIschema from '../schema/headers.config';
@@ -20,13 +21,14 @@ const CreatHeader = () => {
     };
 
     //Receiving any Updaterstate from main process
-    ipcRenderer.on('updateState', (e , state,) => {
-        if (typeof state === 'object') {
+    ipcRenderer.on('updateState', (e , { status, },) => {
+        log.info(status,);
+        if (typeof status === 'object') {
             if (updatesState === true )setState(false,); //setUpdater State to flase
             setErrorState(true,);//set error state
         } else {
             if (errorUpdateCheck ===true) setErrorState(false,); //set error state
-            setState(state,);
+            setState(status,);
         }
     },);
 

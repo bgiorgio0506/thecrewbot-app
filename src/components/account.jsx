@@ -17,13 +17,12 @@ class CreateAccount extends Component {
     constructor(props,) {
         super(props,);
         this.state = {
-            data       : [],
-            follow     : 0,
-            subs       : 0,
-            isLoading  : false,
-            error      : null,
-            showModal  : false,
-            isUpdating : false,
+            data      : [],
+            follow    : 0,
+            subs      : 0,
+            isLoading : false,
+            error     : null,
+            showModal : false,
         };
     }
 
@@ -94,7 +93,7 @@ class CreateAccount extends Component {
     }
 
     render() {
-        const { isLoading, error, data, follow, subs, isUpdating, } = this.state;
+        const { isLoading, error, data, follow, subs, } = this.state;
 
         console.error(error,);
         if (error && error.code !== 403) {
