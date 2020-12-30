@@ -45,7 +45,7 @@ let appTray;
 emitter.setMaxListeners(0,);//set listener to max listener
 
 // Keep a reference for dev mode
-let dev = false;
+let dev = true;
 
 
 
@@ -486,4 +486,4 @@ if (process.env.APP_DEBUG === 'false') {
         if (mainWindow !== undefined && mainWindow.webContents !== undefined) mainWindow.webContents.send('updateState', { status : true, message : 'Restarting ...', percentage : 100, },);
     },);
 
-}
+} else ipcMain.emit('start-services',);
