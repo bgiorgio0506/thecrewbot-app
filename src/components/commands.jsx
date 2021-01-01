@@ -7,6 +7,7 @@ import permissionSchema from '../schema/permissionConfig';
 
 //componets
 import CreateModals from '../components/common/modal';
+import CreateOptsModal from './common/commandOptions';
 
 
 /**
@@ -19,11 +20,20 @@ const CreateCommand = () => {
     const [CommandConfig, setCommandConfig,]  = useState(initConfig,);
     const [showModal, setShowModal,] = useState(false,);
     const [currentCommand, setCurrentCommand,] = useState('',);
+    const [showOptsModal , setOptsModal,] = useState(false,);
 
     function getPermissionsLabel (perm,) {
         let index = permissionSchema.indexOf(perm,);
         if (index !== -1) return permissionSchema[index].label;
         else return 'All';
+    }
+
+    function getCurrentCommandObj (){
+        if (currentCommand !== undefined){
+            let index = utils.findIndexInObjArr(CommandConfig.commands, 'commandString', currentCommand,);
+            if (index != -1) return CommandConfig.commands[index];
+            else return {};
+        } else return {};
     }
 
     function hideModal(event,){
@@ -46,6 +56,11 @@ const CreateCommand = () => {
 
             setShowModal(false,);
         }
+    }
+
+    function hideOptions(event, ){
+        let target = event.target;
+        setOptsModal(false,);
     }
 
     //ipcRenderer event loop
@@ -83,7 +98,7 @@ const CreateCommand = () => {
                         </div>
                         <div>
                             <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => { setCurrentCommand(cmd.commandString,); setShowModal(true,); }}></i>
-                            <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { console.log('clieck ed',); }}></i>
+                            <i className="fas fa-cog" style={{ fontSize : '15px', }} onClick={() => { setCurrentCommand(cmd.commandString,);  setOptsModal(true,); }}></i>
                         </div>
                     </div>);
                 },)
@@ -98,6 +113,7 @@ const CreateCommand = () => {
             <p className={'modalTitle'}> Action Required</p>
             <div className={'modalMessage'}>Would you like to delete the command: <strong>{currentCommand}</strong></div>
         </CreateModals>
+        <CreateOptsModal handleClose={hideOptions} show={showOptsModal} commadConfig = {getCurrentCommandObj()} />
     </div>);
 };
 
