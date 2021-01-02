@@ -73,6 +73,25 @@ const schema = {
                 },
             },
         ],
+        commandsSettings : {
+            generalSettings : [
+                {
+                    id        : 'changeCommandString',
+                    inputType : 'text',
+                    className : ' ',
+                    labelText : ' Command name ',
+                },
+            ],
+
+            coolDownSettings : [
+                {
+                    id        : 'toggleActiveCoolDown',
+                    inputType : 'checkbox',
+                    className : 'checkBoxBtn',
+                    labelText : 'Active Command CoolDown',
+                },
+            ],
+        },
     },
 };
 

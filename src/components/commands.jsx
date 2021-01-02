@@ -113,7 +113,7 @@ const CreateCommand = () => {
             <p className={'modalTitle'}> Action Required</p>
             <div className={'modalMessage'}>Would you like to delete the command: <strong>{currentCommand}</strong></div>
         </CreateModals>
-        <CreateOptsModal handleClose={hideOptions} show={showOptsModal} commadConfig = {getCurrentCommandObj()} />
+        <CreateOptsModal handleClose={hideOptions} show={showOptsModal} commadConfig = { getCurrentCommandObj()} />
     </div>);
 };
 
