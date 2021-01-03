@@ -74,7 +74,7 @@ exports.OAuth2Provider = class  OAuth2Provider{
         return new Promise((resolve, reject,) => {
             const OAuth2Store = new store({ name : 'data', encryptionKey : process.env.SESSION_SECRET, },);
             let OAuth2Data  = OAuth2Store.get('profile',);
-            log.info(OAuth2Data,);
+            log.info(OAuth2Store,);
             if (OAuth2Data === undefined ) return resolve(null,);
             else {
                 const options = {
@@ -93,7 +93,6 @@ exports.OAuth2Provider = class  OAuth2Provider{
                     },);
                     res.on('end', () => {
                         let parsedBody = JSON.parse(data.toString(),);
-                        log.info(parsedBody,);
                         if (parsedBody.status !== undefined && parseInt(parsedBody.status,) !== 200) reject(parsedBody,);
                         else {
                             OAuth2Data.accessToken = parsedBody.access_token;
@@ -122,6 +121,7 @@ exports.TwitchApi = class TwitchApi{
         const OAuth2Store = new store({ name : 'data', encryptionKey : process.env.SESSION_SECRET, },);
         this.options = TwitchConfig.OAuth2ProviderDefaultOptions;
         this.OAuth2Data = OAuth2Store.get('profile',);
+        console.log(OAuth2Store.get(),);
         if (this.OAuth2Data !== undefined &&this.OAuth2Data.accessToken === undefined) return log.error(new Error('Missing Token',),);
     }
 

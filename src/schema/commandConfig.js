@@ -12,7 +12,7 @@ const path = require('path',);
  */
 
 const config = {
-    version  : 19122020,
+    version  : 19122021,
     commands : [
         {
             commandString    : 'paolo',
@@ -67,7 +67,7 @@ const config = {
         {
             commandString    : 'stick',
             commandType      : 'defaults',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -86,7 +86,7 @@ const config = {
         {
             commandString    : 'tutorials',
             commandType      : 'defaults',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -105,7 +105,7 @@ const config = {
         {
             commandString    : 'discord',
             commandType      : 'defaults',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -124,7 +124,7 @@ const config = {
         {
             commandString    : 'donate',
             commandType      : 'defaults',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -143,7 +143,7 @@ const config = {
         {
             commandString    : 'version',
             commandType      : 'debug',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -162,7 +162,7 @@ const config = {
         {
             commandString    : 'metar',
             commandType      : 'weather',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -199,7 +199,7 @@ const config = {
         {
             commandString    : 'taf',
             commandType      : 'weather',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -237,7 +237,7 @@ const config = {
         {
             commandString    : 'commercial',
             commandType      : 'moderation',
-            isCommandActive  : true,
+            isCommandActive  : false,
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -267,7 +267,7 @@ const config = {
         {
             commandString    : 'ding',
             commandType      : 'audio',
-            isCommandActive  : true, // do not active the sound command for now;
+            isCommandActive  : false, // do not active the sound command for now;
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,

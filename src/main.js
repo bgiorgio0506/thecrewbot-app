@@ -323,11 +323,12 @@ ipcMain.on('start-services', async() => {
     /**OAuth Section**/
     //refresh token on every restart
     //wait for it
+    /*eslint-disable promise/no-nesting*/
     await OAuth2Client.refreshOAuth2Token().then(() => {
         log.info('Token Refreshed',);
         return;
     },).catch((err,) => {
-        if (err.status !== undefined) OAuth2Client.startOAuth2Strategy((res,) => {
+        if (err.status !== undefined) OAuth2Client.startOAuth2Strategy().then((res,) => {
             if (typeof res !== 'object'){
                 /*eslint-disable promise/no-nesting*/
                 return utils.writeFile('OAuth.html', res,).then(() => {
@@ -335,8 +336,8 @@ ipcMain.on('start-services', async() => {
                 },).catch((err,) => {
                     throw err;
                 },);
-            }
-        },);
+            } else return;
+        },).catch((e,) => { throw e; },);
         else throw err;
     },);
 
