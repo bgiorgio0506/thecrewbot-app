@@ -45,7 +45,7 @@ let appTray;
 emitter.setMaxListeners(0,);//set listener to max listener
 
 // Keep a reference for dev mode
-let dev = true;
+let dev = false;
 
 
 
@@ -300,8 +300,8 @@ ipcMain.on('start-services', async() => {
         srcHost           : '127.0.0.1',
         srcPort           : port,
         privateKey        : process.env.SSH_KEY,
-        keepaliveInterval : 30000,
-        keepaliveCountMax : 5,
+        keepaliveInterval : 5000,
+        keepaliveCountMax : 4,
     };
 
     let Tunnel  = tunnel(config, (err, ) => {
@@ -310,6 +310,14 @@ ipcMain.on('start-services', async() => {
 
     Tunnel.on('forward-in', (port,) => {
         log.info('Forwarding from thecrewbot.it:' + port,);
+    },);
+
+    Tunnel.on('error', (err,) => {
+        log.error(err,);
+    },);
+
+    Tunnel.on('timeout', () => {
+        log.error('Server timmed out',);
     },);
 
     Tunnel.on('close', () => {
