@@ -124,7 +124,7 @@ const config = {
         {
             commandString    : 'donate',
             commandType      : 'defaults',
-            isCommandActive  : false,
+            isCommandActive  : true,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -143,7 +143,7 @@ const config = {
         {
             commandString    : 'version',
             commandType      : 'debug',
-            isCommandActive  : false,
+            isCommandActive  : true,
             isCoolDownSet    : false,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -162,7 +162,7 @@ const config = {
         {
             commandString    : 'metar',
             commandType      : 'weather',
-            isCommandActive  : false,
+            isCommandActive  : true,
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -199,7 +199,7 @@ const config = {
         {
             commandString    : 'taf',
             commandType      : 'weather',
-            isCommandActive  : false,
+            isCommandActive  : true,
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
@@ -237,7 +237,7 @@ const config = {
         {
             commandString    : 'commercial',
             commandType      : 'moderation',
-            isCommandActive  : false,
+            isCommandActive  : true,
             isCoolDownSet    : true,
             isCoolDownActive : false,
             coolDownTime     : 30000,
