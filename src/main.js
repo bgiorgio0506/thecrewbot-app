@@ -288,46 +288,6 @@ ipcMain.on('start-services', async() => {
     //refresh token on every open
     const OAuth2Client = new OAuth2Provider();
 
-
-    /**Tunnel Section **/
-    const port = parseInt(process.env.WEBHOOK_APP_PORT,);
-    const serverPort  = parseInt(process.env.SSH_PORT,);
-    const config = {
-        username          : process.env.SSH_USERNAME,
-        host              : process.env.SSH_HOST,
-        dstHost           : '0.0.0.0',
-        dstPort           : serverPort,
-        srcHost           : '127.0.0.1',
-        srcPort           : port,
-        privateKey        : process.env.SSH_KEY,
-        keepaliveInterval : 5000,
-        keepaliveCountMax : 4,
-    };
-
-    let Tunnel  = tunnel(config, (err, ) => {
-        if (err) dialog.showErrorBox('Connection Lost ', 'We have lost the connection between you and the thecrewbot server',);
-    },);
-
-    Tunnel.on('forward-in', (port,) => {
-        log.info('Forwarding from thecrewbot.it:' + port,);
-    },);
-
-    Tunnel.on('error', (err,) => {
-        log.error(err,);
-    },);
-
-    Tunnel.on('timeout', () => {
-        log.error('Server timmed out',);
-    },);
-
-    Tunnel.on('close', () => {
-        Tunnel  = tunnel(config, (err, ) => {
-            if (err) dialog.showErrorBox('Error while closing connection', err,);
-        },);
-    },);
-
-    /**End */
-
     /**OAuth Section**/
     //refresh token on every restart
     //wait for it
@@ -351,26 +311,66 @@ ipcMain.on('start-services', async() => {
 
     /**End */
 
+    if (process.env.WEBHOOK_APP_STATUS !== 'false' || process.env.WEBHOOK_APP_DEBUG !== 'false'){
+    /**Tunnel Section **/
+        const port = parseInt(process.env.WEBHOOK_APP_PORT,);
+        const serverPort  = parseInt(process.env.SSH_PORT,);
+        const config = {
+            username          : process.env.SSH_USERNAME,
+            host              : process.env.SSH_HOST,
+            dstHost           : '0.0.0.0',
+            dstPort           : serverPort,
+            srcHost           : '127.0.0.1',
+            srcPort           : port,
+            privateKey        : process.env.SSH_KEY,
+            keepaliveInterval : 5000,
+            keepaliveCountMax : 4,
+        };
 
-    /**WebHook**/
-    const webHook = new TwitchWebhooks();
-    try {
+        let Tunnel  = tunnel(config, (err, ) => {
+            if (err) dialog.showErrorBox('Connection Lost ', 'We have lost the connection between you and the thecrewbot server',);
+        },);
+
+        Tunnel.on('forward-in', (port,) => {
+            log.info('Forwarding from thecrewbot.it:' + port,);
+        },);
+
+        Tunnel.on('error', (err,) => {
+            log.error(err,);
+        },);
+
+        Tunnel.on('timeout', () => {
+            log.error('Server timmed out',);
+        },);
+
+        Tunnel.on('close', () => {
+            Tunnel  = tunnel(config, (err, ) => {
+                if (err) dialog.showErrorBox('Error while closing connection', err,);
+            },);
+        },);
+
+        /**WebHook**/
+        const webHook = new TwitchWebhooks();
+        try {
         //set url and subscribe to events
-        await webHook.setUrl('https://thecrewbot.it',);
-        await webHook.subscribeFollows();
-        await webHook.subscribeUsers();
-        await webHook.subscribeStreams();
-        await webHook.subscribeSubs();
-    } catch (error) {
-        log.error(error,);
+            await webHook.setUrl('https://thecrewbot.it',);
+            await webHook.subscribeFollows();
+            await webHook.subscribeUsers();
+            await webHook.subscribeStreams();
+            await webHook.subscribeSubs();
+        } catch (error) {
+            log.error(error,);
+        }
+
+        webHook.openDataStream();
+        webHook.on('webhook.notification', (notification,) => {
+            log.info(JSON.stringify(notification,),);
+            mainWindow.webContents.send('webhook.notification', notification,);
+        },);
+    /**End */
     }
 
-    webHook.openDataStream();
-    webHook.on('webhook.notification', (notification,) => {
-        log.info(JSON.stringify(notification,),);
-        mainWindow.webContents.send('webhook.notification', notification,);
-    },);
-    /**End */
+
 
     /**Api req */
     const twitchApi = new TwitchApi();
@@ -423,7 +423,7 @@ ChatBot.on('connected', () => {
 
 
 
-
+/**per chi volesse acquistarlo da orbx: https://orbxdirect.com/product/mkstudios-lepa e per chi volesse acquistarlo da simmarket: https://secure.simmarket.com/mk-studios-palma-de-mallorca-p3dv4-p3dv5.phtml */
 
 
 /** UPDATER SECTION **/
