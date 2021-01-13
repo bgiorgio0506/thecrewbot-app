@@ -58,7 +58,7 @@ const CreateCommand = () => {
         }
     }
 
-    function hideOptions(event, ){
+    function hideOptionsModal(event, ){
         let target = event.target;
         setOptsModal(false,);
     }
@@ -94,7 +94,7 @@ const CreateCommand = () => {
                             <p className= {'commandString-Label'}>{getPermissionsLabel(cmd.permissions,)}</p>
                         </div>
                         <div>
-                            <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
+                            <p className= {(cmd.isCommandActive === true)?'commandString-status activeCmd' : 'commandString-status'} onClick={() => { console.log('clicked',); }}>{(cmd.isCommandActive === true) ? 'Active' : 'Disabled'}</p>
                         </div>
                         <div>
                             <i className="fas fa-trash-alt" style={{ fontSize : '15px', }} onClick={() => { setCurrentCommand(cmd.commandString,); setShowModal(true,); }}></i>
@@ -113,7 +113,7 @@ const CreateCommand = () => {
             <p className={'modalTitle'}> Action Required</p>
             <div className={'modalMessage'}>Would you like to delete the command: <strong>{currentCommand}</strong></div>
         </CreateModals>
-        <CreateOptsModal handleClose={hideOptions} show={showOptsModal} commadConfig = { getCurrentCommandObj()} />
+        <CreateOptsModal handleClose={hideOptionsModal} show={showOptsModal} commadConfig = { getCurrentCommandObj()} />
     </div>);
 };
 

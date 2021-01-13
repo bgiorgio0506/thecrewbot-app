@@ -791,6 +791,7 @@ section.slideshow div.slideshow-controller span{
     font-weight: bold;
     font-size: 16px;
     color: grey;
+    cursor: pointer;
 }
 
 .activeCmd{
