@@ -283,6 +283,7 @@ ipcMain.on('remove-command', (e, commandIndex,) => {
 ipcMain.on('start-services', async() => {
     //service server
     require('./controllers/OAuth2Server/OAuth2Server ',);
+    const webHookServer = require('./controllers/WebHook/webHookServer',);
     const { TwitchWebhooks, OAuth2Provider, TwitchApi, } = require('./js/twitchLib',);
 
     //refresh token on every open
@@ -350,6 +351,7 @@ ipcMain.on('start-services', async() => {
         },);
 
         /**WebHook**/
+        webHookServer.connect();
         const webHook = new TwitchWebhooks();
         try {
         //set url and subscribe to events

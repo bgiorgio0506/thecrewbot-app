@@ -7,6 +7,7 @@ const path         = require('path',);
 const fs           = require('fs',);
 const log = require('electron-log',);
 const event  = require('events',);
+var server;
 
 
 // Define our constants, you will change these with your own
@@ -329,11 +330,12 @@ app.route('/',).get((req, res,) => {
     res.send('Hey',);
 },);
 
-var server = app.listen(process.env.WEBHOOK_APP_PORT,  function (err,) {
-    if (err) log.error(err,);
-    console.log('Server WebHook is online and listening to port: ' + server.address().port,);
-},);
-
+exports.connect = () => {
+    server = app.listen(process.env.WEBHOOK_APP_PORT,  function (err,) {
+        if (err) log.error(err,);
+        console.log('Server WebHook is online and listening to port: ' + server.address().port,);
+    },);
+};
 
 exports.on = (e, listener,) => {
     return eventEmitter.on(e, listener,);

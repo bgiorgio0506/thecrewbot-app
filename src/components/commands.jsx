@@ -58,9 +58,12 @@ const CreateCommand = () => {
         }
     }
 
+    //handle closure
     function hideOptionsModal(event, ){
         let target = event.target;
-        setOptsModal(false,);
+        if (target.value === 'Save'){
+            //send event to main
+        } else setOptsModal(false,);
     }
 
     //ipcRenderer event loop
