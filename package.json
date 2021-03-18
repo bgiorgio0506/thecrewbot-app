@@ -149,7 +149,7 @@
     "dotenv-webpack": "^2.0.0",
     "electron": "^10.2.0",
     "electron-rebuild": "^2.3.4",
-    "eslint": "^7.16.0",
+    "eslint": "^7.22.0",
     "eslint-plugin-promise": "^4.2.1",
     "html-webpack-plugin": "^4.5.0",
     "media-query-plugin": "^1.4.0",
