@@ -117,7 +117,7 @@
     "express-session": "^1.17.1",
     "follow-redirects": "^1.13.1",
     "form-data": "^3.0.0",
-    "javascript-obfuscator": "^2.10.0",
+    "javascript-obfuscator": "^2.10.7",
     "passport": "^0.4.1",
     "passport-oauth": "^1.0.0",
     "passport-twitch": "^1.0.3",
