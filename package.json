@@ -122,7 +122,7 @@
     "passport-oauth": "^1.0.0",
     "passport-twitch": "^1.0.3",
     "path": "^0.12.7",
-    "querystring": "^0.2.0",
+    "querystring": "^0.2.1",
     "raw-body": "^2.4.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
