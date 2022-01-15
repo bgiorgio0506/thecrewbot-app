@@ -130,7 +130,7 @@
     "react-router-dom": "^5.2.0",
     "request": "^2.88.2",
     "reverse-tunnel-ssh": "^1.1.0",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "tmi.js": "^1.7.1",
     "update-electron-app": "^2.0.1",
     "url": "^0.11.0"
